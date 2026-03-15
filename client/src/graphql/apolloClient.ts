@@ -1,7 +1,8 @@
 import { ApolloClient, HttpLink, InMemoryCache, from } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 
-const GRAPHQL_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL ?? "/api/graphql";
+const GRAPHQL_URL =
+  process.env.NEXT_PUBLIC_GRAPHQL_URL ?? "http://localhost:4000";
 
 export function createApolloClient() {
   const httpLink = new HttpLink({
