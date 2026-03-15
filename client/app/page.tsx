@@ -58,7 +58,7 @@ export default function Home() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-xl flex-col justify-center gap-6 p-6">
-      <h1 className="text-2xl font-semibold">GraphQL Typed Hooks POC</h1>
+      <h1 className="text-2xl font-semibold">Test Screen</h1>
 
       <form
         onSubmit={onSave}
@@ -104,11 +104,6 @@ export default function Home() {
       {loadError ? (
         <p className="text-sm text-destructive">{loadError.message}</p>
       ) : null}
-
-      <div className="rounded-lg border bg-card p-4">
-        <p className="mb-2 text-sm font-medium">Loaded JSON</p>
-        <pre className="whitespace-pre-wrap text-sm">{prettyJson}</pre>
-      </div>
     </main>
   );
 }

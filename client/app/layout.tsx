@@ -9,8 +9,9 @@ import { cn } from '@/lib/utils';
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  title: 'GraphQL Demo',
-  description: 'Minimalny klient Apollo + GraphQL',
+  title: 'IO - Integrated Recruitment System',
+  description:
+    'A recruitment system built with Next.js, GraphQL, and Apollo Client.',
 };
 
 export default function RootLayout({
