@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import {
   useLoadDataQuery,
   useSaveDataMutation,
-} from "@/src/graphql/generated/hooks";
+} from "@/src/api/generated/graphql-api";
 
 type FormValues = {
   input1: string;

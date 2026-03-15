@@ -1,15 +1,12 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 
-const schemaUrl =
-  process.env.GRAPHQL_SCHEMA_URL ??
-  process.env.NEXT_PUBLIC_GRAPHQL_URL ??
-  "http://localhost:4000";
+const schemaUrl = process.env.NEXT_PUBLIC_GRAPHQL_URL;
 
 const config: CodegenConfig = {
   schema: schemaUrl,
-  documents: "src/graphql/operations/**/*.graphql",
+  documents: "src/api/gql/**/*.graphql",
   generates: {
-    "src/graphql/generated/hooks.ts": {
+    "src/api/generated/graphql-api.ts": {
       plugins: [
         {
           add: {
