@@ -2,6 +2,12 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const schemaUrl = process.env.NEXT_PUBLIC_GRAPHQL_URL;
 
+if (!schemaUrl) {
+  throw new Error(
+    'NEXT_PUBLIC_GRAPHQL_URL environment variable is not defined',
+  );
+}
+
 const config: CodegenConfig = {
   schema: schemaUrl,
   documents: 'src/api/gql/**/*.graphql',
@@ -19,8 +25,12 @@ const config: CodegenConfig = {
       ],
       config: {
         withHooks: true,
+        withSuspense: false,
         withHOC: false,
         withComponent: false,
+        withResultType: false,
+        withMutationFn: false,
+        withMutationOptionsType: false,
         apolloReactHooksImportFrom: '@apollo/client/react',
         gqlImport: '@apollo/client#gql',
       },
