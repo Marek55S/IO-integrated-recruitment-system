@@ -1,7 +1,10 @@
 import { gql } from "@apollo/client";
 
-export const HEALTH_CHECK_QUERY = gql`
-  query HealthCheck {
-    __typename
+export const FIRST_QUERY = gql`
+  query FirstQuery {
+    firstQuery {
+      text
+      id
+    }
   }
 `;
