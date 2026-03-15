@@ -1,0 +1,1 @@
+{"input1":"Pierwszy","input2":"xyz"}

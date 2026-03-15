@@ -1,0 +1,17 @@
+type FormData {
+  input1: String
+  input2: String
+}
+
+input FormDataInput {
+  input1: String
+  input2: String
+}
+
+type Query {
+  loadData: FormData
+}
+
+type Mutation {
+  saveData(data: FormDataInput!): Boolean!
+}

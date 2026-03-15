@@ -2,7 +2,7 @@
 
 import { ApolloProvider } from "@apollo/client/react";
 import { useState } from "react";
-import { createApolloClient } from "../GraphQL/apolloClient";
+import { createApolloClient } from "@/src/graphql/apolloClient";
 
 type ProvidersProps = {
   children: React.ReactNode;
