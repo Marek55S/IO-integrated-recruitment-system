@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { PropsWithChildren, useMemo } from 'react';
 
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { ApolloProvider } from '@apollo/client/react';
@@ -8,7 +8,9 @@ import { ApolloProvider } from '@apollo/client/react';
 function createGraphQLApolloClient() {
   const endpoint = process.env.NEXT_PUBLIC_GRAPHQL_URL;
   if (!endpoint) {
-    throw new Error('NEXT_PUBLIC_GRAPHQL_URL is not defined');
+    throw new Error(
+      'NEXT_PUBLIC_GRAPHQL_URL environment variable is not defined',
+    );
   }
 
   return new ApolloClient({
@@ -17,9 +19,7 @@ function createGraphQLApolloClient() {
   });
 }
 
-export default function GraphQLApiProvider({
-  children,
-}: React.PropsWithChildren) {
+export default function GraphQLApiProvider({ children }: PropsWithChildren) {
   const client = useMemo(() => createGraphQLApolloClient(), []);
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
