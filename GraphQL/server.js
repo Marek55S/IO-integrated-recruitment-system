@@ -4,26 +4,7 @@ const fs = require("node:fs/promises");
 const path = require("node:path");
 
 const dataFilePath = path.join(__dirname, "data.txt");
-
-const typeDefs = `#graphql
-  type FormData {
-    input1: String
-    input2: String
-  }
-
-  input FormDataInput {
-    input1: String
-    input2: String
-  }
-
-  type Query {
-    loadData: FormData
-  }
-
-  type Mutation {
-    saveData(data: FormDataInput!): Boolean!
-  }
-`;
+const schemaFilePath = path.join(__dirname, "schema.graphql");
 
 async function readStoredData() {
   try {
@@ -49,6 +30,7 @@ const resolvers = {
 };
 
 async function start() {
+  const typeDefs = await fs.readFile(schemaFilePath, { encoding: "utf8" });
   const server = new ApolloServer({ typeDefs, resolvers });
 
   const { url } = await startStandaloneServer(server, {

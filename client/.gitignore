@@ -38,4 +38,4 @@ yarn-error.log*
 next-env.d.ts
 
 # generated files
-src/graphql/generated/
+src/grapqhl/generated/
