@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "typecheck": "tsc --noEmit",
+    "dev": "dotenv -e ../.env -- next dev",
+    "build": "dotenv -e ../.env -- next build",
+    "start": "dotenv -e ../.env -- next start",
+    "typecheck": "dotenv -e ../.env -- tsc --noEmit",
     "format": "prettier --write .",
     "lint": "npm run format && eslint --ext .ts,.tsx . --fix",
-    "codegen": "dotenv -e .env -- graphql-codegen --config codegen.ts"
+    "codegen": "dotenv -e ../.env -- graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@apollo/client": "^4.1.6",
