@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import GraphQLApiProvider from "@/src/api/GraphQLApiProvider";
+import GraphQLApiProvider from '@/src/api/GraphQLApiProvider';
 
 type ProvidersProps = {
   children: React.ReactNode;
