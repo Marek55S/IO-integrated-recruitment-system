@@ -16,9 +16,7 @@ function createGraphQLApolloClient() {
   });
 }
 
-export default function GraphQLApiProvider({
-  children,
-}: React.PropsWithChildren<{}>) {
+export default function GraphQLApiProvider({ children }: React.PropsWithChildren) {
   const client = useMemo(() => createGraphQLApolloClient(), []);
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
