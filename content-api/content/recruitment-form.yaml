@@ -174,4 +174,4 @@ screens:
         type: "tel"
         label: "Telefon kontaktowy"
         required: false
-    button_text: "Wyślij zgłoszenie"
+    button_text: "Dalej: Podsumowanie"

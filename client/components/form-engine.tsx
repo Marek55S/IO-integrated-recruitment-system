@@ -140,7 +140,9 @@ function FormEngine({ config, submissionConfig }: FormEngineProps) {
       (agreement) => agreement.id,
     );
 
-    const isAgreementsValid = await trigger(agreementIds, { shouldFocus: true });
+    const isAgreementsValid = await trigger(agreementIds, {
+      shouldFocus: true,
+    });
     if (!isAgreementsValid) {
       return;
     }
@@ -148,8 +150,9 @@ function FormEngine({ config, submissionConfig }: FormEngineProps) {
     await onSubmit();
   };
 
-  const progressPercent =
-    ((currentScreenIndex + 1) / config.screens.length) * 100;
+  const totalSteps = config.screens.length + 1;
+  const currentStep = isSummaryScreen ? totalSteps : currentScreenIndex + 1;
+  const progressPercent = (currentStep / totalSteps) * 100;
 
   const watchedValues = watch();
 
@@ -158,7 +161,7 @@ function FormEngine({ config, submissionConfig }: FormEngineProps) {
       <header className="space-y-3">
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <span>
-            Step {currentScreenIndex + 1} of {config.screens.length}
+            Step {currentStep} of {totalSteps}
           </span>
           <span>{Math.round(progressPercent)}%</span>
         </div>
@@ -171,10 +174,16 @@ function FormEngine({ config, submissionConfig }: FormEngineProps) {
         </div>
 
         <div>
-          <h2 className="text-2xl font-semibold">{currentScreen.title}</h2>
-          {currentScreen.subtitle ? (
+          <h2 className="text-2xl font-semibold">
+            {isSummaryScreen ? submissionConfig.title : currentScreen.title}
+          </h2>
+          {(
+            isSummaryScreen ? submissionConfig.subtitle : currentScreen.subtitle
+          ) ? (
             <p className="text-sm text-muted-foreground">
-              {currentScreen.subtitle}
+              {isSummaryScreen
+                ? submissionConfig.subtitle
+                : currentScreen.subtitle}
             </p>
           ) : null}
         </div>
@@ -202,7 +211,9 @@ function FormEngine({ config, submissionConfig }: FormEngineProps) {
               {submissionConfig.agreements.map((agreement) => {
                 const hasError = Boolean(errors[agreement.id]);
                 const checked = Boolean(watch(agreement.id));
-                const agreementError = errors[agreement.id] as FieldError | undefined;
+                const agreementError = errors[agreement.id] as
+                  | FieldError
+                  | undefined;
 
                 return (
                   <div key={agreement.id} className="space-y-1.5">
@@ -221,18 +232,20 @@ function FormEngine({ config, submissionConfig }: FormEngineProps) {
                       <Label htmlFor={agreement.id} className="leading-5">
                         {agreement.label}
                         {agreement.required ? ' *' : ''}
+                        {agreement.link ? (
+                          <>
+                            {' '}
+                            <a
+                              href={agreement.link}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-sm text-primary underline underline-offset-4">
+                              {agreement.link_text ?? agreement.label}
+                            </a>
+                          </>
+                        ) : null}
                       </Label>
                     </div>
-
-                    {agreement.link ? (
-                      <a
-                        href={agreement.link}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-sm text-primary underline underline-offset-4">
-                        {agreement.link_text ?? agreement.label}
-                      </a>
-                    ) : null}
 
                     {hasError ? (
                       <p className="text-xs text-destructive">

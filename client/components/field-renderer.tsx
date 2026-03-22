@@ -53,18 +53,20 @@ function FieldRenderer({
           <Label htmlFor={field.id} className="leading-5">
             {field.label}
             {field.required ? ' *' : ''}
+            {field.link ? (
+              <>
+                {' '}
+                <a
+                  href={field.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm text-primary underline underline-offset-4">
+                  {field.link_text ?? field.label}
+                </a>
+              </>
+            ) : null}
           </Label>
         </div>
-
-        {field.link ? (
-          <a
-            href={field.link}
-            target="_blank"
-            rel="noreferrer"
-            className="text-sm text-primary underline underline-offset-4">
-            {field.link_text ?? field.label}
-          </a>
-        ) : null}
 
         {field.input_info ? (
           <p className="text-xs text-muted-foreground">{field.input_info}</p>

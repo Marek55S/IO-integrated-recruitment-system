@@ -4,7 +4,10 @@ import path from "node:path";
 import yaml from "js-yaml";
 
 import { formConfigSchema, type FormConfig } from "./form-schema";
-import { submissionConfigSchema, type SubmissionConfig } from "./submission-schema";
+import {
+  submissionConfigSchema,
+  type SubmissionConfig,
+} from "./submission-schema";
 
 const CONTENT_CANDIDATE_PATHS = [
   path.resolve(process.cwd(), "../content-api/content/recruitment-form.yaml"),
@@ -14,7 +17,10 @@ const CONTENT_CANDIDATE_PATHS = [
 ];
 
 const SUBMISSION_CANDIDATE_PATHS = [
-  path.resolve(process.cwd(), "../content-api/content/recruitment-submission.yaml"),
+  path.resolve(
+    process.cwd(),
+    "../content-api/content/recruitment-submission.yaml",
+  ),
   path.resolve(__dirname, "../content/recruitment-submission.yaml"),
 ];
 
