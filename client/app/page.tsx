@@ -1,5 +1,6 @@
-import { FormEngine } from '@/components/form-engine';
 import { getFormConfig } from '@io/content-api/server';
+
+import { FormEngine } from '@/components/form-engine';
 
 export default function Home() {
   const config = getFormConfig();
