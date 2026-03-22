@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 declare const formConfigSchema: z.ZodObject<{
     form_id: z.ZodString;
     version: z.ZodString;
@@ -13,6 +13,7 @@ declare const formConfigSchema: z.ZodObject<{
             input_info: z.ZodOptional<z.ZodString>;
             regex: z.ZodOptional<z.ZodString>;
             link: z.ZodOptional<z.ZodString>;
+            link_text: z.ZodOptional<z.ZodString>;
             type: z.ZodLiteral<"select">;
             options: z.ZodArray<z.ZodString>;
             required: z.ZodBoolean;
@@ -24,6 +25,7 @@ declare const formConfigSchema: z.ZodObject<{
             input_info: z.ZodOptional<z.ZodString>;
             regex: z.ZodOptional<z.ZodString>;
             link: z.ZodOptional<z.ZodString>;
+            link_text: z.ZodOptional<z.ZodString>;
             type: z.ZodLiteral<"section_title">;
         }, z.core.$strip>, z.ZodObject<{
             id: z.ZodString;
@@ -33,6 +35,7 @@ declare const formConfigSchema: z.ZodObject<{
             input_info: z.ZodOptional<z.ZodString>;
             regex: z.ZodOptional<z.ZodString>;
             link: z.ZodOptional<z.ZodString>;
+            link_text: z.ZodOptional<z.ZodString>;
             type: z.ZodEnum<{
                 number: "number";
                 text: "text";
@@ -46,8 +49,8 @@ declare const formConfigSchema: z.ZodObject<{
     }, z.core.$strip>>;
 }, z.core.$strip>;
 export type FormConfig = z.infer<typeof formConfigSchema>;
-export type FormScreen = FormConfig['screens'][number];
-export type FormField = FormScreen['fields'][number];
+export type FormScreen = FormConfig["screens"][number];
+export type FormField = FormScreen["fields"][number];
 export { formConfigSchema };
 export declare function buildFormDataSchema(config: FormConfig): z.ZodObject<{
     [x: string]: z.ZodType<unknown, unknown, z.core.$ZodTypeInternals<unknown, unknown>>;

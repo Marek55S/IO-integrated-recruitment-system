@@ -174,14 +174,4 @@ screens:
         type: "tel"
         label: "Telefon kontaktowy"
         required: false
-      - id: "rodo_agreement"
-        type: "checkbox"
-        label: "Oświadczam, że dane są prawdziwe"
-        required: false
-      - id: "marketing_agreement"
-        type: "checkbox"
-        label: "Wyrażam zgodę na komunikację marketingową"
-        required: false
-        link_text: "Polityka prywatności"
-        link: "https://uczelnia.pl/polityka-prywatnosci"
     button_text: "Wyślij zgłoszenie"

@@ -4,14 +4,14 @@ exports.formConfigSchema = void 0;
 exports.buildFormDataSchema = buildFormDataSchema;
 const zod_1 = require("zod");
 const FIELD_TYPES = [
-    'text',
-    'email',
-    'tel',
-    'number',
-    'checkbox',
-    'date',
-    'select',
-    'section_title',
+    "text",
+    "email",
+    "tel",
+    "number",
+    "checkbox",
+    "date",
+    "select",
+    "section_title",
 ];
 const baseFieldSchema = zod_1.z.object({
     id: zod_1.z.string().min(1),
@@ -22,19 +22,20 @@ const baseFieldSchema = zod_1.z.object({
     input_info: zod_1.z.string().optional(),
     regex: zod_1.z.string().optional(),
     link: zod_1.z.string().url().optional(),
+    link_text: zod_1.z.string().optional(),
 });
 const selectFieldSchema = baseFieldSchema.extend({
-    type: zod_1.z.literal('select'),
+    type: zod_1.z.literal("select"),
     options: zod_1.z.array(zod_1.z.string().min(1)).min(1),
     required: zod_1.z.boolean(),
 });
 const sectionTitleFieldSchema = baseFieldSchema.extend({
-    type: zod_1.z.literal('section_title'),
+    type: zod_1.z.literal("section_title"),
 });
 const standardInputFieldSchema = baseFieldSchema.extend({
-    type: zod_1.z.enum(['text', 'email', 'tel', 'number', 'checkbox', 'date']),
+    type: zod_1.z.enum(["text", "email", "tel", "number", "checkbox", "date"]),
 });
-const fieldSchema = zod_1.z.discriminatedUnion('type', [
+const fieldSchema = zod_1.z.discriminatedUnion("type", [
     selectFieldSchema,
     sectionTitleFieldSchema,
     standardInputFieldSchema,
@@ -56,10 +57,10 @@ function buildFormDataSchema(config) {
     const shape = {};
     for (const screen of config.screens) {
         for (const field of screen.fields) {
-            if (field.type === 'section_title') {
+            if (field.type === "section_title") {
                 continue;
             }
-            if (field.type === 'checkbox') {
+            if (field.type === "checkbox") {
                 shape[field.id] = field.required
                     ? zod_1.z.literal(true, {
                         message: `${field.label} jest wymagane.`,
@@ -67,7 +68,7 @@ function buildFormDataSchema(config) {
                     : zod_1.z.boolean().optional();
                 continue;
             }
-            if (field.type === 'select') {
+            if (field.type === "select") {
                 const selectSchema = zod_1.z
                     .string()
                     .refine((value) => field.options.includes(value), `${field.label} ma niepoprawna wartosc.`);
@@ -76,7 +77,7 @@ function buildFormDataSchema(config) {
                     : zod_1.z
                         .string()
                         .optional()
-                        .transform((value) => value ?? '')
+                        .transform((value) => value ?? "")
                         .refine((value) => !value || field.options.includes(value), `${field.label} ma niepoprawna wartosc.`);
                 continue;
             }
@@ -89,7 +90,7 @@ function buildFormDataSchema(config) {
                 : zod_1.z
                     .string()
                     .optional()
-                    .transform((value) => value ?? '')
+                    .transform((value) => value ?? "")
                     .refine((value) => !value || !regexp || regexp.test(value), `${field.label} ma niepoprawny format.`);
         }
     }
