@@ -1,0 +1,6 @@
+query LoadData {
+  loadData {
+    input1
+    input2
+  }
+}
