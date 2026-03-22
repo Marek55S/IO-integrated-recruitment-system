@@ -15,6 +15,22 @@ type FormEngineProps = {
   config: FormConfig;
 };
 
+function shouldRenderField(fieldId: string, values: FormValues): boolean {
+  const correspondenceFields = new Set([
+    'correspondence_country',
+    'correspondence_city',
+    'correspondence_postal_code',
+    'correspondence_street',
+    'correspondence_house_number',
+  ]);
+
+  if (!correspondenceFields.has(fieldId)) {
+    return true;
+  }
+
+  return !Boolean(values.correspondence_same_as_residence);
+}
+
 function createDefaultValues(config: FormConfig): FormValues {
   return config.screens.reduce<FormValues>((acc, screen) => {
     screen.fields.forEach((field) => {
@@ -92,6 +108,8 @@ function FormEngine({ config }: FormEngineProps) {
   const progressPercent =
     ((currentScreenIndex + 1) / config.screens.length) * 100;
 
+  const watchedValues = watch();
+
   return (
     <section className="mx-auto w-full max-w-3xl space-y-6 rounded-2xl border bg-card p-6 shadow-sm">
       <header className="space-y-3">
@@ -125,16 +143,22 @@ function FormEngine({ config }: FormEngineProps) {
           void handleNext();
         }}
         className="space-y-5">
-        {currentScreen.fields.map((field) => (
-          <FieldRenderer
-            key={field.id}
-            field={field}
-            register={register}
-            setValue={setValue}
-            value={watch(field.id)}
-            error={errors[field.id] as never}
-          />
-        ))}
+        {currentScreen.fields.map((field) => {
+          if (!shouldRenderField(field.id, watchedValues)) {
+            return null;
+          }
+
+          return (
+            <FieldRenderer
+              key={field.id}
+              field={field}
+              register={register}
+              setValue={setValue}
+              value={watch(field.id)}
+              error={errors[field.id] as never}
+            />
+          );
+        })}
 
         <div className="flex items-center gap-3 pt-2">
           <Button

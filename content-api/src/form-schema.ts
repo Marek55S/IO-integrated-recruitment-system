@@ -20,6 +20,7 @@ const baseFieldSchema = z.object({
   input_info: z.string().optional(),
   regex: z.string().optional(),
   link: z.string().url().optional(),
+  link_text: z.string().optional(),
 });
 
 const selectFieldSchema = baseFieldSchema.extend({

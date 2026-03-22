@@ -62,7 +62,7 @@ function FieldRenderer({
             target="_blank"
             rel="noreferrer"
             className="text-sm text-primary underline underline-offset-4">
-            Polityka prywatnosci
+            {field.link_text ?? field.label}
           </a>
         ) : null}
 

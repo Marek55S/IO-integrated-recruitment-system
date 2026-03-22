@@ -10,18 +10,18 @@ screens:
         type: "text"
         label: "Imię (imiona)"
         placeholder: "np. Jan"
-        required: true
+        required: false
         input_info: "Podaj wszystkie imiona zgodnie z dowodem osobistym."
       - id: "last_name"
         type: "text"
         label: "Nazwisko"
         placeholder: "np. Kowalski"
-        required: true
+        required: false
       - id: "losowe_pole"
         type: "text"
         label: "Losowe Pole"
         placeholder: "XDDD"
-        required: true
+        required: false
       - id: "family_name"
         type: "text"
         label: "Nazwisko rodowe"
@@ -31,50 +31,96 @@ screens:
         type: "text"
         label: "PESEL"
         placeholder: "00000000000"
-        required: true
+        required: false
         regex: "^[0-9]{11}$"
         input_info: "Wymagane 11 cyfr."
       - id: "birth_date"
         type: "date"
         label: "Data urodzenia"
-        required: true
+        required: false
       - id: "birth_place"
         type: "text"
         label: "Miejsce urodzenia"
         placeholder: "np. Warszawa"
-        required: true
+        required: false
       - id: "citizenship"
         type: "text"
         label: "Obywatelstwo"
         placeholder: "np. polskie"
-        required: true
+        required: false
     button_text: "Dalej: Adresy"
 
   - id: 2
     title: "Dane adresowe i kontaktowe"
     subtitle: "Gdzie możemy Cię znaleźć i jak się z Tobą kontaktować?"
     fields:
-      - id: "residence_address"
+      - id: "residence_country"
         type: "text"
-        label: "Adres zamieszkania"
-        placeholder: "Ulica, numer domu/mieszkania, kod pocztowy, miasto"
-        required: true
-      - id: "correspondence_address"
+        label: "Kraj zamieszkania"
+        placeholder: "np. Polska"
+        required: false
+      - id: "residence_city"
         type: "text"
-        label: "Adres do korespondencji"
-        placeholder: "Wypełnij, jeśli inny niż zamieszkania"
+        label: "Miasto zamieszkania"
+        placeholder: "np. Warszawa"
+        required: false
+      - id: "residence_postal_code"
+        type: "text"
+        label: "Kod pocztowy zamieszkania"
+        placeholder: "00-000"
+        regex: "^[0-9]{2}-[0-9]{3}$"
+        required: false
+      - id: "residence_street"
+        type: "text"
+        label: "Ulica zamieszkania"
+        placeholder: "np. Kwiatowa"
+        required: false
+      - id: "residence_house_number"
+        type: "text"
+        label: "Nr domu/mieszkania zamieszkania"
+        placeholder: "np. 15/2"
+        required: false
+      - id: "correspondence_same_as_residence"
+        type: "checkbox"
+        label: "Adres do korespondencji taki sam jak zamieszkania"
+        required: false
+      - id: "correspondence_country"
+        type: "text"
+        label: "Kraj do korespondencji"
+        placeholder: "np. Polska"
+        required: false
+      - id: "correspondence_city"
+        type: "text"
+        label: "Miasto do korespondencji"
+        placeholder: "np. Warszawa"
+        required: false
+      - id: "correspondence_postal_code"
+        type: "text"
+        label: "Kod pocztowy do korespondencji"
+        placeholder: "00-000"
+        regex: "^[0-9]{2}-[0-9]{3}$"
+        required: false
+      - id: "correspondence_street"
+        type: "text"
+        label: "Ulica do korespondencji"
+        placeholder: "np. Kwiatowa"
+        required: false
+      - id: "correspondence_house_number"
+        type: "text"
+        label: "Nr domu/mieszkania do korespondencji"
+        placeholder: "np. 15/2"
         required: false
       - id: "email"
         type: "email"
         label: "Adres e-mail"
         placeholder: "twoj@email.pl"
-        required: true
+        required: false
         regex: "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
       - id: "phone"
         type: "tel"
         label: "Numer telefonu"
         placeholder: "+48 000 000 000"
-        required: true
+        required: false
     button_text: "Dalej: Wykształcenie"
 
   - id: 3
@@ -85,21 +131,21 @@ screens:
         type: "text"
         label: "Tytuł zawodowy"
         placeholder: "np. licencjat, magister, inżynier"
-        required: true
+        required: false
       - id: "university_name"
         type: "text"
         label: "Nazwa szkoły wyższej"
-        required: true
+        required: false
       - id: "graduation_year"
         type: "number"
         label: "Rok ukończenia studiów"
         placeholder: "RRRR"
-        required: true
+        required: false
         regex: "^(19|20)\\d{2}$"
       - id: "high_school_diploma_country"
         type: "select"
         label: "Miejsce uzyskania świadectwa dojrzałości"
-        required: true
+        required: false
         input_info: "Dane zbierane wyłącznie do celów statystycznych."
         options: ["Polska", "Poza Polską"]
       - id: "high_school_country_name"
@@ -131,10 +177,11 @@ screens:
       - id: "rodo_agreement"
         type: "checkbox"
         label: "Oświadczam, że dane są prawdziwe"
-        required: true
+        required: false
       - id: "marketing_agreement"
         type: "checkbox"
         label: "Wyrażam zgodę na komunikację marketingową"
         required: false
+        link_text: "Polityka prywatności"
         link: "https://uczelnia.pl/polityka-prywatnosci"
     button_text: "Wyślij zgłoszenie"
