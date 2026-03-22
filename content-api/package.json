@@ -1,0 +1,38 @@
+{
+  "name": "@io/content-api",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/form-schema.js",
+  "types": "dist/form-schema.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/form-schema.d.ts",
+      "import": "./dist/form-schema.js",
+      "require": "./dist/form-schema.js",
+      "default": "./dist/form-schema.js"
+    },
+    "./server": {
+      "types": "./dist/content-service.d.ts",
+      "import": "./dist/content-service.js",
+      "require": "./dist/content-service.js",
+      "default": "./dist/content-service.js"
+    }
+  },
+  "files": [
+    "dist",
+    "content"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.1",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.19.18",
+    "typescript": "^5.9.2"
+  }
+}
