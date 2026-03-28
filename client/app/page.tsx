@@ -1,10 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { UserRound } from 'lucide-react';
 
 import type { ProgramsIndex } from '@io/content-api';
 
 import { ProgramsSearch } from '@/components/programs-search';
+import { buttonVariants } from '@/components/ui/button';
 
 export default function HomePage() {
   const [programs, setPrograms] = useState<ProgramsIndex['programs'] | null>(
@@ -42,6 +45,15 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-background px-4 py-10 md:px-6 md:py-14">
       <div className="mx-auto max-w-3xl space-y-8">
+        <div className="flex justify-end">
+          <Link
+            href="/profile"
+            aria-label="Profil"
+            className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+            <UserRound className="size-6" />
+          </Link>
+        </div>
+
         <header className="space-y-2 text-center">
           <h1 className="text-3xl font-semibold tracking-tight">
             Kierunki studiów

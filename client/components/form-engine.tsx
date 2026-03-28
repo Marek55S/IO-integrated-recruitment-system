@@ -21,6 +21,7 @@ import {
   RECRUITMENT_DEFAULT_SUBMIT,
   runRecruitmentFormAction,
 } from '@/lib/content-form-actions';
+import { RECRUITMENT_FORM_VALUES_STORAGE_KEY } from '@/lib/recruitment-storage';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 
@@ -113,6 +114,15 @@ function FormEngine({
 
   const onSubmit = handleSubmit((values) => {
     console.log('Form submission payload:', values);
+    try {
+      localStorage.setItem(
+        RECRUITMENT_FORM_VALUES_STORAGE_KEY,
+        JSON.stringify(values),
+      );
+    } catch {
+      /* quota / private mode */
+    }
+
     onSuccessfulSubmit?.();
   });
 

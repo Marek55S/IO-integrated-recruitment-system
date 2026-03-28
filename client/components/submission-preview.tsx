@@ -1,12 +1,12 @@
 'use client';
 
-import type { SubmissionConfig } from '@io/content-api';
+import type { SubmissionDisplayConfig } from '@io/content-api';
 
 type FormValues = Record<string, unknown>;
 
 type SubmissionPreviewProps = {
   values: FormValues;
-  config: SubmissionConfig;
+  config: SubmissionDisplayConfig;
 };
 
 function formatValue(value: unknown) {

@@ -8,9 +8,15 @@ export {
 
 export {
   buildSubmissionAgreementSchema,
+  profileViewHeaderSchema,
+  recruitmentSectionsFileSchema,
   submissionConfigSchema,
+  submissionPayloadSchema,
+  type ProfileViewConfig,
+  type ProfileViewHeader,
   type SubmissionAgreement,
   type SubmissionConfig,
+  type SubmissionDisplayConfig,
 } from "./submission-schema";
 
 export {

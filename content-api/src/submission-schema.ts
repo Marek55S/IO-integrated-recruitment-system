@@ -5,7 +5,7 @@ const submissionItemSchema = z.object({
   label: z.string().min(1),
 });
 
-const submissionSectionSchema = z.object({
+export const submissionSectionSchema = z.object({
   id: z.string().min(1),
   title: z.string().min(1),
   items: z.array(submissionItemSchema).min(1),
@@ -32,8 +32,31 @@ const submissionConfigSchema = z.object({
   back_action: z.string().min(1).optional(),
 });
 
+/** Plik recruitment-submission.yaml bez sekcji (sekcje z recruitment-data-sections.yaml). */
+export const submissionPayloadSchema = submissionConfigSchema.omit({
+  sections: true,
+});
+
+/** Plik recruitment-data-sections.yaml */
+export const recruitmentSectionsFileSchema = z.object({
+  sections: z.array(submissionSectionSchema).min(1),
+});
+
+export const profileViewHeaderSchema = z.object({
+  title: z.string().min(1),
+  subtitle: z.string().optional(),
+});
+
 export type SubmissionConfig = z.infer<typeof submissionConfigSchema>;
 export type SubmissionAgreement = SubmissionConfig["agreements"][number];
+export type SubmissionDisplayConfig = Pick<
+  SubmissionConfig,
+  "title" | "subtitle" | "sections"
+>;
+export type ProfileViewHeader = z.infer<typeof profileViewHeaderSchema>;
+export type ProfileViewConfig = ProfileViewHeader & {
+  sections: SubmissionConfig["sections"];
+};
 
 export { submissionConfigSchema };
 

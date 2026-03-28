@@ -5,7 +5,11 @@ import yaml from "js-yaml";
 
 import { formConfigSchema, type FormConfig } from "./form-schema";
 import {
+  profileViewHeaderSchema,
+  recruitmentSectionsFileSchema,
   submissionConfigSchema,
+  submissionPayloadSchema,
+  type ProfileViewConfig,
   type SubmissionConfig,
 } from "./submission-schema";
 import {
@@ -37,6 +41,19 @@ const SUBMISSION_CANDIDATE_PATHS = [
   path.resolve(__dirname, "../content/recruitment-submission.yaml"),
 ];
 
+const RECRUITMENT_SECTIONS_CANDIDATE_PATHS = [
+  path.resolve(
+    process.cwd(),
+    "../content-api/content/recruitment-data-sections.yaml",
+  ),
+  path.resolve(__dirname, "../content/recruitment-data-sections.yaml"),
+];
+
+const PROFILE_VIEW_CANDIDATE_PATHS = [
+  path.resolve(process.cwd(), "../content-api/content/profile-view.yaml"),
+  path.resolve(__dirname, "../content/profile-view.yaml"),
+];
+
 function resolveContentPath(): string {
   const filePath = CONTENT_CANDIDATE_PATHS.find((candidatePath) =>
     fs.existsSync(candidatePath),
@@ -65,6 +82,42 @@ function resolveSubmissionPath(): string {
   return filePath;
 }
 
+function resolveRecruitmentSectionsPath(): string {
+  const filePath = RECRUITMENT_SECTIONS_CANDIDATE_PATHS.find((candidatePath) =>
+    fs.existsSync(candidatePath),
+  );
+
+  if (!filePath) {
+    throw new Error(
+      `Could not find recruitment-data-sections.yaml. Tried: ${RECRUITMENT_SECTIONS_CANDIDATE_PATHS.join(", ")}`,
+    );
+  }
+
+  return filePath;
+}
+
+function resolveProfileViewPath(): string {
+  const filePath = PROFILE_VIEW_CANDIDATE_PATHS.find((candidatePath) =>
+    fs.existsSync(candidatePath),
+  );
+
+  if (!filePath) {
+    throw new Error(
+      `Could not find profile-view.yaml. Tried: ${PROFILE_VIEW_CANDIDATE_PATHS.join(", ")}`,
+    );
+  }
+
+  return filePath;
+}
+
+function loadRecruitmentSections(): SubmissionConfig["sections"] {
+  const filePath = resolveRecruitmentSectionsPath();
+  const yamlText = fs.readFileSync(filePath, "utf8");
+  const parsedYaml = yaml.load(yamlText);
+
+  return recruitmentSectionsFileSchema.parse(parsedYaml).sections;
+}
+
 function resolveProgramsDir(): string {
   const dirPath = PROGRAMS_DIR_CANDIDATES.find((candidatePath) =>
     fs.existsSync(candidatePath),
@@ -80,7 +133,11 @@ function resolveProgramsDir(): string {
 }
 
 export type { FormConfig } from "./form-schema";
-export type { SubmissionConfig } from "./submission-schema";
+export type {
+  ProfileViewConfig,
+  SubmissionConfig,
+  SubmissionDisplayConfig,
+} from "./submission-schema";
 export type { ProgramPage, ProgramsIndex } from "./programs-schema";
 
 export function getFormConfig(): FormConfig {
@@ -95,8 +152,20 @@ export function getSubmissionConfig(): SubmissionConfig {
   const filePath = resolveSubmissionPath();
   const yamlText = fs.readFileSync(filePath, "utf8");
   const parsedYaml = yaml.load(yamlText);
+  const payload = submissionPayloadSchema.parse(parsedYaml);
+  const sections = loadRecruitmentSections();
 
-  return submissionConfigSchema.parse(parsedYaml);
+  return submissionConfigSchema.parse({ ...payload, sections });
+}
+
+export function getProfileViewConfig(): ProfileViewConfig {
+  const filePath = resolveProfileViewPath();
+  const yamlText = fs.readFileSync(filePath, "utf8");
+  const parsedYaml = yaml.load(yamlText);
+  const header = profileViewHeaderSchema.parse(parsedYaml);
+  const sections = loadRecruitmentSections();
+
+  return { ...header, sections };
 }
 
 export function getProgramsIndex(): ProgramsIndex {
