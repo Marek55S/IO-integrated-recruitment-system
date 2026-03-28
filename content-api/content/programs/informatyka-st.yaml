@@ -1,0 +1,40 @@
+program_id: informatyka-st
+title: Informatyka — studia stacjonarne
+description: |
+  Kierunek łączy solidne podstawy informatyki z praktycznym programowaniem i projektowaniem systemów.
+  Absolwenci znajdują zatrudnienie jako programiści, analitycy danych oraz inżynierowie oprogramowania.
+image_src: /programs/informatyka-st.svg
+
+form:
+  form_id: recruitment-program-informatyka-st
+  version: "1.0"
+  screens:
+    - id: 1
+      title: Zgłoszenie na kierunek
+      subtitle: Uzupełnij dane podstawowe — pola i styl odpowiadają głównemu formularzowi rekrutacji.
+      fields:
+        - id: candidate_first_name
+          type: text
+          label: Imię
+          placeholder: np. Anna
+          required: true
+        - id: candidate_last_name
+          type: text
+          label: Nazwisko
+          placeholder: np. Kowalska
+          required: true
+        - id: candidate_email
+          type: email
+          label: E-mail kontaktowy
+          placeholder: kandydat@example.com
+          required: true
+        - id: github_profile
+          type: text
+          label: Profil GitHub lub portfolio (opcjonalnie)
+          placeholder: https://
+          required: false
+        - id: study_mode_confirm
+          type: checkbox
+          label: Potwierdzam zainteresowanie studiami w trybie stacjonarnym
+          required: true
+      button_text: Wyślij zgłoszenie

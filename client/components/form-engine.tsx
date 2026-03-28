@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Link from 'next/link';
 import { type FieldError, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -22,6 +23,7 @@ type FormValues = Record<string, unknown>;
 type FormEngineProps = {
   config: FormConfig;
   submissionConfig: SubmissionConfig;
+  onSuccessfulSubmit?: () => void;
 };
 
 function shouldRenderField(fieldId: string, values: FormValues): boolean {
@@ -63,7 +65,11 @@ function createDefaultValues(
   return defaults;
 }
 
-function FormEngine({ config, submissionConfig }: FormEngineProps) {
+function FormEngine({
+  config,
+  submissionConfig,
+  onSuccessfulSubmit,
+}: FormEngineProps) {
   const schema = useMemo(
     () =>
       buildFormDataSchema(config).merge(
@@ -101,6 +107,7 @@ function FormEngine({ config, submissionConfig }: FormEngineProps) {
 
   const onSubmit = handleSubmit((values) => {
     console.log('Form submission payload:', values);
+    onSuccessfulSubmit?.();
   });
 
   const handleNext = async () => {
@@ -293,6 +300,17 @@ function FormEngine({ config, submissionConfig }: FormEngineProps) {
                 : 'Dalej'}
           </Button>
         </div>
+
+        {isSummaryScreen ? (
+          <p className="border-t pt-4 text-center text-sm text-muted-foreground">
+            Szukasz innego kierunku?{' '}
+            <Link
+              href="/"
+              className="text-primary underline underline-offset-4">
+              Katalog kierunków i wyszukiwarka
+            </Link>
+          </p>
+        ) : null}
       </form>
 
       <details className="rounded-lg border bg-muted/30 p-3">

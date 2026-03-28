@@ -1,0 +1,5 @@
+programs:
+  - id: informatyka-st
+    name: Informatyka — studia stacjonarne
+  - id: zarzadzanie-np
+    name: Zarządzanie — studia niestacjonarne

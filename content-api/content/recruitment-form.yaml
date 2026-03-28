@@ -17,11 +17,6 @@ screens:
         label: "Nazwisko"
         placeholder: "np. Kowalski"
         required: false
-      - id: "losowe_pole"
-        type: "text"
-        label: "Losowe Pole"
-        placeholder: "XDDD"
-        required: false
       - id: "family_name"
         type: "text"
         label: "Nazwisko rodowe"

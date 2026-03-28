@@ -1,0 +1,43 @@
+program_id: zarzadzanie-np
+title: Zarządzanie — studia niestacjonarne
+description: |
+  Studia dla osób planujących karierę managerską w małych i średnich organizacjach oraz w zespołach produktowych.
+  Program kładzie nacisk na zarządzanie zasobami ludzkimi, finansami operacyjnymi i strategią.
+image_src: /programs/zarzadzanie-np.svg
+
+form:
+  form_id: recruitment-program-zarzadzanie-np
+  version: "1.0"
+  screens:
+    - id: 1
+      title: Zgłoszenie na kierunek
+      subtitle: Dane zgłoszeniowe w tym samym układzie co pola w recruitment-form.
+      fields:
+        - id: candidate_first_name
+          type: text
+          label: Imię
+          placeholder: np. Piotr
+          required: true
+        - id: candidate_last_name
+          type: text
+          label: Nazwisko
+          placeholder: np. Nowak
+          required: true
+        - id: candidate_phone
+          type: tel
+          label: Telefon
+          placeholder: +48 600 000 000
+          required: true
+        - id: work_experience
+          type: select
+          label: Staż pracy na stanowisku managerskim / analitycznym
+          required: true
+          options:
+            - Brak
+            - "Do 2 lat"
+            - "Powyżej 2 lat"
+        - id: weekend_availability
+          type: checkbox
+          label: Potwierdzam możliwość uczestnictwa w zajęciach w trybie niestacjonarnym (weekendy / bloki)
+          required: true
+      button_text: Wyślij zgłoszenie
