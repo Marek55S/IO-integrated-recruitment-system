@@ -47,7 +47,7 @@ function ProgramsSearch({ programs }: ProgramsSearchProps) {
   return (
     <div ref={rootRef} className="relative mx-auto w-full max-w-xl">
       <label className="block space-y-2">
-        <span className="text-sm font-semibold text-foreground">
+        <span className="font-outside-card-title text-base font-semibold">
           Szukaj kierunku
         </span>
         <input

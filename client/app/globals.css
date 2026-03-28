@@ -80,6 +80,26 @@ body {
   --sidebar-ring: #3d9a6f;
 }
 
+/* Tekst na tle strony (nie w kartach): serif + głęboka zieleń / grafit */
+.font-outside-card-title {
+  font-family: var(--font-display), ui-serif, Georgia, 'Times New Roman', serif;
+  color: #054023;
+  letter-spacing: -0.02em;
+}
+
+.font-outside-card-body {
+  font-family: var(--font-display), ui-serif, Georgia, 'Times New Roman', serif;
+  color: #1a2f24;
+}
+
+.dark .font-outside-card-title {
+  color: #c8e6d4;
+}
+
+.dark .font-outside-card-body {
+  color: #d5e5dc;
+}
+
 @theme inline {
   --font-sans: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);

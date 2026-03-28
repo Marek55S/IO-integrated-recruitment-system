@@ -40,7 +40,7 @@ function StudyApplicationsCards() {
   if (applications.length === 0) {
     return (
       <section className="mx-auto flex w-full max-w-md flex-col items-center space-y-3">
-        <h2 className="text-center text-lg font-semibold tracking-tight text-foreground">
+        <h2 className="font-outside-card-title text-center text-xl font-semibold tracking-tight">
           Twoje wnioski o studia
         </h2>
         <p className="border-primary/25 w-full rounded-xl border border-dashed bg-muted/30 px-4 py-8 text-center text-sm text-muted-foreground">
@@ -53,7 +53,7 @@ function StudyApplicationsCards() {
 
   return (
     <section className="mx-auto flex w-full max-w-md flex-col items-center space-y-4">
-      <h2 className="text-center text-lg font-semibold tracking-tight text-foreground">
+      <h2 className="font-outside-card-title text-center text-xl font-semibold tracking-tight">
         Twoje wnioski o studia
       </h2>
       <ul className="flex w-full flex-col items-center gap-4">

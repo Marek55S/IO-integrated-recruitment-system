@@ -19,7 +19,7 @@ function SiteHeader() {
       alt=""
       width={190}
       height={190}
-      className="h-11 w-auto max-h-11 max-w-[min(100%,200px)] object-contain object-center"
+      className="h-[3.5rem] w-auto max-h-[calc(4.25rem-0.5rem)] max-w-[min(100%,240px)] object-contain object-center"
       draggable={false}
     />
   );
