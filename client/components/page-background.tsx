@@ -1,8 +1,7 @@
 'use client';
 
 /**
- * Delikatne, ruchome tło w tonacji znaku AGH (zieleń, granat, czerń).
- * Warstwa statyczna + rozmyte „bloby” z osobnymi animacjami.
+ * Tło w tonacji znaku AGH: zieleń, czerń, czerwień — płynne, falujące gradienty.
  */
 function PageBackground() {
   return (
@@ -10,6 +9,8 @@ function PageBackground() {
       className="agh-page-bg pointer-events-none fixed inset-0 z-0 overflow-hidden"
       aria-hidden>
       <div className="agh-page-bg__base absolute inset-0" />
+      <div className="agh-page-bg__flow absolute inset-[-20%] will-change-transform" />
+      <div className="agh-page-bg__waves absolute inset-0 opacity-[0.22]" />
       <div className="agh-page-bg__blob agh-page-bg__blob--1 absolute rounded-full will-change-transform" />
       <div className="agh-page-bg__blob agh-page-bg__blob--2 absolute rounded-full will-change-transform" />
       <div className="agh-page-bg__blob agh-page-bg__blob--3 absolute rounded-full will-change-transform" />

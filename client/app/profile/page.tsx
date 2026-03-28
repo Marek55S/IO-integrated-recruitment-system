@@ -92,7 +92,7 @@ export default function ProfilePage() {
         <p className="mt-4 text-center text-sm">
           <Link
             href="/"
-            className="text-primary font-medium underline-offset-4 hover:underline">
+            className="text-primary cursor-pointer font-medium underline-offset-4 hover:underline">
             Strona główna
           </Link>
         </p>
@@ -113,22 +113,6 @@ export default function ProfilePage() {
   return (
     <main className="min-h-screen bg-transparent px-4 py-8 md:px-6 md:py-10">
       <div className="mx-auto max-w-4xl space-y-8">
-        <p className="text-sm">
-          <Link
-            href="/"
-            className="text-primary text-sm font-medium underline-offset-4 hover:underline">
-            ← Kierunki studiów
-          </Link>
-        </p>
-
-        {!values ? (
-          <p className="rounded-lg border border-dashed bg-muted/30 px-4 py-6 text-center text-sm text-muted-foreground">
-            Brak zapisanych danych. Wypełnij formularz startowy i wyślij
-            zgłoszenie — wtedy zobaczysz tutaj podgląd pól zdefiniowanych w
-            treści.
-          </p>
-        ) : null}
-
         <SubmissionPreview
           values={displayValues}
           config={{

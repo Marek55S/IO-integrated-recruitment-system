@@ -63,7 +63,7 @@ function ProgramsSearch({ programs }: ProgramsSearchProps) {
             }
           }}
           placeholder="Zacznij wpisywać nazwę kierunku…"
-          className="border-primary/25 bg-card ring-offset-background placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/30 flex h-11 w-full rounded-md border px-3 py-2 text-sm shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          className="border-border bg-card placeholder:text-muted-foreground flex h-11 w-full rounded-md border px-3 py-2 text-sm shadow-sm focus-visible:border-border focus-visible:ring-0 focus-visible:outline-none"
           autoComplete="off"
           role="combobox"
           aria-expanded={open && hasQuery}

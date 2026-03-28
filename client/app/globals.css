@@ -122,29 +122,29 @@ body {
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Tło w stylu palety AGH: zieleń (#00693c), granat, czerń (#231f20) — subtelny ruch */
+/* Tło w palecie znaku AGH: zieleń, czerń, czerwień — płynne, falujące przejścia */
 .agh-page-bg__base {
   background-color: var(--background);
   background-image:
     radial-gradient(
       ellipse 100% 80% at 8% 0%,
-      rgb(0 105 60 / 0.14) 0%,
-      transparent 48%
-    ),
-    radial-gradient(
-      ellipse 90% 85% at 100% 12%,
-      rgb(28 62 110 / 0.22) 0%,
+      rgb(0 105 60 / 0.18) 0%,
       transparent 50%
     ),
     radial-gradient(
-      ellipse 70% 60% at 55% 100%,
-      rgb(35 31 32 / 0.12) 0%,
-      transparent 46%
+      ellipse 95% 75% at 100% 8%,
+      rgb(167 25 48 / 0.14) 0%,
+      transparent 52%
     ),
     radial-gradient(
-      ellipse 55% 50% at 70% 55%,
-      rgb(14 42 71 / 0.08) 0%,
-      transparent 55%
+      ellipse 75% 65% at 50% 100%,
+      rgb(30 30 30 / 0.16) 0%,
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse 60% 55% at 72% 48%,
+      rgb(0 105 60 / 0.1) 0%,
+      transparent 56%
     );
 }
 
@@ -153,19 +153,119 @@ body {
   background-image:
     radial-gradient(
       ellipse 100% 80% at 10% 0%,
-      rgb(61 154 111 / 0.12) 0%,
+      rgb(61 154 111 / 0.14) 0%,
       transparent 55%
     ),
     radial-gradient(
-      ellipse 90% 70% at 100% 25%,
-      rgb(60 100 140 / 0.1) 0%,
+      ellipse 90% 70% at 100% 20%,
+      rgb(232 92 111 / 0.1) 0%,
       transparent 52%
     ),
     radial-gradient(
       ellipse 70% 50% at 45% 100%,
-      rgb(0 0 0 / 0.25) 0%,
+      rgb(0 0 0 / 0.35) 0%,
       transparent 48%
     );
+}
+
+/* Duży, rozmyty wir zielono-czarno-czerwony */
+.agh-page-bg__flow {
+  opacity: 0.88;
+  filter: blur(72px);
+  background: conic-gradient(
+    from 200deg at 58% 42%,
+    rgb(0 105 60 / 0.5) 0deg,
+    rgb(20 22 21 / 0.42) 95deg,
+    rgb(167 25 48 / 0.38) 200deg,
+    rgb(8 45 28 / 0.44) 285deg,
+    rgb(0 105 60 / 0.5) 360deg
+  );
+  animation: agh-flow-swirl 28s ease-in-out infinite;
+}
+
+.dark .agh-page-bg__flow {
+  background: conic-gradient(
+    from 190deg at 55% 45%,
+    rgb(61 154 111 / 0.35) 0deg,
+    rgb(10 14 12 / 0.55) 100deg,
+    rgb(232 92 111 / 0.22) 210deg,
+    rgb(30 70 48 / 0.4) 300deg,
+    rgb(61 154 111 / 0.35) 360deg
+  );
+}
+
+@keyframes agh-flow-swirl {
+  0%,
+  100% {
+    transform: translate(-3%, -2%) scale(1.06) rotate(0deg);
+  }
+  40% {
+    transform: translate(5%, 4%) scale(1.14) rotate(10deg);
+  }
+  72% {
+    transform: translate(2%, -5%) scale(1.02) rotate(-6deg);
+  }
+}
+
+/* Lekkie „fale” — przesuwane paski w kolorach marki */
+.agh-page-bg__waves {
+  background-image:
+    repeating-linear-gradient(
+      125deg,
+      transparent,
+      transparent 44px,
+      rgb(0 105 60 / 0.045) 44px,
+      rgb(0 105 60 / 0.045) 46px,
+      transparent 46px,
+      transparent 88px,
+      rgb(167 25 48 / 0.035) 88px,
+      rgb(167 25 48 / 0.035) 90px,
+      transparent 90px,
+      transparent 132px,
+      rgb(30 30 30 / 0.04) 132px,
+      rgb(30 30 30 / 0.04) 134px
+    ),
+    repeating-linear-gradient(
+      -35deg,
+      transparent 0 60px,
+      rgb(0 105 60 / 0.03) 60px 61px,
+      transparent 61px 120px
+    );
+  background-size: 240% 240%, 180% 180%;
+  animation: agh-wave-drift 32s ease-in-out infinite;
+  mix-blend-mode: multiply;
+}
+
+.dark .agh-page-bg__waves {
+  background-image:
+    repeating-linear-gradient(
+      125deg,
+      transparent,
+      transparent 44px,
+      rgb(61 154 111 / 0.06) 44px,
+      rgb(61 154 111 / 0.06) 46px,
+      transparent 46px,
+      transparent 88px,
+      rgb(232 92 111 / 0.05) 88px,
+      rgb(232 92 111 / 0.05) 90px
+    ),
+    repeating-linear-gradient(
+      -35deg,
+      transparent 0 70px,
+      rgb(255 255 255 / 0.025) 70px 71px,
+      transparent 71px 140px
+    );
+  mix-blend-mode: soft-light;
+}
+
+@keyframes agh-wave-drift {
+  0%,
+  100% {
+    background-position: 0% 20%, 80% 0%;
+  }
+  50% {
+    background-position: 100% 60%, 0% 100%;
+  }
 }
 
 .agh-page-bg__blob {
@@ -194,8 +294,8 @@ body {
   height: min(68vmin, 440px);
   background: radial-gradient(
     circle,
-    rgb(28 62 98 / 0.4) 0%,
-    rgb(14 42 71 / 0.2) 45%,
+    rgb(167 25 48 / 0.32) 0%,
+    rgb(90 18 28 / 0.16) 45%,
     transparent 66%
   );
   animation: agh-drift-2 28s ease-in-out infinite;
@@ -209,9 +309,9 @@ body {
   height: min(95vmin, 580px);
   background: radial-gradient(
     circle,
-    rgb(35 31 32 / 0.14) 0%,
-    rgb(0 105 60 / 0.12) 38%,
-    rgb(24 58 92 / 0.1) 55%,
+    rgb(30 30 30 / 0.2) 0%,
+    rgb(0 105 60 / 0.14) 38%,
+    rgb(167 25 48 / 0.08) 55%,
     transparent 68%
   );
   animation: agh-drift-3 32s ease-in-out infinite;
@@ -225,8 +325,8 @@ body {
   height: min(52vmin, 340px);
   background: radial-gradient(
     circle,
-    rgb(30 75 115 / 0.28) 0%,
-    rgb(0 105 60 / 0.16) 48%,
+    rgb(0 105 60 / 0.26) 0%,
+    rgb(167 25 48 / 0.14) 48%,
     transparent 72%
   );
   animation: agh-drift-4 20s ease-in-out infinite;
@@ -283,7 +383,9 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .agh-page-bg__blob {
+  .agh-page-bg__blob,
+  .agh-page-bg__flow,
+  .agh-page-bg__waves {
     animation: none !important;
   }
 }

@@ -95,7 +95,7 @@ export default function RegisterPage() {
                 href="https://uczelnia.pl/polityka-prywatnosci"
                 target="_blank"
                 rel="noreferrer"
-                className="text-primary font-medium underline-offset-4 hover:underline">
+                className="text-primary cursor-pointer font-medium underline-offset-4 hover:underline">
                 (szczegóły)
               </a>
             </Label>
@@ -112,7 +112,7 @@ export default function RegisterPage() {
           Masz konto?{' '}
           <Link
             href="/login"
-            className="text-primary font-medium underline-offset-4 hover:underline">
+            className="text-primary cursor-pointer font-medium underline-offset-4 hover:underline">
             Zaloguj się
           </Link>
         </p>
