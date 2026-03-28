@@ -4,6 +4,7 @@ import { Geist } from 'next/font/google';
 
 import './globals.css';
 import Providers from './providers';
+import { ScrollToTopOnRoute } from '@/components/scroll-to-top-on-route';
 import { SiteHeader } from '@/components/site-header';
 import { cn } from '@/lib/utils';
 
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html lang="pl" className={cn('font-sans', geist.variable)}>
       <body>
         <Providers>
+          <ScrollToTopOnRoute />
           <SiteHeader />
           {children}
         </Providers>

@@ -1,7 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import Link from 'next/link';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { type FieldError, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -93,6 +92,21 @@ function FormEngine({
   const [currentScreenIndex, setCurrentScreenIndex] =
     useState(initialScreenIndex);
   const [isSummaryScreen, setIsSummaryScreen] = useState(false);
+
+  const stepKey = `${currentScreenIndex}-${isSummaryScreen ? '1' : '0'}`;
+  const prevStepKeyRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (prevStepKeyRef.current === null) {
+      prevStepKeyRef.current = stepKey;
+      return;
+    }
+
+    if (prevStepKeyRef.current !== stepKey) {
+      prevStepKeyRef.current = stepKey;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [stepKey]);
 
   const {
     register,
@@ -330,17 +344,6 @@ function FormEngine({
                 : 'Dalej'}
           </Button>
         </div>
-
-        {isSummaryScreen ? (
-          <p className="border-t pt-4 text-center text-sm text-muted-foreground">
-            Szukasz innego kierunku?{' '}
-            <Link
-              href="/"
-              className="text-primary underline underline-offset-4">
-              Katalog kierunków i wyszukiwarka
-            </Link>
-          </p>
-        ) : null}
       </form>
 
       <details className="rounded-lg border bg-muted/30 p-3">

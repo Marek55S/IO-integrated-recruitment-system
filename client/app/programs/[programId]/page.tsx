@@ -112,10 +112,6 @@ export default function ProgramRecruitmentPage() {
     <main className="min-h-screen bg-background px-4 py-8 md:px-6 md:py-10">
       <article className="mx-auto max-w-3xl space-y-8">
         <header className="space-y-4">
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            Rekrutacja · {page.program_id}
-          </p>
-
           <div className="overflow-hidden rounded-2xl border bg-card shadow-sm">
             <img
               src={page.image_src}
@@ -126,14 +122,11 @@ export default function ProgramRecruitmentPage() {
             />
           </div>
 
-          <div className="space-y-2">
-            <h1 className="text-3xl font-semibold tracking-tight">
-              {page.title}
-            </h1>
+          {page.description ? (
             <p className="whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
               {page.description}
             </p>
-          </div>
+          ) : null}
         </header>
 
         <ProgramRecruitmentForm
