@@ -73,7 +73,7 @@ function ProgramRecruitmentForm({
   });
 
   return (
-    <section className="mx-auto w-full max-w-3xl space-y-6 rounded-2xl border bg-card p-6 shadow-sm">
+    <section className="border-primary/15 mx-auto w-full max-w-3xl space-y-6 rounded-xl border bg-card p-6 shadow-md md:p-8">
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -85,7 +85,9 @@ function ProgramRecruitmentForm({
         {config.screens.map((screen) => (
           <div key={screen.id} className="space-y-5">
             <header className="space-y-1 border-b border-border pb-4">
-              <h2 className="text-2xl font-semibold">{screen.title}</h2>
+              <h2 className="text-primary text-2xl font-semibold tracking-tight">
+                {screen.title}
+              </h2>
               {screen.subtitle ? (
                 <p className="text-sm text-muted-foreground">
                   {screen.subtitle}

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import type { ProgramsIndex } from '@io/content-api';
 
+import { BrandedPageLoader } from '@/components/branded-page-loader';
 import { ProgramsSearch } from '@/components/programs-search';
 import { StudyApplicationsCards } from '@/components/study-applications-cards';
 
@@ -41,7 +42,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-background px-4 py-8 md:px-6 md:py-10">
+    <main className="min-h-screen bg-transparent px-4 py-8 md:px-6 md:py-10">
       <div className="mx-auto max-w-3xl space-y-10">
         {error ? (
           <p className="text-center text-sm text-destructive">{error}</p>
@@ -50,9 +51,7 @@ export default function HomePage() {
         {programs ? <ProgramsSearch programs={programs} /> : null}
 
         {!error && !programs ? (
-          <p className="text-center text-sm text-muted-foreground">
-            Wczytywanie…
-          </p>
+          <BrandedPageLoader label="Wczytywanie kierunków…" />
         ) : null}
 
         <StudyApplicationsCards />

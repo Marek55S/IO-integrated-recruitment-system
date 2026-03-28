@@ -41,9 +41,11 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center px-4 py-8">
-      <section className="w-full max-w-md rounded-2xl border bg-card p-6 shadow-sm md:p-8">
-        <h1 className="text-2xl font-semibold">Rejestracja</h1>
+    <main className="flex min-h-[calc(100vh-4.25rem)] items-center justify-center px-4 py-10">
+      <section className="border-primary/15 w-full max-w-md rounded-xl border bg-card p-6 shadow-md md:p-8">
+        <h1 className="text-primary text-2xl font-semibold tracking-tight">
+          Rejestracja
+        </h1>
 
         <form onSubmit={onSubmit} className="mt-6 space-y-4">
           <div className="space-y-2">
@@ -93,7 +95,7 @@ export default function RegisterPage() {
                 href="https://uczelnia.pl/polityka-prywatnosci"
                 target="_blank"
                 rel="noreferrer"
-                className="underline underline-offset-4">
+                className="text-primary font-medium underline-offset-4 hover:underline">
                 (szczegóły)
               </a>
             </Label>
@@ -101,14 +103,16 @@ export default function RegisterPage() {
 
           {error ? <p className="text-sm text-destructive">{error}</p> : null}
 
-          <Button type="submit" variant="destructive" className="w-full">
+          <Button type="submit" variant="default" className="w-full">
             Zarejestruj
           </Button>
         </form>
 
         <p className="mt-4 text-sm text-muted-foreground">
           Masz konto?{' '}
-          <Link href="/login" className="underline underline-offset-4">
+          <Link
+            href="/login"
+            className="text-primary font-medium underline-offset-4 hover:underline">
             Zaloguj się
           </Link>
         </p>

@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 
 import type { ProgramPage as ProgramPageData } from '@io/content-api';
 
+import { BrandedPageLoader } from '@/components/branded-page-loader';
 import { ProgramRecruitmentForm } from '@/components/program-recruitment-form';
 
 export default function ProgramRecruitmentPage() {
@@ -72,17 +73,15 @@ export default function ProgramRecruitmentPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-background px-4 py-8 md:px-6 md:py-10">
-        <p className="text-center text-sm text-muted-foreground">
-          Wczytywanie kierunku…
-        </p>
+      <main className="min-h-screen bg-transparent px-4 py-8 md:px-6 md:py-10">
+        <BrandedPageLoader label="Wczytywanie kierunku…" />
       </main>
     );
   }
 
   if (error) {
     return (
-      <main className="min-h-screen bg-background px-4 py-8 md:px-6 md:py-10">
+      <main className="min-h-screen bg-transparent px-4 py-8 md:px-6 md:py-10">
         <p className="text-center text-sm text-destructive">{error}</p>
         <p className="mt-4 text-center text-sm">
           <Link href="/" className="text-primary underline underline-offset-4">
@@ -109,10 +108,10 @@ export default function ProgramRecruitmentPage() {
   }
 
   return (
-    <main className="min-h-screen bg-background px-4 py-8 md:px-6 md:py-10">
+    <main className="min-h-screen bg-transparent px-4 py-8 md:px-6 md:py-10">
       <article className="mx-auto max-w-3xl space-y-8">
         <header className="space-y-4">
-          <div className="overflow-hidden rounded-2xl border bg-card shadow-sm">
+          <div className="border-primary/15 overflow-hidden rounded-xl border bg-card shadow-md">
             <img
               src={page.image_src}
               alt={page.title}

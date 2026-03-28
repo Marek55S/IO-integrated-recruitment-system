@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import type { FormConfig, SubmissionConfig } from '@io/content-api';
 
+import { BrandedPageLoader } from '@/components/branded-page-loader';
 import { FormEngine } from '@/components/form-engine';
 
 type RecruitmentFormPayload = {
@@ -45,15 +46,13 @@ export default function FormPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-background px-4 py-8 md:px-6 md:py-10">
+    <main className="min-h-[calc(100vh-4.25rem)] bg-transparent px-4 py-8 md:px-6 md:py-10">
       {error ? (
         <p className="text-center text-sm text-destructive">{error}</p>
       ) : null}
 
       {!error && !payload ? (
-        <p className="text-center text-sm text-muted-foreground">
-          Wczytywanie formularza…
-        </p>
+        <BrandedPageLoader label="Wczytywanie formularza…" />
       ) : null}
 
       {payload ? (

@@ -47,7 +47,7 @@ function ProgramsSearch({ programs }: ProgramsSearchProps) {
   return (
     <div ref={rootRef} className="relative mx-auto w-full max-w-xl">
       <label className="block space-y-2">
-        <span className="text-sm font-medium text-foreground">
+        <span className="text-sm font-semibold text-foreground">
           Szukaj kierunku
         </span>
         <input
@@ -63,7 +63,7 @@ function ProgramsSearch({ programs }: ProgramsSearchProps) {
             }
           }}
           placeholder="Zacznij wpisywać nazwę kierunku…"
-          className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          className="border-primary/25 bg-card ring-offset-background placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/30 flex h-11 w-full rounded-md border px-3 py-2 text-sm shadow-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           autoComplete="off"
           role="combobox"
           aria-expanded={open && hasQuery}
@@ -74,7 +74,7 @@ function ProgramsSearch({ programs }: ProgramsSearchProps) {
       {open && hasQuery ? (
         <div
           id="programs-search-results"
-          className="absolute z-50 mt-1 max-h-72 w-full overflow-auto rounded-md border bg-popover text-popover-foreground shadow-md"
+          className="border-primary/20 absolute z-50 mt-1 max-h-72 w-full overflow-auto rounded-md border bg-popover text-popover-foreground shadow-lg"
           role="listbox">
           {filtered.length === 0 ? (
             <p className="px-3 py-6 text-center text-sm text-muted-foreground">
@@ -86,7 +86,7 @@ function ProgramsSearch({ programs }: ProgramsSearchProps) {
                 <li key={program.id} role="option">
                   <Link
                     href={`/programs/${program.id}`}
-                    className="hover:bg-muted focus:bg-muted block px-3 py-2.5 text-sm transition-colors"
+                    className="hover:bg-primary/8 focus:bg-primary/8 block px-3 py-2.5 text-sm transition-colors"
                     onClick={() => {
                       setOpen(false);
                       setQuery('');

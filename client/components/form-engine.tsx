@@ -202,7 +202,7 @@ function FormEngine({
     : (currentScreen.back_action ?? RECRUITMENT_DEFAULT_BACK);
 
   return (
-    <section className="mx-auto w-full max-w-3xl space-y-6 rounded-2xl border bg-card p-6 shadow-sm">
+    <section className="border-primary/15 mx-auto w-full max-w-3xl space-y-6 rounded-xl border bg-card p-6 shadow-md md:p-8">
       <header className="space-y-3">
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <span>
@@ -219,7 +219,7 @@ function FormEngine({
         </div>
 
         <div>
-          <h2 className="text-2xl font-semibold">
+          <h2 className="text-primary text-2xl font-semibold tracking-tight">
             {isSummaryScreen ? submissionConfig.title : currentScreen.title}
           </h2>
           {(
@@ -248,8 +248,8 @@ function FormEngine({
           <>
             <SubmissionPreview values={getValues()} config={submissionConfig} />
 
-            <section className="space-y-3 rounded-xl border bg-muted/30 p-4">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            <section className="border-primary/10 space-y-3 rounded-xl border bg-muted/40 p-4">
+              <h3 className="text-primary text-xs font-bold uppercase tracking-wider">
                 Zgody
               </h3>
 
@@ -346,7 +346,7 @@ function FormEngine({
         </div>
       </form>
 
-      <details className="rounded-lg border bg-muted/30 p-3">
+      <details className="border-primary/10 rounded-lg border bg-muted/40 p-3">
         <summary className="cursor-pointer text-sm text-muted-foreground">
           Podglad aktualnych danych formularza
         </summary>

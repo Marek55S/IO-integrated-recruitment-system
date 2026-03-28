@@ -40,10 +40,10 @@ function StudyApplicationsCards() {
   if (applications.length === 0) {
     return (
       <section className="mx-auto flex w-full max-w-md flex-col items-center space-y-3">
-        <h2 className="text-center text-lg font-semibold tracking-tight">
+        <h2 className="text-center text-lg font-semibold tracking-tight text-foreground">
           Twoje wnioski o studia
         </h2>
-        <p className="w-full rounded-xl border border-dashed bg-muted/20 px-4 py-8 text-center text-sm text-muted-foreground">
+        <p className="border-primary/25 w-full rounded-xl border border-dashed bg-muted/30 px-4 py-8 text-center text-sm text-muted-foreground">
           Nie masz jeszcze złożonych wniosków. Wybierz kierunek z wyszukiwarki
           powyżej i prześlij zgłoszenie — wtedy pojawi się tutaj z statusem.
         </p>
@@ -53,16 +53,18 @@ function StudyApplicationsCards() {
 
   return (
     <section className="mx-auto flex w-full max-w-md flex-col items-center space-y-4">
-      <h2 className="text-center text-lg font-semibold tracking-tight">
+      <h2 className="text-center text-lg font-semibold tracking-tight text-foreground">
         Twoje wnioski o studia
       </h2>
       <ul className="flex w-full flex-col items-center gap-4">
         {applications.map((app) => (
           <li
             key={app.id}
-            className="flex w-full flex-col rounded-xl border bg-card p-4 shadow-sm">
+            className="flex w-full flex-col rounded-xl border border-border border-l-4 border-l-primary bg-card p-4 shadow-md">
             <div className="flex flex-1 flex-col gap-2">
-              <p className="font-medium leading-snug">{app.programName}</p>
+              <p className="font-semibold leading-snug text-foreground">
+                {app.programName}
+              </p>
               <p className="text-xs text-muted-foreground">
                 Złożono: {formatDate(app.submittedAt)}
               </p>
@@ -70,8 +72,8 @@ function StudyApplicationsCards() {
               <span
                 className={
                   app.status === 'paid'
-                    ? 'mt-1 inline-flex w-fit rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-medium text-emerald-800 dark:text-emerald-200'
-                    : 'mt-1 inline-flex w-fit rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-medium text-amber-900 dark:text-amber-100'
+                    ? 'bg-primary/12 text-primary mt-1 inline-flex w-fit rounded-full px-2.5 py-0.5 text-xs font-semibold'
+                    : 'mt-1 inline-flex w-fit rounded-full bg-secondary px-2.5 py-0.5 text-xs font-semibold text-secondary-foreground'
                 }>
                 {studyApplicationStatusLabel(app.status)}
               </span>

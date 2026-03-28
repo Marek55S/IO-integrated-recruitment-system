@@ -6,8 +6,10 @@ import { useRouter } from 'next/navigation';
 
 import type { ProfileViewConfig } from '@io/content-api';
 
+import { BrandedPageLoader } from '@/components/branded-page-loader';
 import { SubmissionPreview } from '@/components/submission-preview';
 import { Button } from '@/components/ui/button';
+import { clearAllDemoRecruitmentStorage } from '@/lib/clear-demo-storage';
 import { RECRUITMENT_FORM_VALUES_STORAGE_KEY } from '@/lib/recruitment-storage';
 
 type FormValues = Record<string, unknown>;
@@ -78,12 +80,19 @@ export default function ProfilePage() {
     router.push('/login');
   };
 
+  const handleClearDemo = () => {
+    clearAllDemoRecruitmentStorage();
+    setValues(null);
+  };
+
   if (loadError) {
     return (
-      <main className="min-h-screen bg-background px-4 py-10 md:px-6 md:py-14">
+      <main className="min-h-screen bg-transparent px-4 py-10 md:px-6 md:py-14">
         <p className="text-center text-sm text-destructive">{loadError}</p>
         <p className="mt-4 text-center text-sm">
-          <Link href="/" className="text-primary underline underline-offset-4">
+          <Link
+            href="/"
+            className="text-primary font-medium underline-offset-4 hover:underline">
             Strona główna
           </Link>
         </p>
@@ -93,10 +102,8 @@ export default function ProfilePage() {
 
   if (!config) {
     return (
-      <main className="min-h-screen bg-background px-4 py-10 md:px-6 md:py-14">
-        <p className="text-center text-sm text-muted-foreground">
-          Wczytywanie profilu…
-        </p>
+      <main className="min-h-screen bg-transparent px-4 py-10 md:px-6 md:py-14">
+        <BrandedPageLoader label="Wczytywanie profilu…" />
       </main>
     );
   }
@@ -104,10 +111,12 @@ export default function ProfilePage() {
   const displayValues = values ?? {};
 
   return (
-    <main className="min-h-screen bg-background px-4 py-8 md:px-6 md:py-10">
+    <main className="min-h-screen bg-transparent px-4 py-8 md:px-6 md:py-10">
       <div className="mx-auto max-w-4xl space-y-8">
         <p className="text-sm">
-          <Link href="/" className="text-primary underline underline-offset-4">
+          <Link
+            href="/"
+            className="text-primary text-sm font-medium underline-offset-4 hover:underline">
             ← Kierunki studiów
           </Link>
         </p>
@@ -129,9 +138,20 @@ export default function ProfilePage() {
           }}
         />
 
-        <div className="flex justify-center">
-          <Button type="button" variant="outline" onClick={handleLogout}>
+        <div className="flex flex-col items-center gap-3">
+          <Button
+            type="button"
+            className="border-transparent bg-[#a71930] text-white hover:bg-[#8f1526] hover:text-white focus-visible:border-[#a71930]/40 focus-visible:ring-[#a71930]/25"
+            onClick={handleLogout}>
             Wyloguj się
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="text-muted-foreground"
+            onClick={handleClearDemo}>
+            Wyczyść dane demo (localStorage)
           </Button>
         </div>
       </div>
