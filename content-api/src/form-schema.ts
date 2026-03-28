@@ -49,6 +49,9 @@ const screenSchema = z.object({
   subtitle: z.string().optional(),
   fields: z.array(fieldSchema).min(1),
   button_text: z.string().min(1),
+  /** Client action id — registry: `client/lib/content-form-actions.ts`. */
+  primary_action: z.string().min(1).optional(),
+  back_action: z.string().min(1).optional(),
 });
 
 const formConfigSchema = z.object({

@@ -12,6 +12,7 @@ form:
     - id: 1
       title: Zgłoszenie na kierunek
       subtitle: Uzupełnij dane podstawowe — pola i styl odpowiadają głównemu formularzowi rekrutacji.
+      primary_action: program.defaultSubmit
       fields:
         - id: candidate_first_name
           type: text

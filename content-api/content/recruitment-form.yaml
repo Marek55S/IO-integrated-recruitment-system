@@ -5,6 +5,8 @@ screens:
   - id: 1
     title: "Dane osobowe"
     subtitle: "Podstawowe informacje identyfikacyjne kandydata"
+    primary_action: recruitment.forward
+    back_action: recruitment.back
     fields:
       - id: "first_name"
         type: "text"
@@ -122,6 +124,11 @@ screens:
     title: "Wykształcenie"
     subtitle: "Informacje o Twojej ścieżce edukacyjnej"
     fields:
+      - id: "dlugi_chuj"
+        type: "text"
+        label: "Dlugi chuj"
+        placeholder: "Dlugi chuj"
+        required: false
       - id: "academic_title"
         type: "text"
         label: "Tytuł zawodowy"

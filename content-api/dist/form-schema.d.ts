@@ -46,6 +46,8 @@ declare const formConfigSchema: z.ZodObject<{
             }>;
         }, z.core.$strip>], "type">>;
         button_text: z.ZodString;
+        primary_action: z.ZodOptional<z.ZodString>;
+        back_action: z.ZodOptional<z.ZodString>;
     }, z.core.$strip>>;
 }, z.core.$strip>;
 export type FormConfig = z.infer<typeof formConfigSchema>;

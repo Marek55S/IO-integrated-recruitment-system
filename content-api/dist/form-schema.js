@@ -46,6 +46,9 @@ const screenSchema = zod_1.z.object({
     subtitle: zod_1.z.string().optional(),
     fields: zod_1.z.array(fieldSchema).min(1),
     button_text: zod_1.z.string().min(1),
+    /** Client action id — registry: `client/lib/content-form-actions.ts`. */
+    primary_action: zod_1.z.string().min(1).optional(),
+    back_action: zod_1.z.string().min(1).optional(),
 });
 const formConfigSchema = zod_1.z.object({
     form_id: zod_1.z.string().min(1),

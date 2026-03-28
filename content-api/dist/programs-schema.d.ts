@@ -57,6 +57,8 @@ export declare const programPageSchema: z.ZodObject<{
                 }>;
             }, z.core.$strip>], "type">>;
             button_text: z.ZodString;
+            primary_action: z.ZodOptional<z.ZodString>;
+            back_action: z.ZodOptional<z.ZodString>;
         }, z.core.$strip>>;
     }, z.core.$strip>;
 }, z.core.$strip>;

@@ -26,6 +26,10 @@ const submissionConfigSchema = zod_1.z.object({
     subtitle: zod_1.z.string().optional(),
     sections: zod_1.z.array(submissionSectionSchema).min(1),
     agreements: zod_1.z.array(submissionAgreementSchema).min(1),
+    /** Summary screen primary button — client action id. */
+    submit_action: zod_1.z.string().min(1).optional(),
+    /** Back from summary to last form step — client action id. */
+    back_action: zod_1.z.string().min(1).optional(),
 });
 exports.submissionConfigSchema = submissionConfigSchema;
 function buildSubmissionAgreementSchema(config) {

@@ -8,6 +8,10 @@ import { buildFormDataSchema, type FormConfig } from '@io/content-api';
 
 import { FieldRenderer } from '@/components/field-renderer';
 import { Button } from '@/components/ui/button';
+import {
+  PROGRAM_DEFAULT_SUBMIT,
+  runProgramFormAction,
+} from '@/lib/content-form-actions';
 
 type FormValues = Record<string, unknown>;
 
@@ -32,7 +36,9 @@ function createDefaultValuesFromConfig(formConfig: FormConfig): FormValues {
 function ProgramRecruitmentForm({ config }: ProgramRecruitmentFormProps) {
   const schema = useMemo(() => buildFormDataSchema(config), [config]);
 
-  const submitLabel = config.screens.at(-1)?.button_text ?? 'Wyślij zgłoszenie';
+  const lastScreen = config.screens.at(-1);
+  const submitLabel = lastScreen?.button_text ?? 'Wyślij zgłoszenie';
+  const submitActionId = lastScreen?.primary_action ?? PROGRAM_DEFAULT_SUBMIT;
 
   const {
     register,
@@ -46,13 +52,20 @@ function ProgramRecruitmentForm({ config }: ProgramRecruitmentFormProps) {
     mode: 'onBlur',
   });
 
-  const onSubmit = handleSubmit((values) => {
+  const submitValidated = handleSubmit((values) => {
     console.log('Program recruitment submission:', values);
   });
 
   return (
     <section className="mx-auto w-full max-w-3xl space-y-6 rounded-2xl border bg-card p-6 shadow-sm">
-      <form onSubmit={onSubmit} className="space-y-8">
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          void runProgramFormAction(submitActionId, {
+            submitValidated: () => submitValidated(),
+          });
+        }}
+        className="space-y-8">
         {config.screens.map((screen) => (
           <div key={screen.id} className="space-y-5">
             <header className="space-y-1 border-b border-border pb-4">

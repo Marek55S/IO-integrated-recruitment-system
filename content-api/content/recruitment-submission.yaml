@@ -2,6 +2,9 @@ submission_id: "postgraduate-recruitment-2026-submission"
 version: "1.0"
 title: "Podsumowanie zgłoszenia"
 subtitle: "Zweryfikuj dane przed ostatecznym wysłaniem"
+# Id akcji z client/lib/content-form-actions.ts (pole primary na podsumowaniu / Wstecz)
+submit_action: recruitment.submit
+back_action: recruitment.back
 
 sections:
   - id: "personal_data"

@@ -26,6 +26,10 @@ const submissionConfigSchema = z.object({
   subtitle: z.string().optional(),
   sections: z.array(submissionSectionSchema).min(1),
   agreements: z.array(submissionAgreementSchema).min(1),
+  /** Summary screen primary button — client action id. */
+  submit_action: z.string().min(1).optional(),
+  /** Back from summary to last form step — client action id. */
+  back_action: z.string().min(1).optional(),
 });
 
 export type SubmissionConfig = z.infer<typeof submissionConfigSchema>;

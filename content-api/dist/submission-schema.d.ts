@@ -19,6 +19,8 @@ declare const submissionConfigSchema: z.ZodObject<{
         link: z.ZodOptional<z.ZodString>;
         link_text: z.ZodOptional<z.ZodString>;
     }, z.core.$strip>>;
+    submit_action: z.ZodOptional<z.ZodString>;
+    back_action: z.ZodOptional<z.ZodString>;
 }, z.core.$strip>;
 export type SubmissionConfig = z.infer<typeof submissionConfigSchema>;
 export type SubmissionAgreement = SubmissionConfig["agreements"][number];

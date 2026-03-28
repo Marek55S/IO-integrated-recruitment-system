@@ -15,6 +15,12 @@ import {
 import { FieldRenderer } from '@/components/field-renderer';
 import { SubmissionPreview } from '@/components/submission-preview';
 import { Button } from '@/components/ui/button';
+import {
+  RECRUITMENT_DEFAULT_BACK,
+  RECRUITMENT_DEFAULT_FORWARD,
+  RECRUITMENT_DEFAULT_SUBMIT,
+  runRecruitmentFormAction,
+} from '@/lib/content-form-actions';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 
@@ -163,6 +169,14 @@ function FormEngine({
 
   const watchedValues = watch();
 
+  const primaryActionId = isSummaryScreen
+    ? (submissionConfig.submit_action ?? RECRUITMENT_DEFAULT_SUBMIT)
+    : (currentScreen.primary_action ?? RECRUITMENT_DEFAULT_FORWARD);
+
+  const backActionId = isSummaryScreen
+    ? (submissionConfig.back_action ?? RECRUITMENT_DEFAULT_BACK)
+    : (currentScreen.back_action ?? RECRUITMENT_DEFAULT_BACK);
+
   return (
     <section className="mx-auto w-full max-w-3xl space-y-6 rounded-2xl border bg-card p-6 shadow-sm">
       <header className="space-y-3">
@@ -199,11 +213,11 @@ function FormEngine({
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          if (isSummaryScreen) {
-            void handleFinalSubmit();
-          } else {
-            void handleNext();
-          }
+          void runRecruitmentFormAction(primaryActionId, {
+            goNext: handleNext,
+            goBack: handlePrevious,
+            submitFinal: handleFinalSubmit,
+          });
         }}
         className="space-y-5">
         {isSummaryScreen ? (
@@ -287,8 +301,14 @@ function FormEngine({
           <Button
             type="button"
             variant="outline"
-            onClick={handlePrevious}
-            disabled={isFirstScreen}>
+            onClick={() =>
+              void runRecruitmentFormAction(backActionId, {
+                goNext: handleNext,
+                goBack: handlePrevious,
+                submitFinal: handleFinalSubmit,
+              })
+            }
+            disabled={isFirstScreen && !isSummaryScreen}>
             Wstecz
           </Button>
 

@@ -12,6 +12,7 @@ form:
     - id: 1
       title: Zgłoszenie na kierunek
       subtitle: Dane zgłoszeniowe w tym samym układzie co pola w recruitment-form.
+      primary_action: program.defaultSubmit
       fields:
         - id: candidate_first_name
           type: text
