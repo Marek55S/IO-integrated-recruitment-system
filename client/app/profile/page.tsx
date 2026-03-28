@@ -123,10 +123,7 @@ export default function ProfilePage() {
         />
 
         <div className="flex flex-col items-center gap-3">
-          <Button
-            type="button"
-            className="border-transparent bg-[#a71930] text-white hover:bg-[#8f1526] hover:text-white focus-visible:border-[#a71930]/40 focus-visible:ring-[#a71930]/25"
-            onClick={handleLogout}>
+          <Button type="button" variant="destructive" onClick={handleLogout}>
             Wyloguj się
           </Button>
           <Button

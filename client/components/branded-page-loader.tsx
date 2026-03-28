@@ -7,7 +7,7 @@ type BrandedPageLoaderProps = {
 };
 
 /**
- * Spinner z płynną zmianą koloru obrysu (zieleń → czerń → czerwień AGH) podczas obrotu.
+ * Spinner w tonacji WI AGH: granat → niebieski → szary.
  */
 function BrandedPageLoader({
   label = 'Ładowanie…',
@@ -51,7 +51,7 @@ function BrandedPageLoader({
 
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#f2f6f3]/75 backdrop-blur-[2px] dark:bg-[#141a17]/80">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-100/80 backdrop-blur-[2px] dark:bg-[#0c1222]/85">
         {content}
       </div>
     );

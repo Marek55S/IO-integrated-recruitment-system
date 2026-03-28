@@ -15,7 +15,7 @@ function SiteHeader() {
 
   const logoImg = (
     <img
-      src="/programs/AGH.svg"
+      src="/programs/WI.svg"
       alt=""
       width={190}
       height={190}
@@ -25,7 +25,7 @@ function SiteHeader() {
   );
 
   return (
-    <header className="border-primary/80 sticky top-0 z-40 border-b-2 bg-card/92 shadow-sm backdrop-blur-md backdrop-saturate-150">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-[#0b1220] shadow-md">
       <div className="relative mx-auto flex h-[4.25rem] max-w-6xl items-center justify-center px-4">
         {logoIsInteractive ? (
           <Link
@@ -37,7 +37,7 @@ function SiteHeader() {
         ) : (
           <span
             className="flex cursor-default items-center"
-            aria-label="AGH">
+            aria-label="Wydział Informatyki AGH">
             {logoImg}
           </span>
         )}
@@ -50,7 +50,7 @@ function SiteHeader() {
               variant: 'ghost',
               size: 'icon',
               className:
-                'absolute top-1/2 right-4 -translate-y-1/2 text-[#1e1e1e] hover:bg-black/5 hover:text-[#1e1e1e] dark:text-foreground dark:hover:bg-white/10',
+                'absolute top-1/2 right-4 -translate-y-1/2 text-white hover:bg-white/10 hover:text-white',
             })}>
             <UserRound className="size-6" />
           </Link>

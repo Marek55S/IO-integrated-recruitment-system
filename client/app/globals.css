@@ -4,100 +4,97 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
-  Motyw inspirowany identyfikacją AGH (Kraków):
-  zieleń #00693C, czerwień #A71930, grafit #1E1E1E
-  — por. znak graficzny uczelni.
+  Motyw w stylu witryny Wydziału Informatyki AGH (informatyka.agh.edu.pl):
+  ciemny nagłówek, jasne tło, akcenty granat / niebieski, neutralne szarości.
 */
 body {
   margin: 0;
 }
 
 :root {
-  --agh-green: #00693c;
-  --agh-red: #a71930;
-  --agh-ink: #1e1e1e;
+  --wi-header: #0b1220;
+  --wi-blue: #2563eb;
+  --wi-navy: #1e3a5f;
 
-  --background: #f2f6f3;
-  --foreground: #1e1e1e;
+  --background: #eef2f7;
+  --foreground: #0f172a;
   --card: #ffffff;
-  --card-foreground: #1e1e1e;
+  --card-foreground: #0f172a;
   --popover: #ffffff;
-  --popover-foreground: #1e1e1e;
-  --primary: #00693c;
+  --popover-foreground: #0f172a;
+  --primary: #1e4976;
   --primary-foreground: #ffffff;
-  --secondary: #e8f2ec;
-  --secondary-foreground: #0d3d24;
-  --muted: #e8efe9;
-  --muted-foreground: #3d5248;
-  --accent: #dceee2;
-  --accent-foreground: #0d3d24;
-  --destructive: #a71930;
-  --border: #c5d5cb;
-  --input: #c5d5cb;
-  --ring: #00693c;
-  --chart-1: #00693c;
-  --chart-2: #a71930;
-  --chart-3: #2d6a4f;
-  --chart-4: #40916c;
-  --chart-5: #95d5b2;
-  --radius: 0.5rem;
-  --sidebar: #f2f6f3;
-  --sidebar-foreground: #1e1e1e;
-  --sidebar-primary: #00693c;
+  --secondary: #e2e8f0;
+  --secondary-foreground: #1e293b;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #dbeafe;
+  --accent-foreground: #1e3a5f;
+  --destructive: #dc2626;
+  --border: #cbd5e1;
+  --input: #cbd5e1;
+  --ring: #3b82f6;
+  --chart-1: #1e4976;
+  --chart-2: #2563eb;
+  --chart-3: #64748b;
+  --chart-4: #0ea5e9;
+  --chart-5: #94a3b8;
+  --radius: 0.375rem;
+  --sidebar: #eef2f7;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #1e4976;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e8f2ec;
-  --sidebar-accent-foreground: #0d3d24;
-  --sidebar-border: #c5d5cb;
-  --sidebar-ring: #00693c;
+  --sidebar-accent: #e2e8f0;
+  --sidebar-accent-foreground: #1e293b;
+  --sidebar-border: #cbd5e1;
+  --sidebar-ring: #3b82f6;
 }
 
 .dark {
-  --background: #141a17;
-  --foreground: #f0f4f2;
-  --card: #1c2420;
-  --card-foreground: #f0f4f2;
-  --popover: #1c2420;
-  --popover-foreground: #f0f4f2;
-  --primary: #3d9a6f;
-  --primary-foreground: #0a1610;
-  --secondary: #243028;
-  --secondary-foreground: #dceee2;
-  --muted: #243028;
-  --muted-foreground: #9cb0a4;
-  --accent: #2a3830;
-  --accent-foreground: #dceee2;
-  --destructive: #e85c6f;
-  --border: #2f3d35;
-  --input: #2f3d35;
-  --ring: #3d9a6f;
-  --sidebar: #1c2420;
-  --sidebar-foreground: #f0f4f2;
-  --sidebar-primary: #3d9a6f;
-  --sidebar-primary-foreground: #0a1610;
-  --sidebar-accent: #243028;
-  --sidebar-accent-foreground: #dceee2;
-  --sidebar-border: #2f3d35;
-  --sidebar-ring: #3d9a6f;
+  --background: #0c1222;
+  --foreground: #f1f5f9;
+  --card: #131b2e;
+  --card-foreground: #f1f5f9;
+  --popover: #131b2e;
+  --popover-foreground: #f1f5f9;
+  --primary: #60a5fa;
+  --primary-foreground: #0b1220;
+  --secondary: #1e293b;
+  --secondary-foreground: #e2e8f0;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #1e3a5f;
+  --accent-foreground: #bfdbfe;
+  --destructive: #f87171;
+  --border: #2d3b52;
+  --input: #2d3b52;
+  --ring: #60a5fa;
+  --sidebar: #0c1222;
+  --sidebar-foreground: #f1f5f9;
+  --sidebar-primary: #60a5fa;
+  --sidebar-primary-foreground: #0b1220;
+  --sidebar-accent: #1e293b;
+  --sidebar-accent-foreground: #e2e8f0;
+  --sidebar-border: #2d3b52;
+  --sidebar-ring: #60a5fa;
 }
 
-/* Tekst na tle strony (nie w kartach): serif + głęboka zieleń / grafit */
+/* Tekst na tle strony (poza kartami) — jak na stronach wydziałowych: sans, granat / szary */
 .font-outside-card-title {
-  font-family: var(--font-display), ui-serif, Georgia, 'Times New Roman', serif;
-  color: #054023;
-  letter-spacing: -0.02em;
+  color: #0f172a;
+  letter-spacing: -0.025em;
 }
 
 .font-outside-card-body {
-  font-family: var(--font-display), ui-serif, Georgia, 'Times New Roman', serif;
-  color: #1a2f24;
+  color: #475569;
 }
 
 .dark .font-outside-card-title {
-  color: #c8e6d4;
+  color: #f8fafc;
 }
 
 .dark .font-outside-card-body {
-  color: #d5e5dc;
+  color: #cbd5e1;
 }
 
 @theme inline {
@@ -142,275 +139,104 @@ body {
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Tło w palecie znaku AGH: zieleń, czerń, czerwień — płynne, falujące przejścia */
-.agh-page-bg__base {
+/* Tło strony — jasne, „akademickie”, delikatny błękit jak na stronach WI */
+.wi-page-bg__base {
   background-color: var(--background);
   background-image:
     radial-gradient(
-      ellipse 100% 80% at 8% 0%,
-      rgb(0 105 60 / 0.18) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      ellipse 95% 75% at 100% 8%,
-      rgb(167 25 48 / 0.14) 0%,
+      ellipse 100% 70% at 100% 0%,
+      rgb(37 99 235 / 0.07) 0%,
       transparent 52%
     ),
     radial-gradient(
-      ellipse 75% 65% at 50% 100%,
-      rgb(30 30 30 / 0.16) 0%,
+      ellipse 80% 55% at 0% 100%,
+      rgb(30 58 95 / 0.06) 0%,
       transparent 48%
-    ),
-    radial-gradient(
-      ellipse 60% 55% at 72% 48%,
-      rgb(0 105 60 / 0.1) 0%,
-      transparent 56%
     );
 }
 
-.dark .agh-page-bg__base {
+.dark .wi-page-bg__base {
   background-color: var(--background);
   background-image:
     radial-gradient(
-      ellipse 100% 80% at 10% 0%,
-      rgb(61 154 111 / 0.14) 0%,
+      ellipse 90% 60% at 90% 0%,
+      rgb(96 165 250 / 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(ellipse 70% 50% at 0% 100%, rgb(0 0 0 / 0.35) 0%, transparent 45%);
+}
+
+.wi-page-bg__glow {
+  opacity: 0.75;
+  filter: blur(88px);
+  background:
+    radial-gradient(
+      circle at 72% 18%,
+      rgb(59 130 246 / 0.14) 0%,
+      transparent 52%
+    ),
+    radial-gradient(
+      circle at 12% 78%,
+      rgb(30 58 95 / 0.12) 0%,
+      transparent 48%
+    );
+  animation: wi-glow-drift 22s ease-in-out infinite;
+}
+
+.dark .wi-page-bg__glow {
+  background:
+    radial-gradient(
+      circle at 70% 20%,
+      rgb(59 130 246 / 0.12) 0%,
       transparent 55%
     ),
     radial-gradient(
-      ellipse 90% 70% at 100% 20%,
-      rgb(232 92 111 / 0.1) 0%,
-      transparent 52%
-    ),
-    radial-gradient(
-      ellipse 70% 50% at 45% 100%,
-      rgb(0 0 0 / 0.35) 0%,
-      transparent 48%
+      circle at 15% 80%,
+      rgb(15 23 42 / 0.5) 0%,
+      transparent 50%
     );
 }
 
-/* Duży, rozmyty wir zielono-czarno-czerwony */
-.agh-page-bg__flow {
-  opacity: 0.88;
-  filter: blur(72px);
-  background: conic-gradient(
-    from 200deg at 58% 42%,
-    rgb(0 105 60 / 0.5) 0deg,
-    rgb(20 22 21 / 0.42) 95deg,
-    rgb(167 25 48 / 0.38) 200deg,
-    rgb(8 45 28 / 0.44) 285deg,
-    rgb(0 105 60 / 0.5) 360deg
-  );
-  animation: agh-flow-swirl 28s ease-in-out infinite;
-}
-
-.dark .agh-page-bg__flow {
-  background: conic-gradient(
-    from 190deg at 55% 45%,
-    rgb(61 154 111 / 0.35) 0deg,
-    rgb(10 14 12 / 0.55) 100deg,
-    rgb(232 92 111 / 0.22) 210deg,
-    rgb(30 70 48 / 0.4) 300deg,
-    rgb(61 154 111 / 0.35) 360deg
-  );
-}
-
-@keyframes agh-flow-swirl {
-  0%,
-  100% {
-    transform: translate(-3%, -2%) scale(1.06) rotate(0deg);
-  }
-  40% {
-    transform: translate(5%, 4%) scale(1.14) rotate(10deg);
-  }
-  72% {
-    transform: translate(2%, -5%) scale(1.02) rotate(-6deg);
-  }
-}
-
-/* Lekkie „fale” — przesuwane paski w kolorach marki */
-.agh-page-bg__waves {
-  background-image:
-    repeating-linear-gradient(
-      125deg,
-      transparent,
-      transparent 44px,
-      rgb(0 105 60 / 0.045) 44px,
-      rgb(0 105 60 / 0.045) 46px,
-      transparent 46px,
-      transparent 88px,
-      rgb(167 25 48 / 0.035) 88px,
-      rgb(167 25 48 / 0.035) 90px,
-      transparent 90px,
-      transparent 132px,
-      rgb(30 30 30 / 0.04) 132px,
-      rgb(30 30 30 / 0.04) 134px
-    ),
-    repeating-linear-gradient(
-      -35deg,
-      transparent 0 60px,
-      rgb(0 105 60 / 0.03) 60px 61px,
-      transparent 61px 120px
-    );
-  background-size: 240% 240%, 180% 180%;
-  animation: agh-wave-drift 32s ease-in-out infinite;
-  mix-blend-mode: multiply;
-}
-
-.dark .agh-page-bg__waves {
-  background-image:
-    repeating-linear-gradient(
-      125deg,
-      transparent,
-      transparent 44px,
-      rgb(61 154 111 / 0.06) 44px,
-      rgb(61 154 111 / 0.06) 46px,
-      transparent 46px,
-      transparent 88px,
-      rgb(232 92 111 / 0.05) 88px,
-      rgb(232 92 111 / 0.05) 90px
-    ),
-    repeating-linear-gradient(
-      -35deg,
-      transparent 0 70px,
-      rgb(255 255 255 / 0.025) 70px 71px,
-      transparent 71px 140px
-    );
-  mix-blend-mode: soft-light;
-}
-
-@keyframes agh-wave-drift {
-  0%,
-  100% {
-    background-position: 0% 20%, 80% 0%;
-  }
-  50% {
-    background-position: 100% 60%, 0% 100%;
-  }
-}
-
-.agh-page-bg__blob {
-  opacity: 0.85;
-  filter: blur(78px);
-}
-
-.agh-page-bg__blob--1 {
-  left: -18%;
-  top: -12%;
-  width: min(78vmin, 500px);
-  height: min(78vmin, 500px);
-  background: radial-gradient(
-    circle,
-    rgb(0 105 60 / 0.42) 0%,
-    rgb(0 107 59 / 0.18) 42%,
-    transparent 68%
-  );
-  animation: agh-drift-1 24s ease-in-out infinite;
-}
-
-.agh-page-bg__blob--2 {
-  right: -14%;
-  top: 8%;
-  width: min(68vmin, 440px);
-  height: min(68vmin, 440px);
-  background: radial-gradient(
-    circle,
-    rgb(167 25 48 / 0.32) 0%,
-    rgb(90 18 28 / 0.16) 45%,
-    transparent 66%
-  );
-  animation: agh-drift-2 28s ease-in-out infinite;
-  animation-delay: -9s;
-}
-
-.agh-page-bg__blob--3 {
-  left: 18%;
-  bottom: -22%;
-  width: min(95vmin, 580px);
-  height: min(95vmin, 580px);
-  background: radial-gradient(
-    circle,
-    rgb(30 30 30 / 0.2) 0%,
-    rgb(0 105 60 / 0.14) 38%,
-    rgb(167 25 48 / 0.08) 55%,
-    transparent 68%
-  );
-  animation: agh-drift-3 32s ease-in-out infinite;
-  animation-delay: -16s;
-}
-
-.agh-page-bg__blob--4 {
-  left: 38%;
-  top: 32%;
-  width: min(52vmin, 340px);
-  height: min(52vmin, 340px);
-  background: radial-gradient(
-    circle,
-    rgb(0 105 60 / 0.26) 0%,
-    rgb(167 25 48 / 0.14) 48%,
-    transparent 72%
-  );
-  animation: agh-drift-4 20s ease-in-out infinite;
-  animation-delay: -4s;
-}
-
-@keyframes agh-drift-1 {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  35% {
-    transform: translate(6vw, 5vh) scale(1.1);
-  }
-  68% {
-    transform: translate(-3vw, 9vh) scale(0.94);
-  }
-}
-
-@keyframes agh-drift-2 {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1.05);
-  }
-  45% {
-    transform: translate(-8vw, 6vh) scale(0.96);
-  }
-  75% {
-    transform: translate(5vw, -4vh) scale(1.08);
-  }
-}
-
-@keyframes agh-drift-3 {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  40% {
-    transform: translate(5vw, -7vh) scale(1.06);
-  }
-  80% {
-    transform: translate(-7vw, 3vh) scale(0.92);
-  }
-}
-
-@keyframes agh-drift-4 {
+@keyframes wi-glow-drift {
   0%,
   100% {
     transform: translate(0, 0) scale(1);
   }
   50% {
-    transform: translate(-6vw, 8vh) scale(1.12);
+    transform: translate(-2%, 3%) scale(1.06);
   }
+}
+
+.wi-page-bg__grid {
+  background-image:
+    linear-gradient(rgb(15 23 42 / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(15 23 42 / 0.035) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(
+    ellipse 85% 75% at 50% 45%,
+    rgb(0 0 0 / 0.55) 0%,
+    transparent 68%
+  );
+}
+
+.dark .wi-page-bg__grid {
+  background-image:
+    linear-gradient(rgb(148 163 184 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 0.07) 1px, transparent 1px);
+  mask-image: radial-gradient(
+    ellipse 85% 75% at 50% 45%,
+    rgb(0 0 0 / 0.45) 0%,
+    transparent 70%
+  );
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .agh-page-bg__blob,
-  .agh-page-bg__flow,
-  .agh-page-bg__waves {
+  .wi-page-bg__glow {
     animation: none !important;
   }
 }
 
-/* Loader stron: obrót + zmiana koloru obrysu (zieleń → czerń → czerwień) */
+/* Loader: granat → niebieski → szary */
 .branded-loader {
   display: flex;
   align-items: center;
@@ -424,7 +250,7 @@ body {
 }
 
 .branded-loader__track {
-  stroke: rgb(0 105 60 / 0.14);
+  stroke: rgb(30 58 95 / 0.18);
 }
 
 .branded-loader__arc {
@@ -442,13 +268,13 @@ body {
 @keyframes branded-loader-stroke-color {
   0%,
   100% {
-    stroke: #00693c;
+    stroke: #1e3a5f;
   }
   33% {
-    stroke: #1e1e1e;
+    stroke: #2563eb;
   }
   66% {
-    stroke: #a71930;
+    stroke: #64748b;
   }
 }
 

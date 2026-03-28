@@ -72,7 +72,7 @@ function StudyApplicationsCards() {
               <span
                 className={
                   app.status === 'paid'
-                    ? 'bg-primary/12 text-primary mt-1 inline-flex w-fit rounded-full px-2.5 py-0.5 text-xs font-semibold'
+                    ? 'mt-1 inline-flex w-fit rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-900 dark:bg-emerald-950/70 dark:text-emerald-200'
                     : 'mt-1 inline-flex w-fit rounded-full bg-secondary px-2.5 py-0.5 text-xs font-semibold text-secondary-foreground'
                 }>
                 {studyApplicationStatusLabel(app.status)}

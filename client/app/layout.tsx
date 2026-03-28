@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
-import { Cormorant_Garamond, Source_Sans_3 } from 'next/font/google';
+import { Source_Sans_3 } from 'next/font/google';
 
 import './globals.css';
 import { PageBackground } from '@/components/page-background';
@@ -15,17 +15,9 @@ const sourceSans = Source_Sans_3({
   display: 'swap',
 });
 
-/** Nagłówki i akapity na tle strony (poza białymi kartami) — tonacja AGH */
-const displaySerif = Cormorant_Garamond({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['400', '600', '700'],
-  variable: '--font-display',
-  display: 'swap',
-});
-
 export const metadata: Metadata = {
-  title: 'Rekrutacja — IO',
-  description: 'System rekrutacji na studia (projekt IO).',
+  title: 'Rekrutacja — Wydział Informatyki AGH',
+  description: 'System rekrutacji na studia — styl zgodny z witryną Wydziału Informatyki AGH.',
 };
 
 export default function RootLayout({
@@ -34,9 +26,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html
-      lang="pl"
-      className={cn('font-sans', sourceSans.variable, displaySerif.variable)}>
+    <html lang="pl" className={cn('font-sans', sourceSans.variable)}>
       <body>
         <PageBackground />
         <div className="relative z-[1]">
