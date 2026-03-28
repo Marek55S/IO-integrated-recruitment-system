@@ -7,6 +7,7 @@ import { UserRound } from 'lucide-react';
 import type { ProgramsIndex } from '@io/content-api';
 
 import { ProgramsSearch } from '@/components/programs-search';
+import { StudyApplicationsCards } from '@/components/study-applications-cards';
 import { buttonVariants } from '@/components/ui/button';
 
 export default function HomePage() {
@@ -43,8 +44,8 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-background px-4 py-10 md:px-6 md:py-14">
-      <div className="mx-auto max-w-3xl space-y-8">
+    <main className="min-h-screen bg-background px-4 py-8 md:px-6 md:py-10">
+      <div className="mx-auto max-w-3xl space-y-10">
         <div className="flex justify-end">
           <Link
             href="/profile"
@@ -54,20 +55,6 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <header className="space-y-2 text-center">
-          <h1 className="text-3xl font-semibold tracking-tight">
-            Kierunki studiów
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Wybierz kierunek z listy lub wyszukaj po nazwie. Link do strony
-            rekrutacji zawiera identyfikator kierunku (np.{' '}
-            <code className="rounded bg-muted px-1 py-0.5 text-xs">
-              /programs/informatyka-st
-            </code>
-            ).
-          </p>
-        </header>
-
         {error ? (
           <p className="text-center text-sm text-destructive">{error}</p>
         ) : null}
@@ -76,9 +63,11 @@ export default function HomePage() {
 
         {!error && !programs ? (
           <p className="text-center text-sm text-muted-foreground">
-            Wczytywanie kierunków…
+            Wczytywanie…
           </p>
         ) : null}
+
+        <StudyApplicationsCards />
       </div>
     </main>
   );

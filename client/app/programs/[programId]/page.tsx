@@ -136,7 +136,11 @@ export default function ProgramRecruitmentPage() {
           </div>
         </header>
 
-        <ProgramRecruitmentForm config={page.form} />
+        <ProgramRecruitmentForm
+          config={page.form}
+          programId={page.program_id}
+          programName={page.title}
+        />
       </article>
     </main>
   );

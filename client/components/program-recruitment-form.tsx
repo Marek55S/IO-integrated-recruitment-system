@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,11 +13,14 @@ import {
   PROGRAM_DEFAULT_SUBMIT,
   runProgramFormAction,
 } from '@/lib/content-form-actions';
+import { appendStudyApplication } from '@/lib/study-applications-storage';
 
 type FormValues = Record<string, unknown>;
 
 type ProgramRecruitmentFormProps = {
   config: FormConfig;
+  programId: string;
+  programName: string;
 };
 
 function createDefaultValuesFromConfig(formConfig: FormConfig): FormValues {
@@ -33,7 +37,12 @@ function createDefaultValuesFromConfig(formConfig: FormConfig): FormValues {
   }, {});
 }
 
-function ProgramRecruitmentForm({ config }: ProgramRecruitmentFormProps) {
+function ProgramRecruitmentForm({
+  config,
+  programId,
+  programName,
+}: ProgramRecruitmentFormProps) {
+  const router = useRouter();
   const schema = useMemo(() => buildFormDataSchema(config), [config]);
 
   const lastScreen = config.screens.at(-1);
@@ -54,6 +63,13 @@ function ProgramRecruitmentForm({ config }: ProgramRecruitmentFormProps) {
 
   const submitValidated = handleSubmit((values) => {
     console.log('Program recruitment submission:', values);
+    appendStudyApplication({
+      programId,
+      programName,
+      submittedAt: new Date().toISOString(),
+      status: 'awaiting_payment',
+    });
+    router.push('/');
   });
 
   return (

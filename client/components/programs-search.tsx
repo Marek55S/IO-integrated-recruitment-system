@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 
 import type { ProgramsIndex } from '@io/content-api';
@@ -15,52 +15,93 @@ function normalize(text: string) {
 
 function ProgramsSearch({ programs }: ProgramsSearchProps) {
   const [query, setQuery] = useState('');
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  const q = query.trim();
+  const hasQuery = q.length > 0;
 
   const filtered = useMemo(() => {
-    const q = normalize(query.trim());
-    if (!q) {
-      return programs;
+    if (!hasQuery) {
+      return [];
     }
 
-    return programs.filter((program) => normalize(program.name).includes(q));
-  }, [programs, query]);
+    const nq = normalize(q);
+    return programs.filter((program) => normalize(program.name).includes(nq));
+  }, [programs, q, hasQuery]);
+
+  useEffect(() => {
+    const onDocPointerDown = (event: PointerEvent) => {
+      const el = rootRef.current;
+      if (!el || el.contains(event.target as Node)) {
+        return;
+      }
+
+      setOpen(false);
+    };
+
+    document.addEventListener('pointerdown', onDocPointerDown);
+    return () => document.removeEventListener('pointerdown', onDocPointerDown);
+  }, []);
 
   return (
-    <div className="mx-auto w-full max-w-xl space-y-6">
+    <div ref={rootRef} className="relative mx-auto w-full max-w-xl">
       <label className="block space-y-2">
         <span className="text-sm font-medium text-foreground">
-          Szukaj kierunku po nazwie
+          Szukaj kierunku
         </span>
         <input
           type="search"
           value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="np. informatyka, zarządzanie…"
+          onChange={(event) => {
+            setQuery(event.currentTarget.value);
+            setOpen(true);
+          }}
+          onFocus={() => {
+            if (hasQuery) {
+              setOpen(true);
+            }
+          }}
+          placeholder="Zacznij wpisywać nazwę kierunku…"
           className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           autoComplete="off"
+          role="combobox"
+          aria-expanded={open && hasQuery}
+          aria-controls="programs-search-results"
         />
       </label>
 
-      <ul className="divide-y divide-border rounded-xl border bg-card shadow-sm">
-        {filtered.length === 0 ? (
-          <li className="px-4 py-8 text-center text-sm text-muted-foreground">
-            Brak wyników dla tego zapytania.
-          </li>
-        ) : (
-          filtered.map((program) => (
-            <li key={program.id}>
-              <Link
-                href={`/programs/${program.id}`}
-                className="hover:bg-muted/50 block px-4 py-3 text-sm font-medium transition-colors">
-                {program.name}
-                <span className="mt-0.5 block text-xs font-normal text-muted-foreground">
-                  ID: {program.id}
-                </span>
-              </Link>
-            </li>
-          ))
-        )}
-      </ul>
+      {open && hasQuery ? (
+        <div
+          id="programs-search-results"
+          className="absolute z-50 mt-1 max-h-72 w-full overflow-auto rounded-md border bg-popover text-popover-foreground shadow-md"
+          role="listbox">
+          {filtered.length === 0 ? (
+            <p className="px-3 py-6 text-center text-sm text-muted-foreground">
+              Brak wyników.
+            </p>
+          ) : (
+            <ul className="py-1">
+              {filtered.map((program) => (
+                <li key={program.id} role="option">
+                  <Link
+                    href={`/programs/${program.id}`}
+                    className="hover:bg-muted focus:bg-muted block px-3 py-2.5 text-sm transition-colors"
+                    onClick={() => {
+                      setOpen(false);
+                      setQuery('');
+                    }}>
+                    <span className="font-medium">{program.name}</span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground">
+                      {program.id}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ) : null}
     </div>
   );
 }
