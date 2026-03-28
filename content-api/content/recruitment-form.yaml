@@ -124,11 +124,6 @@ screens:
     title: "Wykształcenie"
     subtitle: "Informacje o Twojej ścieżce edukacyjnej"
     fields:
-      - id: "dlugi_chuj"
-        type: "text"
-        label: "Dlugi chuj"
-        placeholder: "Dlugi chuj"
-        required: false
       - id: "academic_title"
         type: "text"
         label: "Tytuł zawodowy"
