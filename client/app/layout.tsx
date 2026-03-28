@@ -10,8 +10,7 @@ const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: 'IO - Integrated Recruitment System',
-  description:
-    'A recruitment system built with Next.js, GraphQL, and Apollo Client.',
+  description: 'A recruitment system built with Next.js.',
 };
 
 export default function RootLayout({
