@@ -21,116 +21,89 @@ import {
 
 const PROGRAM_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
+// ---------------------------------------------------------------------------
+// Ścieżki do plików YAML. Każda lista zawiera kandydatów — pierwszy
+// istniejący plik wygrywa. Wynik jest cachowany na czas procesu (build-time).
+// ---------------------------------------------------------------------------
+
+function contentCandidates(filename: string): string[] {
+  return [
+    path.resolve(process.cwd(), `../content-api/content/${filename}`),
+    path.resolve(__dirname, `../content/${filename}`),
+  ];
+}
+
 const PROGRAMS_DIR_CANDIDATES = [
   path.resolve(process.cwd(), "../content-api/content/programs"),
   path.resolve(__dirname, "../content/programs"),
 ];
 
-const CONTENT_CANDIDATE_PATHS = [
-  path.resolve(process.cwd(), "../content-api/content/recruitment-form.yaml"),
-  path.resolve(process.cwd(), "../content-api/content/base-data-form.pl.yaml"),
-  path.resolve(__dirname, "../content/recruitment-form.yaml"),
-  path.resolve(__dirname, "../content/base-data-form.pl.yaml"),
-];
+// ---------------------------------------------------------------------------
+// Resolver z cache — rozwiązuje ścieżkę raz i zapamiętuje wynik.
+// ---------------------------------------------------------------------------
 
-const SUBMISSION_CANDIDATE_PATHS = [
-  path.resolve(
-    process.cwd(),
-    "../content-api/content/recruitment-submission.yaml",
-  ),
-  path.resolve(__dirname, "../content/recruitment-submission.yaml"),
-];
+const resolvedPathCache = new Map<string, string>();
 
-const RECRUITMENT_SECTIONS_CANDIDATE_PATHS = [
-  path.resolve(
-    process.cwd(),
-    "../content-api/content/recruitment-data-sections.yaml",
-  ),
-  path.resolve(__dirname, "../content/recruitment-data-sections.yaml"),
-];
+function resolvePath(label: string, candidates: string[]): string {
+  const cached = resolvedPathCache.get(label);
+  if (cached) {
+    return cached;
+  }
 
-const PROFILE_VIEW_CANDIDATE_PATHS = [
-  path.resolve(process.cwd(), "../content-api/content/profile-view.yaml"),
-  path.resolve(__dirname, "../content/profile-view.yaml"),
-];
-
-function resolveContentPath(): string {
-  const filePath = CONTENT_CANDIDATE_PATHS.find((candidatePath) =>
+  const filePath = candidates.find((candidatePath) =>
     fs.existsSync(candidatePath),
   );
 
   if (!filePath) {
     throw new Error(
-      `Could not find YAML form config. Tried: ${CONTENT_CANDIDATE_PATHS.join(", ")}`,
+      `[content-service] Nie znaleziono pliku "${label}". Sprawdzone ścieżki:\n${candidates.map((c) => `  - ${c}`).join("\n")}`,
     );
   }
 
+  resolvedPathCache.set(label, filePath);
   return filePath;
 }
 
-function resolveSubmissionPath(): string {
-  const filePath = SUBMISSION_CANDIDATE_PATHS.find((candidatePath) =>
-    fs.existsSync(candidatePath),
-  );
-
-  if (!filePath) {
-    throw new Error(
-      `Could not find YAML submission config. Tried: ${SUBMISSION_CANDIDATE_PATHS.join(", ")}`,
-    );
+function resolveDir(label: string, candidates: string[]): string {
+  const cached = resolvedPathCache.get(label);
+  if (cached) {
+    return cached;
   }
 
-  return filePath;
-}
-
-function resolveRecruitmentSectionsPath(): string {
-  const filePath = RECRUITMENT_SECTIONS_CANDIDATE_PATHS.find((candidatePath) =>
-    fs.existsSync(candidatePath),
-  );
-
-  if (!filePath) {
-    throw new Error(
-      `Could not find recruitment-data-sections.yaml. Tried: ${RECRUITMENT_SECTIONS_CANDIDATE_PATHS.join(", ")}`,
-    );
-  }
-
-  return filePath;
-}
-
-function resolveProfileViewPath(): string {
-  const filePath = PROFILE_VIEW_CANDIDATE_PATHS.find((candidatePath) =>
-    fs.existsSync(candidatePath),
-  );
-
-  if (!filePath) {
-    throw new Error(
-      `Could not find profile-view.yaml. Tried: ${PROFILE_VIEW_CANDIDATE_PATHS.join(", ")}`,
-    );
-  }
-
-  return filePath;
-}
-
-function loadRecruitmentSections(): SubmissionConfig["sections"] {
-  const filePath = resolveRecruitmentSectionsPath();
-  const yamlText = fs.readFileSync(filePath, "utf8");
-  const parsedYaml = yaml.load(yamlText);
-
-  return recruitmentSectionsFileSchema.parse(parsedYaml).sections;
-}
-
-function resolveProgramsDir(): string {
-  const dirPath = PROGRAMS_DIR_CANDIDATES.find((candidatePath) =>
+  const dirPath = candidates.find((candidatePath) =>
     fs.existsSync(candidatePath),
   );
 
   if (!dirPath) {
     throw new Error(
-      `Could not find programs content directory. Tried: ${PROGRAMS_DIR_CANDIDATES.join(", ")}`,
+      `[content-service] Nie znaleziono katalogu "${label}". Sprawdzone ścieżki:\n${candidates.map((c) => `  - ${c}`).join("\n")}`,
     );
   }
 
+  resolvedPathCache.set(label, dirPath);
   return dirPath;
 }
+
+// ---------------------------------------------------------------------------
+// Pomocnicze ładowanie YAML
+// ---------------------------------------------------------------------------
+
+function loadYaml(filePath: string): unknown {
+  const yamlText = fs.readFileSync(filePath, "utf8");
+  return yaml.load(yamlText);
+}
+
+function loadRecruitmentSections(): SubmissionConfig["sections"] {
+  const filePath = resolvePath(
+    "recruitment-data-sections.yaml",
+    contentCandidates("recruitment-data-sections.yaml"),
+  );
+  return recruitmentSectionsFileSchema.parse(loadYaml(filePath)).sections;
+}
+
+// ---------------------------------------------------------------------------
+// Eksporty typów
+// ---------------------------------------------------------------------------
 
 export type { FormConfig } from "./form-schema";
 export type {
@@ -140,46 +113,51 @@ export type {
 } from "./submission-schema";
 export type { ProgramPage, ProgramsIndex } from "./programs-schema";
 
-export function getFormConfig(): FormConfig {
-  const filePath = resolveContentPath();
-  const yamlText = fs.readFileSync(filePath, "utf8");
-  const parsedYaml = yaml.load(yamlText);
+// ---------------------------------------------------------------------------
+// Publiczne gettery — wywoływane w build-time przez Server Components
+// ---------------------------------------------------------------------------
 
-  return formConfigSchema.parse(parsedYaml);
+export function getFormConfig(): FormConfig {
+  const filePath = resolvePath(
+    "recruitment-form.yaml",
+    contentCandidates("recruitment-form.yaml"),
+  );
+  return formConfigSchema.parse(loadYaml(filePath));
 }
 
 export function getSubmissionConfig(): SubmissionConfig {
-  const filePath = resolveSubmissionPath();
-  const yamlText = fs.readFileSync(filePath, "utf8");
-  const parsedYaml = yaml.load(yamlText);
-  const payload = submissionPayloadSchema.parse(parsedYaml);
+  const filePath = resolvePath(
+    "recruitment-submission.yaml",
+    contentCandidates("recruitment-submission.yaml"),
+  );
+  const payload = submissionPayloadSchema.parse(loadYaml(filePath));
   const sections = loadRecruitmentSections();
 
   return submissionConfigSchema.parse({ ...payload, sections });
 }
 
 export function getProfileViewConfig(): ProfileViewConfig {
-  const filePath = resolveProfileViewPath();
-  const yamlText = fs.readFileSync(filePath, "utf8");
-  const parsedYaml = yaml.load(yamlText);
-  const header = profileViewHeaderSchema.parse(parsedYaml);
+  const filePath = resolvePath(
+    "profile-view.yaml",
+    contentCandidates("profile-view.yaml"),
+  );
+  const header = profileViewHeaderSchema.parse(loadYaml(filePath));
   const sections = loadRecruitmentSections();
 
   return { ...header, sections };
 }
 
 export function getProgramsIndex(): ProgramsIndex {
-  const programsDir = resolveProgramsDir();
+  const programsDir = resolveDir("programs", PROGRAMS_DIR_CANDIDATES);
   const indexPath = path.join(programsDir, "index.yaml");
 
   if (!fs.existsSync(indexPath)) {
-    throw new Error(`Programs index not found at ${indexPath}`);
+    throw new Error(
+      `[content-service] Plik programs/index.yaml nie istnieje w: ${indexPath}`,
+    );
   }
 
-  const yamlText = fs.readFileSync(indexPath, "utf8");
-  const parsedYaml = yaml.load(yamlText);
-
-  return programsIndexSchema.parse(parsedYaml);
+  return programsIndexSchema.parse(loadYaml(indexPath));
 }
 
 export function getProgramPageById(programId: string): ProgramPage | null {
@@ -187,16 +165,14 @@ export function getProgramPageById(programId: string): ProgramPage | null {
     return null;
   }
 
-  const programsDir = resolveProgramsDir();
+  const programsDir = resolveDir("programs", PROGRAMS_DIR_CANDIDATES);
   const filePath = path.join(programsDir, `${programId}.yaml`);
 
   if (!fs.existsSync(filePath)) {
     return null;
   }
 
-  const yamlText = fs.readFileSync(filePath, "utf8");
-  const parsedYaml = yaml.load(yamlText);
-  const page = programPageSchema.parse(parsedYaml);
+  const page = programPageSchema.parse(loadYaml(filePath));
 
   if (page.program_id !== programId) {
     return null;

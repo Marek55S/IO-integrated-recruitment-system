@@ -2,6 +2,8 @@
 
 import type { SubmissionDisplayConfig } from '@io/content-api';
 
+import { shouldRenderField } from '@/lib/conditional-fields';
+
 type FormValues = Record<string, unknown>;
 
 type SubmissionPreviewProps = {
@@ -19,22 +21,6 @@ function formatValue(value: unknown) {
   }
 
   return String(value);
-}
-
-function shouldHideItem(fieldId: string, values: FormValues): boolean {
-  const correspondenceDetails = new Set([
-    'correspondence_country',
-    'correspondence_city',
-    'correspondence_postal_code',
-    'correspondence_street',
-    'correspondence_house_number',
-  ]);
-
-  if (!correspondenceDetails.has(fieldId)) {
-    return false;
-  }
-
-  return Boolean(values.correspondence_same_as_residence);
 }
 
 function SubmissionPreview({ values, config }: SubmissionPreviewProps) {
@@ -57,7 +43,7 @@ function SubmissionPreview({ values, config }: SubmissionPreviewProps) {
             </h3>
             <div className="overflow-hidden rounded-lg border border-border">
               {section.items
-                .filter((item) => !shouldHideItem(item.field_id, values))
+                .filter((item) => shouldRenderField(item.field_id, values))
                 .map((item, index) => (
                   <div
                     key={item.field_id}

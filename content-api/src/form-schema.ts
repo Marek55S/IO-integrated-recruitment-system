@@ -66,6 +66,17 @@ export type FormField = FormScreen["fields"][number];
 
 export { formConfigSchema };
 
+function safeRegExp(pattern: string): RegExp | null {
+  try {
+    return new RegExp(pattern);
+  } catch {
+    console.error(
+      `[form-schema] Niepoprawne wyrażenie regularne: "${pattern}" — pole zostanie walidowane bez wzorca.`,
+    );
+    return null;
+  }
+}
+
 export function buildFormDataSchema(config: FormConfig) {
   const shape: Record<string, z.ZodTypeAny> = {};
 
@@ -105,7 +116,7 @@ export function buildFormDataSchema(config: FormConfig) {
         continue;
       }
 
-      const regexp = field.regex ? new RegExp(field.regex) : null;
+      const regexp = field.regex ? safeRegExp(field.regex) : null;
 
       shape[field.id] = field.required
         ? z

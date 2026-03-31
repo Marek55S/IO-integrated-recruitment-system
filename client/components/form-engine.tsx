@@ -20,6 +20,7 @@ import {
   RECRUITMENT_DEFAULT_SUBMIT,
   runRecruitmentFormAction,
 } from '@/lib/content-form-actions';
+import { shouldRenderField } from '@/lib/conditional-fields';
 import { RECRUITMENT_FORM_VALUES_STORAGE_KEY } from '@/lib/recruitment-storage';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -31,22 +32,6 @@ type FormEngineProps = {
   submissionConfig: SubmissionConfig;
   onSuccessfulSubmit?: () => void;
 };
-
-function shouldRenderField(fieldId: string, values: FormValues): boolean {
-  const correspondenceFields = new Set([
-    'correspondence_country',
-    'correspondence_city',
-    'correspondence_postal_code',
-    'correspondence_street',
-    'correspondence_house_number',
-  ]);
-
-  if (!correspondenceFields.has(fieldId)) {
-    return true;
-  }
-
-  return !Boolean(values.correspondence_same_as_residence);
-}
 
 function createDefaultValues(
   config: FormConfig,
@@ -191,7 +176,20 @@ function FormEngine({
   const currentStep = isSummaryScreen ? totalSteps : currentScreenIndex + 1;
   const progressPercent = (currentStep / totalSteps) * 100;
 
-  const watchedValues = watch();
+  const currentFieldIds = currentScreen.fields
+    .filter((field) => field.type !== 'section_title')
+    .map((field) => field.id);
+  const watchedValues = watch(currentFieldIds) as unknown as Record<
+    string,
+    unknown
+  >;
+  const watchedByFieldId = currentFieldIds.reduce<Record<string, unknown>>(
+    (acc, id, index) => {
+      acc[id] = (watchedValues as unknown as unknown[])[index];
+      return acc;
+    },
+    {},
+  );
 
   const primaryActionId = isSummaryScreen
     ? (submissionConfig.submit_action ?? RECRUITMENT_DEFAULT_SUBMIT)
