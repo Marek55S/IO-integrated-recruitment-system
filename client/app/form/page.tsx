@@ -1,10 +1,22 @@
-import { getFormConfig, getSubmissionConfig } from '@io/content-api/server';
+import {
+  getFormConfig,
+  getSubmissionConfig,
+  getProgramsIndex,
+} from '@io/content-api/server';
 
 import { FormPageClient } from './form-page-client';
 
 export default function FormPage() {
   const form = getFormConfig();
   const submission = getSubmissionConfig();
+  const { programs } = getProgramsIndex();
+  const validProgramIds = programs.map((p) => p.id);
 
-  return <FormPageClient form={form} submission={submission} />;
+  return (
+    <FormPageClient
+      form={form}
+      submission={submission}
+      validProgramIds={validProgramIds}
+    />
+  );
 }

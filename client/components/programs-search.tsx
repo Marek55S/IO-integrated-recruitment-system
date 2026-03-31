@@ -86,7 +86,7 @@ function ProgramsSearch({ programs }: ProgramsSearchProps) {
                 <li key={program.id} role="option">
                   <Link
                     href={`/programs/${program.id}`}
-                    className="hover:bg-primary/8 focus:bg-primary/8 block px-3 py-2.5 text-sm transition-colors"
+                    className="hover:bg-primary/8 focus-visible:bg-primary/8 focus-visible:outline-none block px-3 py-2.5 text-sm transition-colors"
                     onClick={() => {
                       setOpen(false);
                       setQuery('');

@@ -41,10 +41,10 @@ export async function runRecruitmentFormAction(
 ): Promise<void> {
   const handler = recruitmentHandlers[actionId];
   if (!handler) {
-    console.warn(
-      `[content-form-actions] Nieznana akcja rekrutacji: "${actionId}"`,
+    throw new Error(
+      `[content-form-actions] Nieznana akcja rekrutacji: "${actionId}". ` +
+        `Dostępne: ${Object.keys(recruitmentHandlers).join(', ')}`,
     );
-    return;
   }
 
   await handler(ctx);
@@ -64,10 +64,10 @@ export async function runProgramFormAction(
 ): Promise<void> {
   const handler = programHandlers[actionId];
   if (!handler) {
-    console.warn(
-      `[content-form-actions] Nieznana akcja programu: "${actionId}"`,
+    throw new Error(
+      `[content-form-actions] Nieznana akcja programu: "${actionId}". ` +
+        `Dostępne: ${Object.keys(programHandlers).join(', ')}`,
     );
-    return;
   }
 
   await handler(ctx);

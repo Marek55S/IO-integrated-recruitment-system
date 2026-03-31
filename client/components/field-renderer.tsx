@@ -69,15 +69,24 @@ function FieldRenderer({
         </div>
 
         {field.input_info ? (
-          <p className="text-xs text-muted-foreground">{field.input_info}</p>
+          <p id={`${field.id}-info`} className="text-xs text-muted-foreground">
+            {field.input_info}
+          </p>
         ) : null}
 
         {hasError ? (
-          <p className="text-xs text-destructive">{errorMessage}</p>
+          <p id={`${field.id}-error`} className="text-xs text-destructive">
+            {errorMessage}
+          </p>
         ) : null}
       </div>
     );
   }
+
+  const infoId = field.input_info ? `${field.id}-info` : undefined;
+  const errorId = hasError ? `${field.id}-error` : undefined;
+  const describedBy =
+    [infoId, errorId].filter(Boolean).join(' ') || undefined;
 
   if (field.type === 'select') {
     return (
@@ -91,9 +100,10 @@ function FieldRenderer({
           id={field.id}
           defaultValue=""
           aria-invalid={hasError}
+          aria-describedby={describedBy}
           {...register(field.id)}>
           <option value="" disabled>
-            Wybierz opcje
+            Wybierz opcję
           </option>
           {field.options.map((option) => (
             <option key={option} value={option}>
@@ -103,11 +113,15 @@ function FieldRenderer({
         </Select>
 
         {field.input_info ? (
-          <p className="text-xs text-muted-foreground">{field.input_info}</p>
+          <p id={infoId} className="text-xs text-muted-foreground">
+            {field.input_info}
+          </p>
         ) : null}
 
         {hasError ? (
-          <p className="text-xs text-destructive">{errorMessage}</p>
+          <p id={errorId} className="text-xs text-destructive">
+            {errorMessage}
+          </p>
         ) : null}
       </div>
     );
@@ -127,15 +141,20 @@ function FieldRenderer({
         type={inputType}
         placeholder={field.placeholder}
         aria-invalid={hasError}
+        aria-describedby={describedBy}
         {...register(field.id)}
       />
 
       {field.input_info ? (
-        <p className="text-xs text-muted-foreground">{field.input_info}</p>
+        <p id={infoId} className="text-xs text-muted-foreground">
+          {field.input_info}
+        </p>
       ) : null}
 
       {hasError ? (
-        <p className="text-xs text-destructive">{errorMessage}</p>
+        <p id={errorId} className="text-xs text-destructive">
+          {errorMessage}
+        </p>
       ) : null}
     </div>
   );

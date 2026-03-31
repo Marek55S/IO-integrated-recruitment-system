@@ -204,12 +204,18 @@ function FormEngine({
       <header className="space-y-3">
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <span>
-            Step {currentStep} of {totalSteps}
+            Krok {currentStep} z {totalSteps}
           </span>
           <span>{Math.round(progressPercent)}%</span>
         </div>
 
-        <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+        <div
+          className="h-2 w-full overflow-hidden rounded-full bg-muted"
+          role="progressbar"
+          aria-valuenow={Math.round(progressPercent)}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`Postęp formularza: krok ${currentStep} z ${totalSteps}`}>
           <div
             className="h-full rounded-full bg-primary transition-all"
             style={{ width: `${progressPercent}%` }}
@@ -302,7 +308,7 @@ function FormEngine({
           </>
         ) : (
           currentScreen.fields.map((field) => {
-            if (!shouldRenderField(field.id, watchedValues)) {
+            if (!shouldRenderField(field.id, watchedByFieldId)) {
               return null;
             }
 

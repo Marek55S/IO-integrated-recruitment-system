@@ -28,14 +28,27 @@ export function readStudyApplications(): StudyApplication[] {
       return [];
     }
 
-    return parsed.filter(
-      (item): item is StudyApplication =>
-        item &&
-        typeof item === 'object' &&
-        typeof (item as StudyApplication).id === 'string' &&
-        typeof (item as StudyApplication).programId === 'string' &&
-        typeof (item as StudyApplication).programName === 'string',
-    );
+    const VALID_STATUSES: ReadonlySet<string> = new Set([
+      'awaiting_payment',
+      'paid',
+    ]);
+
+    return parsed.filter((item): item is StudyApplication => {
+      if (!item || typeof item !== 'object') {
+        return false;
+      }
+
+      const record = item as Record<string, unknown>;
+
+      return (
+        typeof record.id === 'string' &&
+        typeof record.programId === 'string' &&
+        typeof record.programName === 'string' &&
+        typeof record.submittedAt === 'string' &&
+        typeof record.status === 'string' &&
+        VALID_STATUSES.has(record.status)
+      );
+    });
   } catch {
     return [];
   }
