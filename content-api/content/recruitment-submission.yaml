@@ -1,0 +1,18 @@
+submission_id: "postgraduate-recruitment-2026-submission"
+version: "1.0"
+title: "Podsumowanie zgłoszenia"
+subtitle: "Zweryfikuj dane przed ostatecznym wysłaniem"
+# Id akcji z client/lib/content-form-actions.ts (pole primary na podsumowaniu / Wstecz)
+submit_action: recruitment.submit
+back_action: recruitment.back
+# Sekcje pól: recruitment-data-sections.yaml (łączone w content-service)
+
+agreements:
+  - id: "rodo_agreement"
+    label: "Oświadczam, że dane są prawdziwe"
+    required: true
+  - id: "marketing_agreement"
+    label: "Wyrażam zgodę na komunikację marketingową"
+    required: false
+    link_text: "Polityka prywatności"
+    link: "https://uczelnia.pl/polityka-prywatnosci"

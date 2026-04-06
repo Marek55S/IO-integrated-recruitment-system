@@ -20,7 +20,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@io/content-api": ["../content-api/src/index.ts"],
+      "@io/content-api/server": ["../content-api/src/content-service.ts"]
     }
   },
   "include": [

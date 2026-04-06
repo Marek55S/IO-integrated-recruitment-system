@@ -1,7 +1,11 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: 'export',
+  transpilePackages: ['@io/content-api'],
+  experimental: {
+    externalDir: true,
+  },
 };
 
 export default nextConfig;

@@ -1,80 +1,100 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+  Motyw w stylu witryny Wydziału Informatyki AGH (informatyka.agh.edu.pl):
+  ciemny nagłówek, jasne tło, akcenty granat / niebieski, neutralne szarości.
+*/
 body {
   margin: 0;
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.809 0.105 251.813);
-  --chart-2: oklch(0.623 0.214 259.815);
-  --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.424 0.199 265.638);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --wi-header: #0b1220;
+  --wi-blue: #2563eb;
+  --wi-navy: #1e3a5f;
+
+  --background: #eef2f7;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #1e4976;
+  --primary-foreground: #ffffff;
+  --secondary: #e2e8f0;
+  --secondary-foreground: #1e293b;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #dbeafe;
+  --accent-foreground: #1e3a5f;
+  --destructive: #dc2626;
+  --border: #cbd5e1;
+  --input: #cbd5e1;
+  --ring: #3b82f6;
+  --chart-1: #1e4976;
+  --chart-2: #2563eb;
+  --chart-3: #64748b;
+  --chart-4: #0ea5e9;
+  --chart-5: #94a3b8;
+  --radius: 0.375rem;
+  --sidebar: #eef2f7;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #1e4976;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e2e8f0;
+  --sidebar-accent-foreground: #1e293b;
+  --sidebar-border: #cbd5e1;
+  --sidebar-ring: #3b82f6;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.809 0.105 251.813);
-  --chart-2: oklch(0.623 0.214 259.815);
-  --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.424 0.199 265.638);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: #0c1222;
+  --foreground: #f1f5f9;
+  --card: #131b2e;
+  --card-foreground: #f1f5f9;
+  --popover: #131b2e;
+  --popover-foreground: #f1f5f9;
+  --primary: #60a5fa;
+  --primary-foreground: #0b1220;
+  --secondary: #1e293b;
+  --secondary-foreground: #e2e8f0;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #1e3a5f;
+  --accent-foreground: #bfdbfe;
+  --destructive: #f87171;
+  --border: #2d3b52;
+  --input: #2d3b52;
+  --ring: #60a5fa;
+  --sidebar: #0c1222;
+  --sidebar-foreground: #f1f5f9;
+  --sidebar-primary: #60a5fa;
+  --sidebar-primary-foreground: #0b1220;
+  --sidebar-accent: #1e293b;
+  --sidebar-accent-foreground: #e2e8f0;
+  --sidebar-border: #2d3b52;
+  --sidebar-ring: #60a5fa;
+}
+
+/* Tekst na tle strony (poza kartami) — jak na stronach wydziałowych: sans, granat / szary */
+.font-outside-card-title {
+  color: #0f172a;
+  letter-spacing: -0.025em;
+}
+
+.font-outside-card-body {
+  color: #475569;
+}
+
+.dark .font-outside-card-title {
+  color: #f8fafc;
+}
+
+.dark .font-outside-card-body {
+  color: #cbd5e1;
 }
 
 @theme inline {
@@ -119,14 +139,164 @@ body {
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* Tło strony — jasne, „akademickie”, delikatny błękit jak na stronach WI */
+.wi-page-bg__base {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(
+      ellipse 100% 70% at 100% 0%,
+      rgb(37 99 235 / 0.07) 0%,
+      transparent 52%
+    ),
+    radial-gradient(
+      ellipse 80% 55% at 0% 100%,
+      rgb(30 58 95 / 0.06) 0%,
+      transparent 48%
+    );
+}
+
+.dark .wi-page-bg__base {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(
+      ellipse 90% 60% at 90% 0%,
+      rgb(96 165 250 / 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(ellipse 70% 50% at 0% 100%, rgb(0 0 0 / 0.35) 0%, transparent 45%);
+}
+
+.wi-page-bg__glow {
+  opacity: 0.75;
+  filter: blur(88px);
+  background:
+    radial-gradient(
+      circle at 72% 18%,
+      rgb(59 130 246 / 0.14) 0%,
+      transparent 52%
+    ),
+    radial-gradient(
+      circle at 12% 78%,
+      rgb(30 58 95 / 0.12) 0%,
+      transparent 48%
+    );
+  animation: wi-glow-drift 22s ease-in-out infinite;
+}
+
+.dark .wi-page-bg__glow {
+  background:
+    radial-gradient(
+      circle at 70% 20%,
+      rgb(59 130 246 / 0.12) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 15% 80%,
+      rgb(15 23 42 / 0.5) 0%,
+      transparent 50%
+    );
+}
+
+@keyframes wi-glow-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-2%, 3%) scale(1.06);
+  }
+}
+
+.wi-page-bg__grid {
+  background-image:
+    linear-gradient(rgb(15 23 42 / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(15 23 42 / 0.035) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(
+    ellipse 85% 75% at 50% 45%,
+    rgb(0 0 0 / 0.55) 0%,
+    transparent 68%
+  );
+}
+
+.dark .wi-page-bg__grid {
+  background-image:
+    linear-gradient(rgb(148 163 184 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 0.07) 1px, transparent 1px);
+  mask-image: radial-gradient(
+    ellipse 85% 75% at 50% 45%,
+    rgb(0 0 0 / 0.45) 0%,
+    transparent 70%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wi-page-bg__glow {
+    animation: none !important;
+  }
+}
+
+/* Loader: granat → niebieski → szary */
+.branded-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.branded-loader__svg {
+  display: block;
+  transform-origin: 50% 50%;
+  animation: branded-loader-spin 1.05s linear infinite;
+}
+
+.branded-loader__track {
+  stroke: rgb(30 58 95 / 0.18);
+}
+
+.branded-loader__arc {
+  stroke-dasharray: 42 90;
+  stroke-dashoffset: 0;
+  animation: branded-loader-stroke-color 2.2s ease-in-out infinite;
+}
+
+@keyframes branded-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes branded-loader-stroke-color {
+  0%,
+  100% {
+    stroke: #1e3a5f;
+  }
+  33% {
+    stroke: #2563eb;
+  }
+  66% {
+    stroke: #64748b;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .branded-loader__svg {
+    animation-duration: 1.8s;
+  }
+
+  .branded-loader__arc {
+    animation-duration: 3.5s;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
-    @apply font-sans;
+    @apply min-h-full font-sans;
+    background-color: var(--background);
+  }
+  body {
+    @apply text-foreground relative isolate min-h-full bg-transparent antialiased;
   }
 }

@@ -1,17 +1,23 @@
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
-import { Geist } from 'next/font/google';
+import { Source_Sans_3 } from 'next/font/google';
 
 import './globals.css';
+import { PageBackground } from '@/components/page-background';
 import Providers from './providers';
+import { ScrollToTopOnRoute } from '@/components/scroll-to-top-on-route';
+import { SiteHeader } from '@/components/site-header';
 import { cn } from '@/lib/utils';
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
+const sourceSans = Source_Sans_3({
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-sans',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: 'IO - Integrated Recruitment System',
-  description:
-    'A recruitment system built with Next.js, GraphQL, and Apollo Client.',
+  title: 'Rekrutacja — Wydział Informatyki AGH',
+  description: 'System rekrutacji na studia — styl zgodny z witryną Wydziału Informatyki AGH.',
 };
 
 export default function RootLayout({
@@ -20,9 +26,16 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="pl" className={cn('font-sans', geist.variable)}>
+    <html lang="pl" className={cn('font-sans', sourceSans.variable)}>
       <body>
-        <Providers>{children}</Providers>
+        <PageBackground />
+        <div className="relative z-[1]">
+          <Providers>
+            <ScrollToTopOnRoute />
+            <SiteHeader />
+            {children}
+          </Providers>
+        </div>
       </body>
     </html>
   );

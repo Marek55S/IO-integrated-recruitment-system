@@ -1,0 +1,174 @@
+form_id: "postgraduate-recruitment-2026"
+version: "1.0"
+
+screens:
+  - id: 1
+    title: "Dane osobowe"
+    subtitle: "Podstawowe informacje identyfikacyjne kandydata"
+    primary_action: recruitment.forward
+    back_action: recruitment.back
+    fields:
+      - id: "first_name"
+        type: "text"
+        label: "Imię (imiona)"
+        placeholder: "np. Jan"
+        required: false
+        input_info: "Podaj wszystkie imiona zgodnie z dowodem osobistym."
+      - id: "last_name"
+        type: "text"
+        label: "Nazwisko"
+        placeholder: "np. Kowalski"
+        required: false
+      - id: "family_name"
+        type: "text"
+        label: "Nazwisko rodowe"
+        placeholder: "Wypełnij, jeśli inne niż obecne"
+        required: false
+      - id: "pesel"
+        type: "text"
+        label: "PESEL"
+        placeholder: "00000000000"
+        required: false
+        regex: "^[0-9]{11}$"
+        input_info: "Wymagane 11 cyfr."
+      - id: "birth_date"
+        type: "date"
+        label: "Data urodzenia"
+        required: false
+      - id: "birth_place"
+        type: "text"
+        label: "Miejsce urodzenia"
+        placeholder: "np. Warszawa"
+        required: false
+      - id: "citizenship"
+        type: "text"
+        label: "Obywatelstwo"
+        placeholder: "np. polskie"
+        required: false
+    button_text: "Dalej: Adresy"
+
+  - id: 2
+    title: "Dane adresowe i kontaktowe"
+    subtitle: "Gdzie możemy Cię znaleźć i jak się z Tobą kontaktować?"
+    fields:
+      - id: "residence_country"
+        type: "text"
+        label: "Kraj zamieszkania"
+        placeholder: "np. Polska"
+        required: false
+      - id: "residence_city"
+        type: "text"
+        label: "Miasto zamieszkania"
+        placeholder: "np. Warszawa"
+        required: false
+      - id: "residence_postal_code"
+        type: "text"
+        label: "Kod pocztowy zamieszkania"
+        placeholder: "00-000"
+        regex: "^[0-9]{2}-[0-9]{3}$"
+        required: false
+      - id: "residence_street"
+        type: "text"
+        label: "Ulica zamieszkania"
+        placeholder: "np. Kwiatowa"
+        required: false
+      - id: "residence_house_number"
+        type: "text"
+        label: "Nr domu/mieszkania zamieszkania"
+        placeholder: "np. 15/2"
+        required: false
+      - id: "correspondence_same_as_residence"
+        type: "checkbox"
+        label: "Adres do korespondencji taki sam jak zamieszkania"
+        required: false
+      - id: "correspondence_country"
+        type: "text"
+        label: "Kraj do korespondencji"
+        placeholder: "np. Polska"
+        required: false
+      - id: "correspondence_city"
+        type: "text"
+        label: "Miasto do korespondencji"
+        placeholder: "np. Warszawa"
+        required: false
+      - id: "correspondence_postal_code"
+        type: "text"
+        label: "Kod pocztowy do korespondencji"
+        placeholder: "00-000"
+        regex: "^[0-9]{2}-[0-9]{3}$"
+        required: false
+      - id: "correspondence_street"
+        type: "text"
+        label: "Ulica do korespondencji"
+        placeholder: "np. Kwiatowa"
+        required: false
+      - id: "correspondence_house_number"
+        type: "text"
+        label: "Nr domu/mieszkania do korespondencji"
+        placeholder: "np. 15/2"
+        required: false
+      - id: "email"
+        type: "email"
+        label: "Adres e-mail"
+        placeholder: "twoj@email.pl"
+        required: false
+        regex: "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+      - id: "phone"
+        type: "tel"
+        label: "Numer telefonu"
+        placeholder: "+48 000 000 000"
+        required: false
+    button_text: "Dalej: Wykształcenie"
+
+  - id: 3
+    title: "Wykształcenie"
+    subtitle: "Informacje o Twojej ścieżce edukacyjnej"
+    fields:
+      - id: "academic_title"
+        type: "text"
+        label: "Tytuł zawodowy"
+        placeholder: "np. licencjat, magister, inżynier"
+        required: false
+      - id: "university_name"
+        type: "text"
+        label: "Nazwa szkoły wyższej"
+        required: false
+      - id: "graduation_year"
+        type: "number"
+        label: "Rok ukończenia studiów"
+        placeholder: "RRRR"
+        required: false
+        regex: "^(19|20)\\d{2}$"
+      - id: "high_school_diploma_country"
+        type: "select"
+        label: "Miejsce uzyskania świadectwa dojrzałości"
+        required: false
+        input_info: "Dane zbierane wyłącznie do celów statystycznych."
+        options: ["Polska", "Poza Polską"]
+      - id: "high_school_country_name"
+        type: "text"
+        label: "Kraj uzyskania świadectwa"
+        required: false
+        input_info: "Wypełnij tylko jeśli świadectwo uzyskano poza Polską"
+    button_text: "Dalej: Zgody i kontakt awaryjny"
+
+  - id: 4
+    title: "Kontakt awaryjny i zgody"
+    subtitle: "Ostatni krok przed wysłaniem zgłoszenia"
+    fields:
+      - id: "emergency_contact_header"
+        type: "section_title"
+        label: "Osoba do zawiadomienia w razie wypadku (opcjonalnie)"
+      - id: "emergency_name"
+        type: "text"
+        label: "Imię i Nazwisko"
+        required: false
+      - id: "emergency_email"
+        type: "email"
+        label: "E-mail kontaktowy"
+        required: false
+      - id: "emergency_phone"
+        type: "tel"
+        label: "Telefon kontaktowy"
+        required: false
+    button_text: "Dalej: Podsumowanie"
