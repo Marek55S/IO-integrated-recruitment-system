@@ -1,7 +1,7 @@
 import {
   getFormConfig,
-  getSubmissionConfig,
   getProgramsIndex,
+  getSubmissionConfig,
 } from '@io/content-api/server';
 
 import { FormPageClient } from './form-page-client';

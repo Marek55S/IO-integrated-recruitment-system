@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import { Source_Sans_3 } from 'next/font/google';
 
 import './globals.css';
-import { PageBackground } from '@/components/page-background';
 import Providers from './providers';
+import { PageBackground } from '@/components/page-background';
 import { ScrollToTopOnRoute } from '@/components/scroll-to-top-on-route';
 import { SiteHeader } from '@/components/site-header';
 import { cn } from '@/lib/utils';
@@ -17,7 +17,8 @@ const sourceSans = Source_Sans_3({
 
 export const metadata: Metadata = {
   title: 'Rekrutacja — Wydział Informatyki AGH',
-  description: 'System rekrutacji na studia — styl zgodny z witryną Wydziału Informatyki AGH.',
+  description:
+    'System rekrutacji na studia — styl zgodny z witryną Wydziału Informatyki AGH.',
 };
 
 export default function RootLayout({

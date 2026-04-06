@@ -68,7 +68,9 @@ function StudyApplicationsCards() {
               <p className="text-xs text-muted-foreground">
                 Złożono: {formatDate(app.submittedAt)}
               </p>
-              <p className="text-xs text-muted-foreground">ID: {app.programId}</p>
+              <p className="text-xs text-muted-foreground">
+                ID: {app.programId}
+              </p>
               <span
                 className={
                   app.status === 'paid'

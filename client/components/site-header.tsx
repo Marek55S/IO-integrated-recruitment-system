@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { UserRound } from 'lucide-react';
 
 import { buttonVariants } from '@/components/ui/button';
+import { UserRound } from 'lucide-react';
 
 const LOGO_PATHS_WITHOUT_HOME_LINK = new Set(['/login', '/register', '/form']);
 
