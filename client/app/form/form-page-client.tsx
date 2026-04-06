@@ -13,7 +13,11 @@ type FormPageClientProps = {
   validProgramIds: string[];
 };
 
-function FormPageInner({ form, submission, validProgramIds }: FormPageClientProps) {
+function FormPageInner({
+  form,
+  submission,
+  validProgramIds,
+}: FormPageClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const programId = searchParams.get('programId');

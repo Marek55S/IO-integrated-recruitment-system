@@ -85,8 +85,7 @@ function FieldRenderer({
 
   const infoId = field.input_info ? `${field.id}-info` : undefined;
   const errorId = hasError ? `${field.id}-error` : undefined;
-  const describedBy =
-    [infoId, errorId].filter(Boolean).join(' ') || undefined;
+  const describedBy = [infoId, errorId].filter(Boolean).join(' ') || undefined;
 
   if (field.type === 'select') {
     return (

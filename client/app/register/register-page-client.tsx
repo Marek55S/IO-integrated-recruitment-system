@@ -135,9 +135,7 @@ function RegisterForm({ validProgramIds }: RegisterPageClientProps) {
           Masz konto?{' '}
           <Link
             href={
-              validProgramId
-                ? `/login?programId=${validProgramId}`
-                : '/login'
+              validProgramId ? `/login?programId=${validProgramId}` : '/login'
             }
             className="text-primary cursor-pointer font-medium underline-offset-4 hover:underline">
             Zaloguj się

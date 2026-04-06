@@ -31,7 +31,9 @@ function SubmissionPreview({ values, config }: SubmissionPreviewProps) {
           {config.title}
         </h2>
         {config.subtitle ? (
-          <p className="mt-1 text-sm text-muted-foreground">{config.subtitle}</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {config.subtitle}
+          </p>
         ) : null}
       </header>
 

@@ -9,3 +9,6 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+
+# build output
+/dist
