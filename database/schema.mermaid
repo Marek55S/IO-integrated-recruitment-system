@@ -1,0 +1,205 @@
+erDiagram
+    users {
+        UUID id PK
+        VARCHAR email UK
+        VARCHAR password_hash
+        user_role role
+        BOOLEAN is_active
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+    }
+
+    candidate_profiles {
+        UUID id PK
+        UUID user_id FK,UK
+        VARCHAR first_name
+        VARCHAR last_name
+        VARCHAR family_name
+        CHAR pesel
+        DATE birth_date
+        VARCHAR birth_place
+        VARCHAR citizenship
+        VARCHAR phone
+        TIMESTAMPTZ updated_at
+    }
+
+    addresses {
+        UUID id PK
+        UUID user_id FK
+        VARCHAR type
+        VARCHAR country
+        VARCHAR city
+        VARCHAR postal_code
+        VARCHAR street
+        VARCHAR house_number
+    }
+
+    education_records {
+        UUID id PK
+        UUID user_id FK,UK
+        VARCHAR academic_title
+        VARCHAR university_name
+        SMALLINT graduation_year
+        VARCHAR diploma_country
+        VARCHAR diploma_country_name
+    }
+
+    emergency_contacts {
+        UUID id PK
+        UUID user_id FK,UK
+        VARCHAR full_name
+        VARCHAR email
+        VARCHAR phone
+    }
+
+    user_agreements {
+        UUID id PK
+        UUID user_id FK
+        VARCHAR agreement_type
+        BOOLEAN accepted
+        TIMESTAMPTZ accepted_at
+    }
+
+    programs {
+        VARCHAR id PK
+        VARCHAR name
+        TEXT description
+        VARCHAR image_src
+        BOOLEAN is_active
+        TIMESTAMPTZ created_at
+    }
+
+    program_editions {
+        UUID id PK
+        VARCHAR program_id FK
+        VARCHAR edition_name
+        DATE recruitment_start
+        DATE recruitment_end
+        DATE studies_start
+        DATE studies_end
+        INTEGER min_enrollment
+        INTEGER max_enrollment
+        NUMERIC enrollment_fee
+        NUMERIC tuition_fee
+        BOOLEAN is_active
+        TIMESTAMPTZ created_at
+    }
+
+    edition_required_documents {
+        UUID id PK
+        UUID edition_id FK
+        required_doc_type doc_type
+        VARCHAR description
+        BOOLEAN is_required
+    }
+
+    program_applications {
+        UUID id PK
+        UUID user_id FK
+        UUID edition_id FK
+        application_status status
+        JSONB form_data
+        TIMESTAMPTZ submitted_at
+        TIMESTAMPTZ updated_at
+    }
+
+    application_status_history {
+        UUID id PK
+        UUID application_id FK
+        application_status old_status
+        application_status new_status
+        UUID changed_by FK
+        TEXT note
+        TIMESTAMPTZ changed_at
+    }
+
+    application_documents {
+        UUID id PK
+        UUID application_id FK
+        required_doc_type doc_type
+        VARCHAR file_path
+        VARCHAR file_name
+        VARCHAR mime_type
+        document_status status
+        UUID reviewed_by FK
+        TEXT review_note
+        TIMESTAMPTZ uploaded_at
+        TIMESTAMPTZ reviewed_at
+    }
+
+    payment_plans {
+        UUID id PK
+        UUID application_id FK,UK
+        payment_plan_type plan_type
+        TIMESTAMPTZ created_at
+    }
+
+    payment_installments {
+        UUID id PK
+        UUID plan_id FK
+        installment_type type
+        SMALLINT installment_no
+        NUMERIC amount
+        DATE due_date
+        installment_status status
+        TIMESTAMPTZ updated_at
+    }
+
+    payments {
+        UUID id PK
+        UUID installment_id FK
+        NUMERIC amount_paid
+        payment_status status
+        VARCHAR gateway_tx_id
+        VARCHAR gateway_status
+        TIMESTAMPTZ paid_at
+        TIMESTAMPTZ created_at
+    }
+
+    contact_messages {
+        UUID id PK
+        UUID application_id FK
+        UUID author_id FK
+        message_direction direction
+        message_channel channel
+        VARCHAR subject
+        TEXT body
+        TIMESTAMPTZ sent_at
+    }
+
+    notifications {
+        UUID id PK
+        UUID user_id FK
+        UUID application_id FK
+        notification_type type
+        VARCHAR title
+        TEXT body
+        BOOLEAN is_read
+        message_channel channel
+        TIMESTAMPTZ sent_at
+    }
+
+    users ||--o| candidate_profiles : "has profile"
+    users ||--o{ addresses : "has addresses"
+    users ||--o| education_records : "has education"
+    users ||--o| emergency_contacts : "has emergency contact"
+    users ||--o{ user_agreements : "accepts agreements"
+    users ||--o{ program_applications : "applies"
+    users ||--o{ notifications : "receives"
+
+    programs ||--o{ program_editions : "has editions"
+    program_editions ||--o{ edition_required_documents : "requires docs"
+    program_editions ||--o{ program_applications : "receives applications"
+
+    program_applications ||--o{ application_status_history : "tracks status"
+    program_applications ||--o{ application_documents : "has documents"
+    program_applications ||--o| payment_plans : "has payment plan"
+    program_applications ||--o{ contact_messages : "has messages"
+    program_applications ||--o{ notifications : "triggers notifications"
+
+    payment_plans ||--o{ payment_installments : "has installments"
+    payment_installments ||--o{ payments : "has payments"
+
+    users ||--o{ application_status_history : "changes status"
+    users ||--o{ application_documents : "reviews docs"
+    users ||--o{ contact_messages : "authors messages"
