@@ -1,0 +1,20 @@
+version: '3.8'
+
+# Pierwsze odpala się seed_generator, potem tego yamla
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: io-recruitment-db
+    restart: always
+    environment:
+      POSTGRES_USER: user_admin
+      POSTGRES_PASSWORD: super_secret_password
+      POSTGRES_DB: recruitment_system
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database:/docker-entrypoint-initdb.d
+
+volumes:
+  postgres_data:
