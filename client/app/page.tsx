@@ -1,10 +1,10 @@
-import { getProgramsIndex } from '@io/content-api/server';
+import { getPrograms } from '@/mockedBackend/programs';
 
 import { ProgramsSearch } from '@/components/programs-search';
 import { StudyApplicationsCards } from '@/components/study-applications-cards';
 
 export default function HomePage() {
-  const { programs } = getProgramsIndex();
+  const programs = getPrograms();
 
   return (
     <main className="min-h-screen bg-transparent px-4 py-8 md:px-6 md:py-10">

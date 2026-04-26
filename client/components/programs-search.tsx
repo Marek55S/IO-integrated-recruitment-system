@@ -3,10 +3,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 
-import type { ProgramsIndex } from '@io/content-api';
+import type { Program } from '@/mockedBackend/programs';
 
 type ProgramsSearchProps = {
-  programs: ProgramsIndex['programs'];
+  programs: Pick<Program, 'id' | 'name'>[];
 };
 
 function normalize(text: string) {

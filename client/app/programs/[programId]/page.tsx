@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import { getProgramPageById, getProgramsIndex } from '@io/content-api/server';
+import { getProgramById, getPrograms } from '@/mockedBackend/programs';
 
 import { ProgramPageClient } from './program-page-client';
 
@@ -9,20 +9,18 @@ type ProgramPageProps = {
 };
 
 export function generateStaticParams() {
-  const { programs } = getProgramsIndex();
-
-  return programs.map((program) => ({
+  return getPrograms().map((program) => ({
     programId: program.id,
   }));
 }
 
 export default async function ProgramPage({ params }: ProgramPageProps) {
   const { programId } = await params;
-  const page = getProgramPageById(programId);
+  const program = getProgramById(programId);
 
-  if (!page) {
+  if (!program) {
     notFound();
   }
 
-  return <ProgramPageClient page={page} />;
+  return <ProgramPageClient program={program} />;
 }

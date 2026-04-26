@@ -9,6 +9,7 @@ const FIELD_TYPES = [
   "date",
   "select",
   "section_title",
+  "file_upload",
 ] as const;
 
 const baseFieldSchema = z.object({
@@ -33,6 +34,16 @@ const sectionTitleFieldSchema = baseFieldSchema.extend({
   type: z.literal("section_title"),
 });
 
+const fileUploadFieldSchema = baseFieldSchema.extend({
+  type: z.literal("file_upload"),
+  /** Tekst opisu wyświetlany nad polem uploadu. */
+  description_text: z.string().optional(),
+  /** Maksymalna liczba plików (domyślnie 5). */
+  max_files: z.number().int().positive().optional(),
+  /** Maksymalny rozmiar pojedynczego pliku w MB (domyślnie 5). */
+  max_size_mb: z.number().positive().optional(),
+});
+
 const standardInputFieldSchema = baseFieldSchema.extend({
   type: z.enum(["text", "email", "tel", "number", "checkbox", "date"]),
 });
@@ -40,6 +51,7 @@ const standardInputFieldSchema = baseFieldSchema.extend({
 const fieldSchema = z.discriminatedUnion("type", [
   selectFieldSchema,
   sectionTitleFieldSchema,
+  fileUploadFieldSchema,
   standardInputFieldSchema,
 ]);
 
@@ -83,6 +95,12 @@ export function buildFormDataSchema(config: FormConfig) {
   for (const screen of config.screens) {
     for (const field of screen.fields) {
       if (field.type === "section_title") {
+        continue;
+      }
+
+      // Pliki są przechowywane jako File[] w stanie RHF — walidacja po stronie komponentu.
+      if (field.type === "file_upload") {
+        shape[field.id] = z.any().optional();
         continue;
       }
 

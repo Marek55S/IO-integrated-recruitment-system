@@ -150,9 +150,24 @@ screens:
         label: "Kraj uzyskania świadectwa"
         required: false
         input_info: "Wypełnij tylko jeśli świadectwo uzyskano poza Polską"
-    button_text: "Dalej: Zgody i kontakt awaryjny"
+    button_text: "Dalej: Dokumenty"
 
   - id: 4
+    title: "Dokumenty"
+    subtitle: "Dołącz wymagane dokumenty rekrutacyjne"
+    primary_action: recruitment.forward
+    back_action: recruitment.back
+    fields:
+      - id: "recruitment_documents"
+        type: "file_upload"
+        label: "Wymagane dokumenty"
+        description_text: "Dołącz skany lub zdjęcia wymaganych dokumentów (dyplom, dowód osobisty lub paszport, inne zaświadczenia). Akceptujemy wyłącznie pliki PDF."
+        max_files: 5
+        max_size_mb: 5
+        required: false
+    button_text: "Dalej: Kontakt awaryjny i zgody"
+
+  - id: 5
     title: "Kontakt awaryjny i zgody"
     subtitle: "Ostatni krok przed wysłaniem zgłoszenia"
     fields:
