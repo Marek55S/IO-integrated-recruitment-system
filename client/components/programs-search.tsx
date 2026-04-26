@@ -92,9 +92,7 @@ function ProgramsSearch({ programs }: ProgramsSearchProps) {
                       setQuery('');
                     }}>
                     <span className="font-medium">{program.name}</span>
-                    <span className="mt-0.5 block text-xs text-muted-foreground">
-                      {program.id}
-                    </span>
+
                   </Link>
                 </li>
               ))}

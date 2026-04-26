@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import type { Program } from '@/mockedBackend/programs';
@@ -8,7 +8,15 @@ import type { Program } from '@/mockedBackend/programs';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { appendStudyApplication } from '@/lib/study-applications-storage';
+import {
+  canApplyToProgram,
+  getApplicationForProgram,
+} from '@/mockedBackend/applications';
+import {
+  appendStudyApplication,
+  studyApplicationStatusLabel,
+  type StudyApplication,
+} from '@/lib/study-applications-storage';
 
 type ProgramPageClientProps = {
   program: Program;
@@ -18,6 +26,13 @@ export function ProgramPageClient({ program }: ProgramPageClientProps) {
   const router = useRouter();
   const [accepted, setAccepted] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [canApply, setCanApply] = useState(true);
+  const [existingApp, setExistingApp] = useState<StudyApplication | null>(null);
+
+  useEffect(() => {
+    setCanApply(canApplyToProgram(program.id));
+    setExistingApp(getApplicationForProgram(program.id));
+  }, [program.id]);
 
   const handleSubmit = () => {
     if (!accepted) {
@@ -60,36 +75,58 @@ export function ProgramPageClient({ program }: ProgramPageClientProps) {
           ) : null}
         </header>
 
-        <section className="border-primary/15 w-full space-y-6 rounded-xl border bg-card p-6 shadow-md md:p-8">
-          <div className="space-y-1.5">
-            <div className="flex items-start gap-3">
-              <Checkbox
-                id="accept_terms"
-                checked={accepted}
-                onChange={(event) => {
-                  setAccepted(event.currentTarget.checked);
-                  if (event.currentTarget.checked) setShowError(false);
-                }}
-                aria-invalid={showError}
-              />
-              <Label htmlFor="accept_terms" className="leading-5">
-                Akceptuję warunki rekrutacji *
-              </Label>
+        {canApply ? (
+          <section className="border-primary/15 w-full space-y-6 rounded-xl border bg-card p-6 shadow-md md:p-8">
+            <div className="space-y-1.5">
+              <div className="flex items-start gap-3">
+                <Checkbox
+                  id="accept_terms"
+                  checked={accepted}
+                  onChange={(event) => {
+                    setAccepted(event.currentTarget.checked);
+                    if (event.currentTarget.checked) setShowError(false);
+                  }}
+                  aria-invalid={showError}
+                />
+                <Label htmlFor="accept_terms" className="leading-5">
+                  Akceptuję warunki rekrutacji *
+                </Label>
+              </div>
+
+              {showError ? (
+                <p className="text-xs text-destructive">
+                  Akceptacja warunków jest wymagana przed wysłaniem zgłoszenia.
+                </p>
+              ) : null}
             </div>
 
-            {showError ? (
-              <p className="text-xs text-destructive">
-                Akceptacja warunków jest wymagana przed wysłaniem zgłoszenia.
+            <div className="flex justify-end">
+              <Button type="button" onClick={handleSubmit}>
+                Wyślij zgłoszenie
+              </Button>
+            </div>
+          </section>
+        ) : (
+          <section className="border-primary/15 w-full space-y-3 rounded-xl border bg-card p-6 shadow-md md:p-8">
+            <p className="font-semibold text-foreground">
+              Masz już złożony wniosek na ten kierunek.
+            </p>
+            {existingApp ? (
+              <p className="text-sm text-muted-foreground">
+                Status:{' '}
+                <span className="font-medium text-foreground">
+                  {studyApplicationStatusLabel(existingApp.status)}
+                </span>
               </p>
             ) : null}
-          </div>
-
-          <div className="flex justify-end">
-            <Button type="button" onClick={handleSubmit}>
-              Wyślij zgłoszenie
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.push('/')}>
+              Wróć do strony głównej
             </Button>
-          </div>
-        </section>
+          </section>
+        )}
       </article>
     </main>
   );
