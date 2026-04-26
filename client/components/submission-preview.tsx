@@ -70,10 +70,6 @@ function DocumentsSection({ files }: { files: File[] }) {
   const [previewFile, setPreviewFile] = useState<File | null>(null);
   const [open, setOpen] = useState(true);
 
-  if (files.length === 0) {
-    return null;
-  }
-
   return (
     <>
       <section className="space-y-2">
@@ -98,6 +94,11 @@ function DocumentsSection({ files }: { files: File[] }) {
 
         {open ? (
           <div className="overflow-hidden rounded-lg border border-border">
+            {files.length === 0 ? (
+              <p className="px-3 py-4 text-center text-sm text-muted-foreground">
+                Brak przesłanych dokumentów.
+              </p>
+            ) : null}
             <ul aria-label="Przesłane dokumenty">
               {files.map((file, index) => (
                 <li
@@ -193,7 +194,7 @@ function SubmissionPreview({ values, config, files }: SubmissionPreviewProps) {
           );
         })}
 
-        {files && files.length > 0 ? (
+        {files !== undefined ? (
           <DocumentsSection files={files} />
         ) : null}
       </div>

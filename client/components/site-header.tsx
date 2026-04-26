@@ -6,12 +6,14 @@ import { usePathname } from 'next/navigation';
 import { buttonVariants } from '@/components/ui/button';
 import { UserRound } from 'lucide-react';
 
-const LOGO_PATHS_WITHOUT_HOME_LINK = new Set(['/login', '/register', '/form']);
+const LOGO_PATHS_WITHOUT_HOME_LINK = new Set(['/login', '/register', '/form', '/admin']);
 
 function SiteHeader() {
   const pathname = usePathname();
   const isHome = pathname === '/';
+  const isAdminArea = pathname.startsWith('/admin') && pathname !== '/admin';
   const logoIsInteractive = !LOGO_PATHS_WITHOUT_HOME_LINK.has(pathname);
+  const logoHref = isAdminArea ? '/admin/dashboard' : '/';
 
   const logoImg = (
     <img
@@ -29,15 +31,15 @@ function SiteHeader() {
       <div className="relative mx-auto flex h-[4.25rem] max-w-6xl items-center justify-center px-4">
         {logoIsInteractive ? (
           <Link
-            href="/"
+            href={logoHref}
             className="flex items-center transition-opacity hover:opacity-90"
-            aria-label="Strona główna — rekrutacja">
+            aria-label="Strona glowna">
             {logoImg}
           </Link>
         ) : (
           <span
             className="flex cursor-default items-center"
-            aria-label="Wydział Informatyki AGH">
+            aria-label="Wydzial Informatyki AGH">
             {logoImg}
           </span>
         )}
