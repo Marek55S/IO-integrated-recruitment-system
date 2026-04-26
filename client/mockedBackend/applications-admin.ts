@@ -9,11 +9,11 @@ export type ApplicationStatus =
   | 'cancelled';
 
 export const APPLICATION_STATUS_LABELS: Record<ApplicationStatus, string> = {
-  submitted: 'Zlozony',
+  submitted: 'Złożony',
   documents_verified: 'Dokumenty OK',
-  awaiting_payment: 'Oczekuje na platnosc',
-  payment_confirmed: 'Platnosc potwierdzona',
-  accepted: 'Przyjety',
+  awaiting_payment: 'Oczekuje na płatność',
+  payment_confirmed: 'Płatność potwierdzona',
+  accepted: 'Przyjęty',
   waitlisted: 'Lista rezerwowa',
   rejected: 'Odrzucony',
   cancelled: 'Anulowany',
