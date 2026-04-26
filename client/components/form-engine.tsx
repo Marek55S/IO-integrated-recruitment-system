@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { shouldRenderField } from '@/lib/conditional-fields';
+import { saveSubmissionFiles } from '@/lib/file-session-store';
 import {
   RECRUITMENT_DEFAULT_BACK,
   RECRUITMENT_DEFAULT_FORWARD,
@@ -112,11 +113,30 @@ function FormEngine({
   const isLastScreen = currentScreenIndex === config.screens.length - 1;
 
   const onSubmit = handleSubmit((values) => {
-    console.log('Form submission payload:', values);
+    // Collect all File[] values from file_upload fields and save to session store
+    const allFiles: File[] = [];
+    config.screens.forEach((screen) => {
+      screen.fields.forEach((field) => {
+        if (field.type === 'file_upload') {
+          const fieldValue = values[field.id];
+          if (Array.isArray(fieldValue)) {
+            fieldValue.forEach((f) => {
+              if (f instanceof File) allFiles.push(f);
+            });
+          }
+        }
+      });
+    });
+    saveSubmissionFiles(allFiles);
+
+    // Persist only JSON-serialisable values (skip File arrays from file_upload fields)
     try {
+      const serialisable = Object.fromEntries(
+        Object.entries(values).filter(([, v]) => !Array.isArray(v) && !(v instanceof File)),
+      );
       localStorage.setItem(
         RECRUITMENT_FORM_VALUES_STORAGE_KEY,
-        JSON.stringify(values),
+        JSON.stringify(serialisable),
       );
     } catch {
       /* quota / private mode */
@@ -126,8 +146,13 @@ function FormEngine({
   });
 
   const handleNext = async () => {
+    const allValues = getValues();
     const currentFieldIds = currentScreen.fields
-      .filter((field) => field.type !== 'section_title')
+      .filter(
+        (field) =>
+          field.type !== 'section_title' &&
+          shouldRenderField(field.id, allValues),
+      )
       .map((field) => field.id);
 
     const isCurrentScreenValid = await trigger(currentFieldIds, {
@@ -191,6 +216,25 @@ function FormEngine({
     {},
   );
 
+  // Collect File[] values from all file_upload fields for the summary preview
+  const previewFiles = useMemo(() => {
+    const files: File[] = [];
+    config.screens.forEach((screen) => {
+      screen.fields.forEach((field) => {
+        if (field.type === 'file_upload') {
+          const v = getValues(field.id);
+          if (Array.isArray(v)) {
+            v.forEach((f) => {
+              if (f instanceof File) files.push(f);
+            });
+          }
+        }
+      });
+    });
+    return files;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSummaryScreen, config.screens]);
+
   const primaryActionId = isSummaryScreen
     ? (submissionConfig.submit_action ?? RECRUITMENT_DEFAULT_SUBMIT)
     : (currentScreen.primary_action ?? RECRUITMENT_DEFAULT_FORWARD);
@@ -215,7 +259,7 @@ function FormEngine({
           aria-valuenow={Math.round(progressPercent)}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label={`Postęp formularza: krok ${currentStep} z ${totalSteps}`}>
+          aria-label={`Postep formularza: krok ${currentStep} z ${totalSteps}`}>
           <div
             className="h-full rounded-full bg-primary transition-all"
             style={{ width: `${progressPercent}%` }}
@@ -250,7 +294,11 @@ function FormEngine({
         className="space-y-5">
         {isSummaryScreen ? (
           <>
-            <SubmissionPreview values={getValues()} config={submissionConfig} />
+            <SubmissionPreview
+              values={getValues()}
+              config={submissionConfig}
+              files={previewFiles}
+            />
 
             <section className="border-primary/10 space-y-3 rounded-xl border bg-muted/40 p-4">
               <h3 className="text-primary text-xs font-bold uppercase tracking-wider">
@@ -342,22 +390,13 @@ function FormEngine({
 
           <Button type="submit" disabled={isSubmitting}>
             {isSummaryScreen
-              ? 'Potwierdz i wyślij'
+              ? 'Potwierdz i wyslij'
               : isLastScreen
                 ? currentScreen.button_text
                 : 'Dalej'}
           </Button>
         </div>
       </form>
-
-      <details className="border-primary/10 rounded-lg border bg-muted/40 p-3">
-        <summary className="cursor-pointer text-sm text-muted-foreground">
-          Podglad aktualnych danych formularza
-        </summary>
-        <pre className="mt-2 overflow-x-auto text-xs">
-          {JSON.stringify(getValues(), null, 2)}
-        </pre>
-      </details>
     </section>
   );
 }

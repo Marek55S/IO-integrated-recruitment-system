@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import type { ProfileViewConfig } from '@io/content-api';
@@ -9,6 +8,7 @@ import type { ProfileViewConfig } from '@io/content-api';
 import { SubmissionPreview } from '@/components/submission-preview';
 import { Button } from '@/components/ui/button';
 import { clearAllDemoRecruitmentStorage } from '@/lib/clear-demo-storage';
+import { clearSubmissionFiles, getSubmissionFiles } from '@/lib/file-session-store';
 import { RECRUITMENT_FORM_VALUES_STORAGE_KEY } from '@/lib/recruitment-storage';
 
 type FormValues = Record<string, unknown>;
@@ -20,6 +20,7 @@ type ProfilePageClientProps = {
 export function ProfilePageClient({ config }: ProfilePageClientProps) {
   const router = useRouter();
   const [values, setValues] = useState<FormValues | null>(null);
+  const [submittedFiles, setSubmittedFiles] = useState<File[]>([]);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -42,6 +43,8 @@ export function ProfilePageClient({ config }: ProfilePageClientProps) {
     } catch {
       setValues(null);
     }
+
+    setSubmittedFiles(getSubmissionFiles());
   }, []);
 
   const handleLogout = () => {
@@ -56,7 +59,9 @@ export function ProfilePageClient({ config }: ProfilePageClientProps) {
 
   const handleClearDemo = () => {
     clearAllDemoRecruitmentStorage();
+    clearSubmissionFiles();
     setValues(null);
+    setSubmittedFiles([]);
   };
 
   const displayValues = values ?? {};
@@ -71,6 +76,7 @@ export function ProfilePageClient({ config }: ProfilePageClientProps) {
             subtitle: config.subtitle,
             sections: config.sections,
           }}
+          files={submittedFiles}
         />
 
         <div className="flex flex-col items-center gap-3">
