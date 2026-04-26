@@ -1,8 +1,7 @@
 import { notFound } from 'next/navigation';
 
-import { getProgramById, getPrograms } from '@/mockedBackend/programs';
-
 import { ProgramPageClient } from './program-page-client';
+import { getProgramById, getPrograms } from '@/mockedBackend/programs';
 
 type ProgramPageProps = {
   params: Promise<{ programId: string }>;

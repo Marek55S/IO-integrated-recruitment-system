@@ -53,7 +53,11 @@ function CollapsibleSection({
           stroke="currentColor"
           strokeWidth={2}
           aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </button>
 
@@ -88,7 +92,11 @@ function DocumentsSection({ files }: { files: File[] }) {
             stroke="currentColor"
             strokeWidth={2}
             aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19 9l-7 7-7-7"
+            />
           </svg>
         </button>
 
@@ -136,7 +144,11 @@ function DocumentsSection({ files }: { files: File[] }) {
                       stroke="currentColor"
                       strokeWidth={2}
                       aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </button>
                 </li>
@@ -194,9 +206,7 @@ function SubmissionPreview({ values, config, files }: SubmissionPreviewProps) {
           );
         })}
 
-        {files !== undefined ? (
-          <DocumentsSection files={files} />
-        ) : null}
+        {files !== undefined ? <DocumentsSection files={files} /> : null}
       </div>
     </article>
   );

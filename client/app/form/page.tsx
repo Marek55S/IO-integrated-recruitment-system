@@ -1,8 +1,7 @@
 import { getFormConfig, getSubmissionConfig } from '@io/content-api/server';
 
-import { getPrograms } from '@/mockedBackend/programs';
-
 import { FormPageClient } from './form-page-client';
+import { getPrograms } from '@/mockedBackend/programs';
 
 export default function FormPage() {
   const form = getFormConfig();

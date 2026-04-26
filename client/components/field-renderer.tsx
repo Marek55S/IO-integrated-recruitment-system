@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { FieldError, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
 import type { FormField } from '@io/content-api';
@@ -20,10 +20,6 @@ type FieldRendererProps = {
   error?: FieldError;
 };
 
-// ---------------------------------------------------------------------------
-// Komponent uploadu plikow PDF
-// ---------------------------------------------------------------------------
-
 function FileUploadField({
   field,
   setValue,
@@ -35,6 +31,7 @@ function FileUploadField({
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const files = Array.isArray(value) ? (value as File[]) : [];
+  const [uploadErrors, setUploadErrors] = useState<string[]>([]);
 
   const maxFiles = field.max_files ?? 5;
   const maxSizeMb = field.max_size_mb ?? 5;
@@ -48,7 +45,7 @@ function FileUploadField({
 
     Array.from(incoming).forEach((file) => {
       if (file.type !== 'application/pdf') {
-        errors.push(`${file.name}: tylko pliki PDF sa akceptowane.`);
+        errors.push(`${file.name}: tylko pliki PDF są akceptowane.`);
         return;
       }
       if (file.size > maxSizeBytes) {
@@ -62,12 +59,12 @@ function FileUploadField({
     const toAdd = valid.slice(0, remaining);
 
     if (valid.length > remaining) {
-      errors.push(`Mozna dodac jeszcze tylko ${remaining} plik(i). Reszta zostala pominieta.`);
+      errors.push(
+        `Można dodać jeszcze tylko ${remaining} plik(i). Reszta została pominięta.`,
+      );
     }
 
-    if (errors.length > 0) {
-      alert(errors.join('\n'));
-    }
+    setUploadErrors(errors);
 
     if (toAdd.length > 0) {
       setValue(field.id, [...files, ...toAdd], { shouldDirty: true });
@@ -105,7 +102,9 @@ function FileUploadField({
       </Label>
 
       {field.description_text ? (
-        <p className="text-sm text-muted-foreground">{field.description_text}</p>
+        <p className="text-sm text-muted-foreground">
+          {field.description_text}
+        </p>
       ) : null}
 
       {canAddMore ? (
@@ -133,16 +132,16 @@ function FileUploadField({
             />
           </svg>
           <span className="text-sm font-medium text-foreground">
-            Kliknij lub przeciagnij pliki tutaj
+            Kliknij lub przeciągnij pliki tutaj
           </span>
           <span className="text-xs text-muted-foreground">
             PDF &middot; maks. {maxSizeMb} MB / plik &middot; maks. {maxFiles}{' '}
-            {maxFiles === 1 ? 'plik' : 'pliki/plikow'}
+            {maxFiles === 1 ? 'plik' : 'pliki/plików'}
           </span>
         </div>
       ) : (
         <p className="rounded-lg border border-dashed border-primary/30 bg-muted/30 px-4 py-3 text-center text-sm text-muted-foreground">
-          Osiagnieto limit {maxFiles} pliki/plikow.
+          Osiągnięto limit {maxFiles} pliki/plików.
         </p>
       )}
 
@@ -156,6 +155,16 @@ function FileUploadField({
         tabIndex={-1}
         onChange={(e) => addFiles(e.target.files)}
       />
+
+      {uploadErrors.length > 0 ? (
+        <ul className="space-y-1" aria-live="polite">
+          {uploadErrors.map((message, idx) => (
+            <li key={idx} className="text-xs text-destructive">
+              {message}
+            </li>
+          ))}
+        </ul>
+      ) : null}
 
       {files.length > 0 ? (
         <ul className="space-y-2" aria-label="Dodane dokumenty">
@@ -188,7 +197,7 @@ function FileUploadField({
               <button
                 type="button"
                 onClick={() => removeFile(index)}
-                aria-label={`Usun ${file.name}`}
+                aria-label={`Usuń ${file.name}`}
                 className="shrink-0 rounded p-0.5 text-muted-foreground transition-colors hover:text-destructive focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-destructive">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -212,10 +221,6 @@ function FileUploadField({
     </div>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Glowny komponent
-// ---------------------------------------------------------------------------
 
 function FieldRenderer({
   field,
@@ -304,7 +309,7 @@ function FieldRenderer({
           aria-describedby={describedBy}
           {...register(field.id)}>
           <option value="" disabled>
-            Wybierz opcje
+            Wybierz opcję
           </option>
           {field.options.map((option) => (
             <option key={option} value={option}>

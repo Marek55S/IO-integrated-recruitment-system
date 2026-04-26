@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
 import { getPrograms } from '@/mockedBackend/programs';
@@ -9,7 +8,6 @@ export default function AdminDashboardPage() {
   return (
     <main className="min-h-screen bg-transparent px-4 py-8 md:px-6 md:py-10">
       <div className="mx-auto max-w-md space-y-6">
-        {/* Admin header strip */}
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
             <svg
@@ -31,7 +29,7 @@ export default function AdminDashboardPage() {
         </div>
 
         <h1 className="text-2xl font-semibold tracking-tight text-amber-700 dark:text-amber-400">
-          Kierunki studiow
+          Kierunki studiów
         </h1>
 
         <ul className="flex flex-col gap-4">

@@ -61,8 +61,7 @@ function ProgramRecruitmentForm({
     mode: 'onBlur',
   });
 
-  const submitValidated = handleSubmit((values) => {
-    console.log('Program recruitment submission:', values);
+  const submitValidated = handleSubmit(() => {
     appendStudyApplication({
       programId,
       programName,

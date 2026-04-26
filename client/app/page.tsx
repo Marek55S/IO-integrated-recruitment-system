@@ -1,7 +1,6 @@
-import { getPrograms } from '@/mockedBackend/programs';
-
 import { ProgramsSearch } from '@/components/programs-search';
 import { StudyApplicationsCards } from '@/components/study-applications-cards';
+import { getPrograms } from '@/mockedBackend/programs';
 
 export default function HomePage() {
   const programs = getPrograms();

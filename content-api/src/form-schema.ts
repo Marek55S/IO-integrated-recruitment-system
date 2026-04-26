@@ -36,11 +36,8 @@ const sectionTitleFieldSchema = baseFieldSchema.extend({
 
 const fileUploadFieldSchema = baseFieldSchema.extend({
   type: z.literal("file_upload"),
-  /** Tekst opisu wyświetlany nad polem uploadu. */
   description_text: z.string().optional(),
-  /** Maksymalna liczba plików (domyślnie 5). */
   max_files: z.number().int().positive().optional(),
-  /** Maksymalny rozmiar pojedynczego pliku w MB (domyślnie 5). */
   max_size_mb: z.number().positive().optional(),
 });
 
@@ -61,7 +58,6 @@ const screenSchema = z.object({
   subtitle: z.string().optional(),
   fields: z.array(fieldSchema).min(1),
   button_text: z.string().min(1),
-  /** Client action id — registry: `client/lib/content-form-actions.ts`. */
   primary_action: z.string().min(1).optional(),
   back_action: z.string().min(1).optional(),
 });
@@ -98,7 +94,6 @@ export function buildFormDataSchema(config: FormConfig) {
         continue;
       }
 
-      // Pliki są przechowywane jako File[] w stanie RHF — walidacja po stronie komponentu.
       if (field.type === "file_upload") {
         shape[field.id] = z.any().optional();
         continue;
@@ -114,22 +109,21 @@ export function buildFormDataSchema(config: FormConfig) {
       }
 
       if (field.type === "select") {
-        const selectSchema = z
-          .string()
-          .refine(
-            (value) => field.options.includes(value),
-            `${field.label} ma niepoprawna wartosc.`,
-          );
-
         shape[field.id] = field.required
-          ? selectSchema.min(1, `${field.label} jest wymagane.`)
+          ? z
+              .string()
+              .min(1, `${field.label} jest wymagane.`)
+              .refine(
+                (value) => field.options.includes(value),
+                `${field.label} ma niepoprawną wartość.`,
+              )
           : z
               .string()
               .optional()
               .transform((value) => value ?? "")
               .refine(
                 (value) => !value || field.options.includes(value),
-                `${field.label} ma niepoprawna wartosc.`,
+                `${field.label} ma niepoprawną wartość.`,
               );
         continue;
       }

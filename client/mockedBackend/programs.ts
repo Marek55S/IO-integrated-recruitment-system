@@ -1,12 +1,3 @@
-/**
- * mockedBackend/programs.ts
- *
- * Symuluje odpowiedź backendu dla tabeli `programs`.
- * Struktura danych odpowiada schematowi bazy danych (schema.sql):
- *   id VARCHAR(100), name VARCHAR(255), description TEXT,
- *   image_src VARCHAR(500), is_active BOOLEAN
- */
-
 export type Program = {
   id: string;
   name: string;
@@ -34,12 +25,10 @@ const PROGRAMS: Program[] = [
   },
 ];
 
-/** Zwraca wszystkie aktywne kierunki studiów. */
 export function getPrograms(): Program[] {
   return PROGRAMS.filter((p) => p.is_active);
 }
 
-/** Zwraca kierunek po id lub null jeśli nie istnieje / jest nieaktywny. */
 export function getProgramById(id: string): Program | null {
   return PROGRAMS.find((p) => p.id === id && p.is_active) ?? null;
 }

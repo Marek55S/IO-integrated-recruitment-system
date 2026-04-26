@@ -10,8 +10,8 @@ import {
   readStudyApplications,
   setStudyApplicationStatus,
   STUDY_APPLICATIONS_CHANGED_EVENT,
-  studyApplicationStatusLabel,
   type StudyApplication,
+  studyApplicationStatusLabel,
 } from '@/lib/study-applications-storage';
 
 function formatDate(iso: string) {
@@ -95,9 +95,10 @@ function StudyApplicationsCards() {
     ? `Anuluj wniosek na kierunek "${cancelTarget.app.programName}"`
     : '';
 
-  const dialogDescription = cancelTarget?.variant === 'paid'
-    ? `${CANCELLATION_POLICY_PAID}\n\nCzy na pewno chcesz anulować ten wniosek?`
-    : 'Tej operacji nie można cofnąć. Nie będzie możliwości ponownego złożenia wniosku na ten kierunek.';
+  const dialogDescription =
+    cancelTarget?.variant === 'paid'
+      ? `${CANCELLATION_POLICY_PAID}\n\nCzy na pewno chcesz anulować ten wniosek?`
+      : 'Tej operacji nie można cofnąć. Nie będzie możliwości ponownego złożenia wniosku na ten kierunek.';
 
   return (
     <>
@@ -110,7 +111,6 @@ function StudyApplicationsCards() {
             <li
               key={app.id}
               className="relative flex w-full flex-col rounded-xl border border-border border-l-4 border-l-primary bg-card p-4 shadow-md">
-              {/* Przycisk anulowania */}
               {app.status !== 'cancelled' ? (
                 <button
                   type="button"
@@ -150,7 +150,10 @@ function StudyApplicationsCards() {
                 <div className="mt-4 flex flex-wrap gap-2 border-t pt-3">
                   <Link
                     href={`/programs/${app.programId}`}
-                    className={buttonVariants({ variant: 'outline', size: 'sm' })}>
+                    className={buttonVariants({
+                      variant: 'outline',
+                      size: 'sm',
+                    })}>
                     Kierunek
                   </Link>
                   {app.status === 'awaiting_payment' ? (

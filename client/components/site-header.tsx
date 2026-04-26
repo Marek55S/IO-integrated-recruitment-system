@@ -6,7 +6,12 @@ import { usePathname } from 'next/navigation';
 import { buttonVariants } from '@/components/ui/button';
 import { UserRound } from 'lucide-react';
 
-const LOGO_PATHS_WITHOUT_HOME_LINK = new Set(['/login', '/register', '/form', '/admin']);
+const LOGO_PATHS_WITHOUT_HOME_LINK = new Set([
+  '/login',
+  '/register',
+  '/form',
+  '/admin',
+]);
 
 function SiteHeader() {
   const pathname = usePathname();
@@ -33,13 +38,13 @@ function SiteHeader() {
           <Link
             href={logoHref}
             className="flex items-center transition-opacity hover:opacity-90"
-            aria-label="Strona glowna">
+            aria-label="Strona główna">
             {logoImg}
           </Link>
         ) : (
           <span
             className="flex cursor-default items-center"
-            aria-label="Wydzial Informatyki AGH">
+            aria-label="Wydział Informatyki AGH">
             {logoImg}
           </span>
         )}

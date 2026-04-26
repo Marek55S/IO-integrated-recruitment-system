@@ -8,7 +8,10 @@ import type { ProfileViewConfig } from '@io/content-api';
 import { SubmissionPreview } from '@/components/submission-preview';
 import { Button } from '@/components/ui/button';
 import { clearAllDemoRecruitmentStorage } from '@/lib/clear-demo-storage';
-import { clearSubmissionFiles, getSubmissionFiles } from '@/lib/file-session-store';
+import {
+  clearSubmissionFiles,
+  getSubmissionFiles,
+} from '@/lib/file-session-store';
 import { RECRUITMENT_FORM_VALUES_STORAGE_KEY } from '@/lib/recruitment-storage';
 
 type FormValues = Record<string, unknown>;
@@ -50,9 +53,7 @@ export function ProfilePageClient({ config }: ProfilePageClientProps) {
   const handleLogout = () => {
     try {
       localStorage.removeItem(RECRUITMENT_FORM_VALUES_STORAGE_KEY);
-    } catch {
-      /* ignore */
-    }
+    } catch {}
 
     router.push('/login');
   };

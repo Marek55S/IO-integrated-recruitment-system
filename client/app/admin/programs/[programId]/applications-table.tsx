@@ -1,6 +1,9 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+
+import { Dialog } from '@base-ui/react/dialog';
+import type { SubmissionDisplayConfig } from '@io/content-api';
 import {
   createColumnHelper,
   flexRender,
@@ -10,21 +13,14 @@ import {
   type SortingState,
   useReactTable,
 } from '@tanstack/react-table';
-import { Dialog } from '@base-ui/react/dialog';
-
-import type { SubmissionDisplayConfig } from '@io/content-api';
 
 import { SubmissionPreview } from '@/components/submission-preview';
 import {
   type AdminApplication,
   APPLICATION_STATUS_LABELS,
-  applicationStatusColor,
   type ApplicationStatus,
+  applicationStatusColor,
 } from '@/mockedBackend/applications-admin';
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
 
 function formatDate(iso: string) {
   try {
@@ -91,10 +87,6 @@ function SortIcon({ direction }: { direction: 'asc' | 'desc' | false }) {
     </svg>
   );
 }
-
-// ---------------------------------------------------------------------------
-// CSV export (wszystkie pola kandydata)
-// ---------------------------------------------------------------------------
 
 function exportToCsv(rows: AdminApplication[], filename: string) {
   const str = (v: unknown) => `"${String(v ?? '').replace(/"/g, '""')}"`;
@@ -180,10 +172,6 @@ function exportToCsv(rows: AdminApplication[], filename: string) {
   URL.revokeObjectURL(url);
 }
 
-// ---------------------------------------------------------------------------
-// Candidate detail modal
-// ---------------------------------------------------------------------------
-
 function CandidateModal({
   application,
   config,
@@ -242,10 +230,6 @@ function CandidateModal({
     </Dialog.Root>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Review modal (for payment_confirmed applications)
-// ---------------------------------------------------------------------------
 
 type ReviewAction = 'rejected' | 'documents_verified';
 
@@ -341,10 +325,6 @@ function ReviewModal({
     </Dialog.Root>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Main table component
-// ---------------------------------------------------------------------------
 
 const ALL_STATUSES = Object.keys(
   APPLICATION_STATUS_LABELS,
@@ -460,7 +440,6 @@ export function ApplicationsTable({
   return (
     <>
       <div className="space-y-4">
-        {/* Toolbar */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <label
@@ -495,7 +474,6 @@ export function ApplicationsTable({
           </span>
         </div>
 
-        {/* Table */}
         <div className="overflow-hidden rounded-xl border border-amber-500/20 bg-card shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -562,7 +540,6 @@ export function ApplicationsTable({
           </div>
         </div>
 
-        {/* Export button */}
         <div className="flex justify-center pt-2">
           <button
             type="button"

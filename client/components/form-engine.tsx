@@ -17,13 +17,13 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { shouldRenderField } from '@/lib/conditional-fields';
-import { saveSubmissionFiles } from '@/lib/file-session-store';
 import {
   RECRUITMENT_DEFAULT_BACK,
   RECRUITMENT_DEFAULT_FORWARD,
   RECRUITMENT_DEFAULT_SUBMIT,
   runRecruitmentFormAction,
 } from '@/lib/content-form-actions';
+import { saveSubmissionFiles } from '@/lib/file-session-store';
 import { RECRUITMENT_FORM_VALUES_STORAGE_KEY } from '@/lib/recruitment-storage';
 
 type FormValues = Record<string, unknown>;
@@ -33,6 +33,29 @@ type FormEngineProps = {
   submissionConfig: SubmissionConfig;
   onSuccessfulSubmit?: () => void;
 };
+
+function collectFiles(config: FormConfig, values: FormValues): File[] {
+  const files: File[] = [];
+  config.screens.forEach((screen) => {
+    screen.fields.forEach((field) => {
+      if (field.type !== 'file_upload') {
+        return;
+      }
+
+      const fieldValue = values[field.id];
+      if (!Array.isArray(fieldValue)) {
+        return;
+      }
+
+      fieldValue.forEach((entry) => {
+        if (entry instanceof File) {
+          files.push(entry);
+        }
+      });
+    });
+  });
+  return files;
+}
 
 function createDefaultValues(
   config: FormConfig,
@@ -99,7 +122,6 @@ function FormEngine({
     trigger,
     setValue,
     getValues,
-    handleSubmit,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
@@ -112,38 +134,25 @@ function FormEngine({
   const isFirstScreen = currentScreenIndex === 0;
   const isLastScreen = currentScreenIndex === config.screens.length - 1;
 
-  const onSubmit = handleSubmit((values) => {
-    // Collect all File[] values from file_upload fields and save to session store
-    const allFiles: File[] = [];
-    config.screens.forEach((screen) => {
-      screen.fields.forEach((field) => {
-        if (field.type === 'file_upload') {
-          const fieldValue = values[field.id];
-          if (Array.isArray(fieldValue)) {
-            fieldValue.forEach((f) => {
-              if (f instanceof File) allFiles.push(f);
-            });
-          }
-        }
-      });
-    });
-    saveSubmissionFiles(allFiles);
+  const persistAndFinish = (values: FormValues) => {
+    saveSubmissionFiles(collectFiles(config, values));
 
-    // Persist only JSON-serialisable values (skip File arrays from file_upload fields)
     try {
       const serialisable = Object.fromEntries(
-        Object.entries(values).filter(([, v]) => !Array.isArray(v) && !(v instanceof File)),
+        Object.entries(values).filter(
+          ([, v]) => !Array.isArray(v) && !(v instanceof File),
+        ),
       );
       localStorage.setItem(
         RECRUITMENT_FORM_VALUES_STORAGE_KEY,
         JSON.stringify(serialisable),
       );
     } catch {
-      /* quota / private mode */
+      void 0;
     }
 
     onSuccessfulSubmit?.();
-  });
+  };
 
   const handleNext = async () => {
     const allValues = getValues();
@@ -194,7 +203,7 @@ function FormEngine({
       return;
     }
 
-    await onSubmit();
+    persistAndFinish(getValues());
   };
 
   const totalSteps = config.screens.length + 1;
@@ -204,36 +213,21 @@ function FormEngine({
   const currentFieldIds = currentScreen.fields
     .filter((field) => field.type !== 'section_title')
     .map((field) => field.id);
-  const watchedValues = watch(currentFieldIds) as unknown as Record<
-    string,
-    unknown
-  >;
+  const watchedValues = watch(currentFieldIds) as unknown as unknown[];
   const watchedByFieldId = currentFieldIds.reduce<Record<string, unknown>>(
     (acc, id, index) => {
-      acc[id] = (watchedValues as unknown as unknown[])[index];
+      acc[id] = watchedValues[index];
       return acc;
     },
     {},
   );
 
-  // Collect File[] values from all file_upload fields for the summary preview
   const previewFiles = useMemo(() => {
-    const files: File[] = [];
-    config.screens.forEach((screen) => {
-      screen.fields.forEach((field) => {
-        if (field.type === 'file_upload') {
-          const v = getValues(field.id);
-          if (Array.isArray(v)) {
-            v.forEach((f) => {
-              if (f instanceof File) files.push(f);
-            });
-          }
-        }
-      });
-    });
-    return files;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSummaryScreen, config.screens]);
+    if (!isSummaryScreen) {
+      return [];
+    }
+    return collectFiles(config, getValues());
+  }, [isSummaryScreen, config, getValues]);
 
   const primaryActionId = isSummaryScreen
     ? (submissionConfig.submit_action ?? RECRUITMENT_DEFAULT_SUBMIT)
@@ -259,7 +253,7 @@ function FormEngine({
           aria-valuenow={Math.round(progressPercent)}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label={`Postep formularza: krok ${currentStep} z ${totalSteps}`}>
+          aria-label={`Postęp formularza: krok ${currentStep} z ${totalSteps}`}>
           <div
             className="h-full rounded-full bg-primary transition-all"
             style={{ width: `${progressPercent}%` }}
@@ -390,7 +384,7 @@ function FormEngine({
 
           <Button type="submit" disabled={isSubmitting}>
             {isSummaryScreen
-              ? 'Potwierdz i wyslij'
+              ? 'Potwierdź i wyślij'
               : isLastScreen
                 ? currentScreen.button_text
                 : 'Dalej'}

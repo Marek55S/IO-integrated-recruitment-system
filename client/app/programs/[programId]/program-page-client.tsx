@@ -3,13 +3,12 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import type { Program } from '@/mockedBackend/programs';
-
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { canApplyToProgram } from '@/mockedBackend/applications';
 import { appendStudyApplication } from '@/lib/study-applications-storage';
+import { canApplyToProgram } from '@/mockedBackend/applications';
+import type { Program } from '@/mockedBackend/programs';
 
 type ProgramPageClientProps = {
   program: Program;

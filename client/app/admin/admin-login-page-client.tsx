@@ -17,7 +17,7 @@ export function AdminLoginPageClient() {
     event.preventDefault();
 
     if (!email || !password) {
-      setError('Uzupelnij e-mail i haslo.');
+      setError('Uzupełnij e-mail i hasło.');
       return;
     }
 
@@ -28,7 +28,6 @@ export function AdminLoginPageClient() {
   return (
     <main className="flex min-h-[calc(100vh-4.25rem)] items-center justify-center px-4 py-10">
       <section className="w-full max-w-md rounded-xl border border-amber-500/25 bg-card p-6 shadow-md md:p-8">
-        {/* Admin indicator badge */}
         <div className="mb-4 flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
             <svg
@@ -66,7 +65,7 @@ export function AdminLoginPageClient() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="admin-password">Haslo</Label>
+            <Label htmlFor="admin-password">Hasło</Label>
             <Input
               id="admin-password"
               type="password"
