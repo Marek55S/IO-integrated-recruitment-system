@@ -3,10 +3,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 
-import type { ProgramsIndex } from '@io/content-api';
+import type { Program } from '@/mockedBackend/programs';
 
 type ProgramsSearchProps = {
-  programs: ProgramsIndex['programs'];
+  programs: Pick<Program, 'id' | 'name'>[];
 };
 
 function normalize(text: string) {
@@ -18,17 +18,19 @@ function ProgramsSearch({ programs }: ProgramsSearchProps) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
-  const q = query.trim();
-  const hasQuery = q.length > 0;
+  const trimmedQuery = query.trim();
+  const hasQuery = trimmedQuery.length > 0;
 
   const filtered = useMemo(() => {
     if (!hasQuery) {
       return [];
     }
 
-    const nq = normalize(q);
-    return programs.filter((program) => normalize(program.name).includes(nq));
-  }, [programs, q, hasQuery]);
+    const needle = normalize(trimmedQuery);
+    return programs.filter((program) =>
+      normalize(program.name).includes(needle),
+    );
+  }, [programs, trimmedQuery, hasQuery]);
 
   useEffect(() => {
     const onDocPointerDown = (event: PointerEvent) => {
@@ -92,9 +94,6 @@ function ProgramsSearch({ programs }: ProgramsSearchProps) {
                       setQuery('');
                     }}>
                     <span className="font-medium">{program.name}</span>
-                    <span className="mt-0.5 block text-xs text-muted-foreground">
-                      {program.id}
-                    </span>
                   </Link>
                 </li>
               ))}
