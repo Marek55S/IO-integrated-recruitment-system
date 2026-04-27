@@ -5,7 +5,7 @@ sections:
     title: "Dane osobowe"
     items:
       - field_id: "first_name"
-        label: "Imię (imiona)"
+        label: "Imię"
       - field_id: "last_name"
         label: "Nazwisko"
       - field_id: "family_name"

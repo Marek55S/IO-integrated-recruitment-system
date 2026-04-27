@@ -23,6 +23,7 @@ import {
   RECRUITMENT_DEFAULT_SUBMIT,
   runRecruitmentFormAction,
 } from '@/lib/content-form-actions';
+import { saveSubmissionFiles } from '@/lib/file-session-store';
 import { RECRUITMENT_FORM_VALUES_STORAGE_KEY } from '@/lib/recruitment-storage';
 
 type FormValues = Record<string, unknown>;
@@ -32,6 +33,29 @@ type FormEngineProps = {
   submissionConfig: SubmissionConfig;
   onSuccessfulSubmit?: () => void;
 };
+
+function collectFiles(config: FormConfig, values: FormValues): File[] {
+  const files: File[] = [];
+  config.screens.forEach((screen) => {
+    screen.fields.forEach((field) => {
+      if (field.type !== 'file_upload') {
+        return;
+      }
+
+      const fieldValue = values[field.id];
+      if (!Array.isArray(fieldValue)) {
+        return;
+      }
+
+      fieldValue.forEach((entry) => {
+        if (entry instanceof File) {
+          files.push(entry);
+        }
+      });
+    });
+  });
+  return files;
+}
 
 function createDefaultValues(
   config: FormConfig,
@@ -98,7 +122,6 @@ function FormEngine({
     trigger,
     setValue,
     getValues,
-    handleSubmit,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
@@ -111,23 +134,34 @@ function FormEngine({
   const isFirstScreen = currentScreenIndex === 0;
   const isLastScreen = currentScreenIndex === config.screens.length - 1;
 
-  const onSubmit = handleSubmit((values) => {
-    console.log('Form submission payload:', values);
+  const persistAndFinish = (values: FormValues) => {
+    saveSubmissionFiles(collectFiles(config, values));
+
     try {
+      const serialisable = Object.fromEntries(
+        Object.entries(values).filter(
+          ([, v]) => !Array.isArray(v) && !(v instanceof File),
+        ),
+      );
       localStorage.setItem(
         RECRUITMENT_FORM_VALUES_STORAGE_KEY,
-        JSON.stringify(values),
+        JSON.stringify(serialisable),
       );
     } catch {
-      /* quota / private mode */
+      void 0;
     }
 
     onSuccessfulSubmit?.();
-  });
+  };
 
   const handleNext = async () => {
+    const allValues = getValues();
     const currentFieldIds = currentScreen.fields
-      .filter((field) => field.type !== 'section_title')
+      .filter(
+        (field) =>
+          field.type !== 'section_title' &&
+          shouldRenderField(field.id, allValues),
+      )
       .map((field) => field.id);
 
     const isCurrentScreenValid = await trigger(currentFieldIds, {
@@ -169,7 +203,7 @@ function FormEngine({
       return;
     }
 
-    await onSubmit();
+    persistAndFinish(getValues());
   };
 
   const totalSteps = config.screens.length + 1;
@@ -179,17 +213,21 @@ function FormEngine({
   const currentFieldIds = currentScreen.fields
     .filter((field) => field.type !== 'section_title')
     .map((field) => field.id);
-  const watchedValues = watch(currentFieldIds) as unknown as Record<
-    string,
-    unknown
-  >;
+  const watchedValues = watch(currentFieldIds) as unknown as unknown[];
   const watchedByFieldId = currentFieldIds.reduce<Record<string, unknown>>(
     (acc, id, index) => {
-      acc[id] = (watchedValues as unknown as unknown[])[index];
+      acc[id] = watchedValues[index];
       return acc;
     },
     {},
   );
+
+  const previewFiles = useMemo(() => {
+    if (!isSummaryScreen) {
+      return [];
+    }
+    return collectFiles(config, getValues());
+  }, [isSummaryScreen, config, getValues]);
 
   const primaryActionId = isSummaryScreen
     ? (submissionConfig.submit_action ?? RECRUITMENT_DEFAULT_SUBMIT)
@@ -250,7 +288,11 @@ function FormEngine({
         className="space-y-5">
         {isSummaryScreen ? (
           <>
-            <SubmissionPreview values={getValues()} config={submissionConfig} />
+            <SubmissionPreview
+              values={getValues()}
+              config={submissionConfig}
+              files={previewFiles}
+            />
 
             <section className="border-primary/10 space-y-3 rounded-xl border bg-muted/40 p-4">
               <h3 className="text-primary text-xs font-bold uppercase tracking-wider">
@@ -342,22 +384,13 @@ function FormEngine({
 
           <Button type="submit" disabled={isSubmitting}>
             {isSummaryScreen
-              ? 'Potwierdz i wyślij'
+              ? 'Potwierdź i wyślij'
               : isLastScreen
                 ? currentScreen.button_text
                 : 'Dalej'}
           </Button>
         </div>
       </form>
-
-      <details className="border-primary/10 rounded-lg border bg-muted/40 p-3">
-        <summary className="cursor-pointer text-sm text-muted-foreground">
-          Podglad aktualnych danych formularza
-        </summary>
-        <pre className="mt-2 overflow-x-auto text-xs">
-          {JSON.stringify(getValues(), null, 2)}
-        </pre>
-      </details>
     </section>
   );
 }

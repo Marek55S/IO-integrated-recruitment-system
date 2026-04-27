@@ -26,18 +26,14 @@ const submissionConfigSchema = z.object({
   subtitle: z.string().optional(),
   sections: z.array(submissionSectionSchema).min(1),
   agreements: z.array(submissionAgreementSchema).min(1),
-  /** Summary screen primary button — client action id. */
   submit_action: z.string().min(1).optional(),
-  /** Back from summary to last form step — client action id. */
   back_action: z.string().min(1).optional(),
 });
 
-/** Plik recruitment-submission.yaml bez sekcji (sekcje z recruitment-data-sections.yaml). */
 export const submissionPayloadSchema = submissionConfigSchema.omit({
   sections: true,
 });
 
-/** Plik recruitment-data-sections.yaml */
 export const recruitmentSectionsFileSchema = z.object({
   sections: z.array(submissionSectionSchema).min(1),
 });
