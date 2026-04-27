@@ -7,7 +7,7 @@ export default function AdminDashboardPage() {
 
   return (
     <main className="min-h-screen bg-transparent px-4 py-8 md:px-6 md:py-10">
-      <div className="mx-auto max-w-md space-y-6">
+      <div className="mx-auto max-w-6xl space-y-6">
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
             <svg
@@ -32,12 +32,12 @@ export default function AdminDashboardPage() {
           Kierunki studiów
         </h1>
 
-        <ul className="flex flex-col gap-4">
+        <ul className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {programs.map((program) => (
             <li key={program.id}>
               <Link
                 href={`/admin/programs/${program.id}`}
-                className="group block overflow-hidden rounded-xl border border-amber-500/20 bg-card shadow-md transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50">
+                className="group block h-full overflow-hidden rounded-xl border border-amber-500/20 bg-card shadow-md transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50 flex flex-col">
                 {program.image_src ? (
                   <div className="aspect-[12/5] w-full overflow-hidden bg-muted">
                     <img
@@ -67,8 +67,8 @@ export default function AdminDashboardPage() {
                   </div>
                 )}
 
-                <div className="px-4 py-3">
-                  <p className="font-semibold leading-snug text-foreground">
+                <div className="min-h-[3.5rem] px-4 py-3">
+                  <p className="line-clamp-2 font-semibold leading-snug text-foreground">
                     {program.name}
                   </p>
                 </div>
