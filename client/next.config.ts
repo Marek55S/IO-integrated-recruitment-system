@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  output: 'export',
+  // output: 'export',
   transpilePackages: ['@io/content-api'],
   experimental: {
     externalDir: true,
