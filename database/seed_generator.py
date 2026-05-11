@@ -657,6 +657,6 @@ def generate_sql() -> str:
 if __name__ == "__main__":
     sql = generate_sql()
     output_path = "database/seed.sql"
-    with open(output_path, "w") as f:
+    with open(output_path, "w", encoding="utf-8") as f:
         f.write(sql)
     print(f"Wygenerowano {CANDIDATE_COUNT} kandydatów → {output_path}")

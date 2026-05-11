@@ -9,3 +9,17 @@ export const pool =
   });
 
 if (process.env.NODE_ENV !== 'production') globalForPg.pgPool = pool;
+
+export async function query(text: string, params?: any[]) {
+  const start = Date.now();
+  const res = await pool.query(text, params);
+  const duration = Date.now() - start;
+
+  console.log('[Baza Danych] Wykonano zapytanie', {
+    text,
+    duration,
+    rows: res.rowCount,
+  });
+
+  return res;
+}
