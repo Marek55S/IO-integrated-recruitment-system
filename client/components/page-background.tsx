@@ -1,8 +1,5 @@
 'use client';
 
-/**
- * Subtelne tło w stylu stron wydziałowych WI AGH: chłodne szarości i delikatny akcent niebieski.
- */
 function PageBackground() {
   return (
     <div

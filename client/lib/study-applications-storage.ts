@@ -1,4 +1,4 @@
-export type StudyApplicationStatus = 'awaiting_payment' | 'paid';
+export type StudyApplicationStatus = 'awaiting_payment' | 'paid' | 'cancelled';
 
 export type StudyApplication = {
   id: string;
@@ -11,6 +11,12 @@ export type StudyApplication = {
 export const STUDY_APPLICATIONS_STORAGE_KEY = 'io-study-applications';
 
 export const STUDY_APPLICATIONS_CHANGED_EVENT = 'io-study-applications-changed';
+
+const VALID_STATUSES: ReadonlySet<string> = new Set([
+  'awaiting_payment',
+  'paid',
+  'cancelled',
+]);
 
 export function readStudyApplications(): StudyApplication[] {
   if (typeof window === 'undefined') {
@@ -27,11 +33,6 @@ export function readStudyApplications(): StudyApplication[] {
     if (!Array.isArray(parsed)) {
       return [];
     }
-
-    const VALID_STATUSES: ReadonlySet<string> = new Set([
-      'awaiting_payment',
-      'paid',
-    ]);
 
     return parsed.filter((item): item is StudyApplication => {
       if (!item || typeof item !== 'object') {
@@ -94,12 +95,19 @@ export function setStudyApplicationStatus(
   writeStudyApplications(next);
 }
 
+export function cancelStudyApplication(id: string) {
+  setStudyApplicationStatus(id, 'cancelled');
+}
+
 export function studyApplicationStatusLabel(
   status: StudyApplicationStatus,
 ): string {
-  if (status === 'paid') {
-    return 'Zapłacone';
+  switch (status) {
+    case 'paid':
+      return 'Zapłacone';
+    case 'cancelled':
+      return 'Anulowany';
+    default:
+      return 'Oczekiwanie na płatność';
   }
-
-  return 'Oczekiwanie na płatność';
 }

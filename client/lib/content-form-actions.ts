@@ -1,8 +1,3 @@
-/**
- * Mapowanie identyfikatorów z YAML (`primary_action`, `submit_action`, …)
- * na logikę po stronie klienta. W YAML podajesz tylko string, np. `recruitment.forward`.
- */
-
 export type RecruitmentFormActionContext = {
   goNext: () => Promise<void>;
   goBack: () => void;
@@ -10,7 +5,6 @@ export type RecruitmentFormActionContext = {
 };
 
 export type ProgramFormActionContext = {
-  /** Pełna walidacja RHF/Zod i callback z `handleSubmit`. */
   submitValidated: () => Promise<void>;
 };
 

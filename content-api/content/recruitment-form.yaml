@@ -10,41 +10,45 @@ screens:
     fields:
       - id: "first_name"
         type: "text"
-        label: "Imię (imiona)"
+        label: "Imię"
         placeholder: "np. Jan"
-        required: false
-        input_info: "Podaj wszystkie imiona zgodnie z dowodem osobistym."
+        required: true
+        regex: "^[A-Za-zÀ-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż\\-]{2,}$"
       - id: "last_name"
         type: "text"
         label: "Nazwisko"
         placeholder: "np. Kowalski"
-        required: false
+        required: true
+        regex: "^[A-Za-zÀ-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż\\-]{2,}$"
       - id: "family_name"
         type: "text"
         label: "Nazwisko rodowe"
         placeholder: "Wypełnij, jeśli inne niż obecne"
         required: false
+        regex: "^[A-Za-zÀ-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż\\-]{2,}$"
       - id: "pesel"
         type: "text"
         label: "PESEL"
         placeholder: "00000000000"
-        required: false
+        required: true
         regex: "^[0-9]{11}$"
-        input_info: "Wymagane 11 cyfr."
+        input_info: "Wymagane dokładnie 11 cyfr."
       - id: "birth_date"
         type: "date"
         label: "Data urodzenia"
-        required: false
+        required: true
       - id: "birth_place"
         type: "text"
         label: "Miejsce urodzenia"
         placeholder: "np. Warszawa"
-        required: false
+        required: true
+        regex: "^[A-Za-zÀ-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż \\-]{2,}$"
       - id: "citizenship"
         type: "text"
         label: "Obywatelstwo"
         placeholder: "np. polskie"
-        required: false
+        required: true
+        regex: "^[A-Za-zÀ-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż \\-]{2,}$"
     button_text: "Dalej: Adresy"
 
   - id: 2
@@ -55,28 +59,31 @@ screens:
         type: "text"
         label: "Kraj zamieszkania"
         placeholder: "np. Polska"
-        required: false
+        required: true
+        regex: "^[A-Za-zÀ-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż \\-]{2,}$"
       - id: "residence_city"
         type: "text"
         label: "Miasto zamieszkania"
         placeholder: "np. Warszawa"
-        required: false
+        required: true
+        regex: "^[A-Za-zÀ-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż \\-]{2,}$"
       - id: "residence_postal_code"
         type: "text"
         label: "Kod pocztowy zamieszkania"
         placeholder: "00-000"
         regex: "^[0-9]{2}-[0-9]{3}$"
-        required: false
+        required: true
       - id: "residence_street"
         type: "text"
         label: "Ulica zamieszkania"
         placeholder: "np. Kwiatowa"
-        required: false
+        required: true
       - id: "residence_house_number"
         type: "text"
         label: "Nr domu/mieszkania zamieszkania"
         placeholder: "np. 15/2"
-        required: false
+        required: true
+        regex: "^[0-9A-Za-z/\\-]{1,10}$"
       - id: "correspondence_same_as_residence"
         type: "checkbox"
         label: "Adres do korespondencji taki sam jak zamieszkania"
@@ -86,11 +93,13 @@ screens:
         label: "Kraj do korespondencji"
         placeholder: "np. Polska"
         required: false
+        regex: "^[A-Za-zÀ-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż \\-]{2,}$"
       - id: "correspondence_city"
         type: "text"
         label: "Miasto do korespondencji"
         placeholder: "np. Warszawa"
         required: false
+        regex: "^[A-Za-zÀ-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż \\-]{2,}$"
       - id: "correspondence_postal_code"
         type: "text"
         label: "Kod pocztowy do korespondencji"
@@ -107,17 +116,20 @@ screens:
         label: "Nr domu/mieszkania do korespondencji"
         placeholder: "np. 15/2"
         required: false
+        regex: "^[0-9A-Za-z/\\-]{1,10}$"
       - id: "email"
         type: "email"
         label: "Adres e-mail"
         placeholder: "twoj@email.pl"
-        required: false
+        required: true
         regex: "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
       - id: "phone"
         type: "tel"
         label: "Numer telefonu"
         placeholder: "+48 000 000 000"
-        required: false
+        required: true
+        regex: "^[+]?[0-9][0-9 \\-]{6,19}$"
+        input_info: "Można podać numer w formacie krajowym lub międzynarodowym."
     button_text: "Dalej: Wykształcenie"
 
   - id: 3
@@ -128,47 +140,69 @@ screens:
         type: "text"
         label: "Tytuł zawodowy"
         placeholder: "np. licencjat, magister, inżynier"
-        required: false
+        required: true
+        regex: "^[A-Za-zÀ-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż .\\-]{2,}$"
       - id: "university_name"
         type: "text"
         label: "Nazwa szkoły wyższej"
-        required: false
+        placeholder: "np. Akademia Górniczo-Hutnicza"
+        required: true
       - id: "graduation_year"
         type: "number"
         label: "Rok ukończenia studiów"
         placeholder: "RRRR"
-        required: false
+        required: true
         regex: "^(19|20)\\d{2}$"
+        input_info: "Podaj czterocyfrowy rok, np. 2020."
       - id: "high_school_diploma_country"
         type: "select"
         label: "Miejsce uzyskania świadectwa dojrzałości"
-        required: false
+        required: true
         input_info: "Dane zbierane wyłącznie do celów statystycznych."
         options: ["Polska", "Poza Polską"]
       - id: "high_school_country_name"
         type: "text"
         label: "Kraj uzyskania świadectwa"
-        required: false
-        input_info: "Wypełnij tylko jeśli świadectwo uzyskano poza Polską"
-    button_text: "Dalej: Zgody i kontakt awaryjny"
+        placeholder: "np. Australia"
+        required: true
+        regex: "^[A-Za-zÀ-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż \\-]{2,}$"
+    button_text: "Dalej: Dokumenty"
 
   - id: 4
-    title: "Kontakt awaryjny i zgody"
-    subtitle: "Ostatni krok przed wysłaniem zgłoszenia"
+    title: "Dokumenty"
+    subtitle: "Dołącz wymagane dokumenty rekrutacyjne"
+    primary_action: recruitment.forward
+    back_action: recruitment.back
     fields:
-      - id: "emergency_contact_header"
-        type: "section_title"
-        label: "Osoba do zawiadomienia w razie wypadku (opcjonalnie)"
+      - id: "recruitment_documents"
+        type: "file_upload"
+        label: "Wymagane dokumenty"
+        description_text: "Dołącz skany lub zdjęcia wymaganych dokumentów (dyplom, dowód osobisty lub paszport, inne zaświadczenia). Akceptujemy wyłącznie pliki PDF."
+        max_files: 5
+        max_size_mb: 5
+        required: false
+    button_text: "Dalej: Kontakt awaryjny"
+
+  - id: 5
+    title: "Kontakt awaryjny"
+    subtitle: "Osoba do zawiadomienia w razie wypadku (opcjonalnie)"
+    fields:
       - id: "emergency_name"
         type: "text"
         label: "Imię i Nazwisko"
+        placeholder: "np. Anna Kowalska"
         required: false
+        regex: "^[A-Za-zÀ-ÿĄąĆćĘęŁłŃńÓóŚśŹźŻż \\-]{2,}$"
       - id: "emergency_email"
         type: "email"
         label: "E-mail kontaktowy"
+        placeholder: "kontakt@example.com"
         required: false
+        regex: "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
       - id: "emergency_phone"
         type: "tel"
         label: "Telefon kontaktowy"
+        placeholder: "+48 000 000 000"
         required: false
+        regex: "^[+]?[0-9][0-9 \\-]{6,19}$"
     button_text: "Dalej: Podsumowanie"

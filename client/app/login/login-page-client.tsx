@@ -29,7 +29,7 @@ function LoginForm({ validProgramIds }: LoginPageClientProps) {
     event.preventDefault();
 
     if (!email || !password) {
-      setError('Uzupełnij e-mail i hasło.');
+      setError('Uzupelnij e-mail i haslo.');
       return;
     }
 
@@ -51,7 +51,7 @@ function LoginForm({ validProgramIds }: LoginPageClientProps) {
   };
 
   return (
-    <main className="flex min-h-[calc(100vh-4.25rem)] items-center justify-center px-4 py-10">
+    <main className="relative flex min-h-[calc(100vh-4.25rem)] items-center justify-center px-4 py-10">
       <section className="border-primary/15 w-full max-w-md rounded-xl border bg-card p-6 shadow-md md:p-8">
         <h1 className="text-primary text-2xl font-semibold tracking-tight">
           Logowanie
@@ -70,7 +70,7 @@ function LoginForm({ validProgramIds }: LoginPageClientProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="login-password">Hasło</Label>
+            <Label htmlFor="login-password">Haslo</Label>
             <Input
               id="login-password"
               type="password"
@@ -96,10 +96,16 @@ function LoginForm({ validProgramIds }: LoginPageClientProps) {
                 : '/register'
             }
             className="text-primary cursor-pointer font-medium underline-offset-4 hover:underline">
-            Zarejestruj się
+            Zarejestruj sie
           </Link>
         </p>
       </section>
+
+      <Link
+        href="/admin"
+        className="fixed bottom-4 left-4 rounded-md px-2.5 py-1.5 text-xs text-muted-foreground/50 transition-colors hover:bg-muted/60 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+        Panel administratora
+      </Link>
     </main>
   );
 }

@@ -2,13 +2,9 @@
 
 type BrandedPageLoaderProps = {
   label?: string;
-  /** Pełny ekran z lekkim przyciemnieniem (np. pierwsze ładowanie). */
   fullScreen?: boolean;
 };
 
-/**
- * Spinner w tonacji WI AGH: granat → niebieski → szary.
- */
 function BrandedPageLoader({
   label = 'Ładowanie…',
   fullScreen = false,

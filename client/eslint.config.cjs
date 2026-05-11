@@ -14,7 +14,6 @@ module.exports = [
     ],
   },
   {
-    // register prettier plugin for flat config
     plugins: {
       prettier: require('eslint-plugin-prettier'),
       'simple-import-sort': require('eslint-plugin-simple-import-sort'),
@@ -30,7 +29,6 @@ module.exports = [
       },
     },
     rules: {
-      // let Prettier handle formatting (including trailing commas)
       'comma-dangle': 'off',
       'prettier/prettier': [
         'error',
@@ -44,7 +42,7 @@ module.exports = [
           groups: [
             ['^react', '^next'],
             ['^@?\\w'],
-            ['^\u0000'],
+            ['^\\u0000'],
             ['^..'],
             ['^./'],
           ],

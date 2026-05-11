@@ -18,10 +18,3 @@ export {
   type SubmissionConfig,
   type SubmissionDisplayConfig,
 } from "./submission-schema";
-
-export {
-  programPageSchema,
-  programsIndexSchema,
-  type ProgramPage,
-  type ProgramsIndex,
-} from "./programs-schema";

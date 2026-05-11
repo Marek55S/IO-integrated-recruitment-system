@@ -9,6 +9,7 @@ const FIELD_TYPES = [
   "date",
   "select",
   "section_title",
+  "file_upload",
 ] as const;
 
 const baseFieldSchema = z.object({
@@ -33,6 +34,13 @@ const sectionTitleFieldSchema = baseFieldSchema.extend({
   type: z.literal("section_title"),
 });
 
+const fileUploadFieldSchema = baseFieldSchema.extend({
+  type: z.literal("file_upload"),
+  description_text: z.string().optional(),
+  max_files: z.number().int().positive().optional(),
+  max_size_mb: z.number().positive().optional(),
+});
+
 const standardInputFieldSchema = baseFieldSchema.extend({
   type: z.enum(["text", "email", "tel", "number", "checkbox", "date"]),
 });
@@ -40,6 +48,7 @@ const standardInputFieldSchema = baseFieldSchema.extend({
 const fieldSchema = z.discriminatedUnion("type", [
   selectFieldSchema,
   sectionTitleFieldSchema,
+  fileUploadFieldSchema,
   standardInputFieldSchema,
 ]);
 
@@ -49,7 +58,6 @@ const screenSchema = z.object({
   subtitle: z.string().optional(),
   fields: z.array(fieldSchema).min(1),
   button_text: z.string().min(1),
-  /** Client action id — registry: `client/lib/content-form-actions.ts`. */
   primary_action: z.string().min(1).optional(),
   back_action: z.string().min(1).optional(),
 });
@@ -86,6 +94,11 @@ export function buildFormDataSchema(config: FormConfig) {
         continue;
       }
 
+      if (field.type === "file_upload") {
+        shape[field.id] = z.any().optional();
+        continue;
+      }
+
       if (field.type === "checkbox") {
         shape[field.id] = field.required
           ? z.literal(true, {
@@ -96,22 +109,21 @@ export function buildFormDataSchema(config: FormConfig) {
       }
 
       if (field.type === "select") {
-        const selectSchema = z
-          .string()
-          .refine(
-            (value) => field.options.includes(value),
-            `${field.label} ma niepoprawna wartosc.`,
-          );
-
         shape[field.id] = field.required
-          ? selectSchema.min(1, `${field.label} jest wymagane.`)
+          ? z
+              .string()
+              .min(1, `${field.label} jest wymagane.`)
+              .refine(
+                (value) => field.options.includes(value),
+                `${field.label} ma niepoprawną wartość.`,
+              )
           : z
               .string()
               .optional()
               .transform((value) => value ?? "")
               .refine(
                 (value) => !value || field.options.includes(value),
-                `${field.label} ma niepoprawna wartosc.`,
+                `${field.label} ma niepoprawną wartość.`,
               );
         continue;
       }
