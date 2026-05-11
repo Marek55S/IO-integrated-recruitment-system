@@ -102,7 +102,7 @@ CREATE TABLE candidate_profiles (
   first_name   VARCHAR(100) NOT NULL,
   last_name    VARCHAR(100) NOT NULL,
   family_name  VARCHAR(100),
-  pesel        CHAR(11),
+  pesel        VARCHAR(255),
   birth_date   DATE,
   birth_place  VARCHAR(100),
   citizenship  VARCHAR(100),
