@@ -64,7 +64,7 @@ export type AdminApplication = {
 const APPLICATIONS: AdminApplication[] = [
   {
     id: 'app-001',
-    programId: 'informatyka-st',
+    programId: 'metody-wytwarzania-oprogramowania',
     status: 'accepted',
     submittedAt: '2026-03-10T09:15:00Z',
     candidate: {
@@ -99,7 +99,7 @@ const APPLICATIONS: AdminApplication[] = [
   },
   {
     id: 'app-002',
-    programId: 'informatyka-st',
+    programId: 'metody-wytwarzania-oprogramowania',
     status: 'awaiting_payment',
     submittedAt: '2026-03-12T14:30:00Z',
     candidate: {
@@ -139,7 +139,7 @@ const APPLICATIONS: AdminApplication[] = [
   },
   {
     id: 'app-003',
-    programId: 'informatyka-st',
+    programId: 'metody-wytwarzania-oprogramowania',
     status: 'submitted',
     submittedAt: '2026-03-15T11:00:00Z',
     candidate: {
@@ -174,7 +174,7 @@ const APPLICATIONS: AdminApplication[] = [
   },
   {
     id: 'app-004',
-    programId: 'informatyka-st',
+    programId: 'metody-wytwarzania-oprogramowania',
     status: 'payment_confirmed',
     submittedAt: '2026-03-18T08:45:00Z',
     candidate: {
@@ -209,7 +209,7 @@ const APPLICATIONS: AdminApplication[] = [
   },
   {
     id: 'app-005',
-    programId: 'informatyka-st',
+    programId: 'metody-wytwarzania-oprogramowania',
     status: 'rejected',
     submittedAt: '2026-03-20T16:10:00Z',
     candidate: {
@@ -244,7 +244,7 @@ const APPLICATIONS: AdminApplication[] = [
   },
   {
     id: 'app-006',
-    programId: 'informatyka-st',
+    programId: 'metody-wytwarzania-oprogramowania',
     status: 'submitted',
     submittedAt: '2026-03-22T10:20:00Z',
     candidate: {
@@ -279,7 +279,7 @@ const APPLICATIONS: AdminApplication[] = [
   },
   {
     id: 'app-007',
-    programId: 'informatyka-st',
+    programId: 'metody-wytwarzania-oprogramowania',
     status: 'waitlisted',
     submittedAt: '2026-03-25T13:00:00Z',
     candidate: {
@@ -314,7 +314,7 @@ const APPLICATIONS: AdminApplication[] = [
   },
   {
     id: 'app-008',
-    programId: 'informatyka-st',
+    programId: 'metody-wytwarzania-oprogramowania',
     status: 'documents_verified',
     submittedAt: '2026-03-28T09:05:00Z',
     candidate: {
