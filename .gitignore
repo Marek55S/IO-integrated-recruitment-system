@@ -29,3 +29,5 @@ database/seed.sql
 # Python
 *.egg-info/
 .venv/
+backend/.venv/
+backend/uploads/
