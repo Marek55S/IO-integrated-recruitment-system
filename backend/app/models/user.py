@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, SmallInteger, String
 from sqlalchemy.dialects.postgresql import ENUM, UUID
@@ -30,8 +30,8 @@ class User(Base):
         default="candidate",
     )
     is_active = Column(Boolean, nullable=False, default=True)
-    created_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow)
-    updated_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
     # relationships
     profile = relationship("CandidateProfile", back_populates="user", uselist=False, lazy="selectin")
@@ -60,7 +60,7 @@ class CandidateProfile(Base):
     birth_place = Column(String(100))
     citizenship = Column(String(100))
     phone = Column(String(20))
-    updated_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
     user = relationship("User", back_populates="profile")
 
@@ -114,5 +114,6 @@ class UserAgreement(Base):
     agreement_type = Column(String(50), nullable=False)  # 'rodo' | 'marketing'
     accepted = Column(Boolean, nullable=False, default=False)
     accepted_at = Column(DateTime(timezone=True))
+
 
     user = relationship("User", back_populates="agreements")

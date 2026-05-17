@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, DateTime, ForeignKey, String, Text
 from sqlalchemy.dialects.postgresql import ENUM, UUID
@@ -31,7 +31,7 @@ class ApplicationDocument(Base):
     )
     reviewed_by = Column(UUID(as_uuid=True), ForeignKey("users.id"))
     review_note = Column(Text)
-    uploaded_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow)
+    uploaded_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
     reviewed_at = Column(DateTime(timezone=True))
 
     application = relationship("ProgramApplication", back_populates="documents")

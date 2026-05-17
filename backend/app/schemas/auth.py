@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
 
 class LoginRequest(BaseModel):
@@ -8,10 +8,19 @@ class LoginRequest(BaseModel):
 
 class RegisterRequest(BaseModel):
     email: EmailStr
-    password: str
+    password: str = Field(..., min_length=8, description="Hasło musi mieć co najmniej 8 znaków")
     firstName: str
     lastName: str
     pesel: str | None = None
+
+    @field_validator("password")
+    @classmethod
+    def validate_password_strength(cls, v: str) -> str:
+        if not any(char.isupper() for char in v):
+            raise ValueError("Hasło musi zawierać co najmniej jedną wielką literę")
+        if not any(char.isdigit() for char in v):
+            raise ValueError("Hasło musi zawierać co najmniej jedną cyfrę")
+        return v
 
 
 class TokenResponse(BaseModel):

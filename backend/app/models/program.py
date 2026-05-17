@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Integer, Numeric, String, Text
 from sqlalchemy.dialects.postgresql import UUID
@@ -16,7 +16,7 @@ class Program(Base):
     description = Column(Text)
     image_src = Column(String(500))
     is_active = Column(Boolean, nullable=False, default=True)
-    created_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
 
     editions = relationship("ProgramEdition", back_populates="program", lazy="selectin")
 
@@ -36,7 +36,7 @@ class ProgramEdition(Base):
     enrollment_fee = Column(Numeric(10, 2), nullable=False, default=100.00)
     tuition_fee = Column(Numeric(10, 2))
     is_active = Column(Boolean, nullable=False, default=True)
-    created_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
 
     program = relationship("Program", back_populates="editions")
     required_documents = relationship("EditionRequiredDocument", back_populates="edition", lazy="selectin")

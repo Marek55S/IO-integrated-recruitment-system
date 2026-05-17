@@ -82,7 +82,11 @@ async def update_profile(
     if body.emergency_contact is not None:
         await _upsert_emergency(db, user.id, body.emergency_contact)
 
-    await db.commit()
+    try:
+        await db.commit()
+    except Exception:
+        await db.rollback()
+        raise
 
     # Re-fetch user with relationships
     await db.refresh(user)

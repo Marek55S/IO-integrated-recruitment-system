@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -11,7 +11,7 @@ from app.dependencies import get_current_user, require_candidate
 from app.models.application import ApplicationStatusHistory, ProgramApplication
 from app.models.program import ProgramEdition
 from app.models.user import User
-from app.schemas.application import ApplicationCreate, ApplicationResponse
+from app.schemas.application import ApplicationCreate, ApplicationResponse, StatusHistoryResponse
 from app.services.application_service import validate_transition
 
 router = APIRouter(prefix="/applications", tags=["applications"])
@@ -27,6 +27,7 @@ def _to_response(app: ProgramApplication) -> ApplicationResponse:
         status=app.status,
         form_data=app.form_data or {},
         submitted_at=app.submitted_at,
+        created_at=app.created_at,
         updated_at=app.updated_at,
         program_name=edition.program.name if edition and edition.program else None,
         edition_name=edition.edition_name if edition else None,
@@ -66,6 +67,19 @@ async def create_application(
     if not edition:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Edycja nie znaleziona lub nieaktywna")
 
+    # Check recruitment dates
+    today = date.today()
+    if edition.recruitment_start and today < edition.recruitment_start:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Rekrutacja jeszcze się nie rozpoczęła. Start: {edition.recruitment_start}",
+        )
+    if edition.recruitment_end and today > edition.recruitment_end:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Rekrutacja na tę edycję już się zakończyła ({edition.recruitment_end})",
+        )
+
     # Check for duplicate
     dup = await db.execute(
         select(ProgramApplication).where(
@@ -83,7 +97,7 @@ async def create_application(
         form_data=body.form_data,
     )
     db.add(app)
-    await db.flush()
+    await db.flush()  # get app.id
 
     # Initial status history entry
     history = ApplicationStatusHistory(
@@ -197,3 +211,32 @@ async def cancel_application(
     await db.commit()
     await db.refresh(app)
     return _to_response(app)
+
+
+@router.get("/{application_id}/history", response_model=list[StatusHistoryResponse])
+async def get_status_history(
+    application_id: UUID,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get status change history for an application (owner or admin)."""
+    # Verify application access
+    app_result = await db.execute(
+        select(ProgramApplication).where(ProgramApplication.id == application_id)
+    )
+    app = app_result.scalar_one_or_none()
+    if not app:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Zgłoszenie nie znalezione")
+
+    from app.models.enums import ADMIN_ROLES, UserRole
+    if app.user_id != user.id and UserRole(user.role) not in ADMIN_ROLES:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Brak dostępu")
+
+    result = await db.execute(
+        select(ApplicationStatusHistory)
+        .where(ApplicationStatusHistory.application_id == application_id)
+        .order_by(ApplicationStatusHistory.changed_at.asc())
+    )
+    return result.scalars().all()
+
+

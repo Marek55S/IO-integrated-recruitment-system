@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, Date, DateTime, ForeignKey, Numeric, SmallInteger, String
 from sqlalchemy.dialects.postgresql import ENUM, UUID
@@ -22,7 +22,7 @@ class PaymentPlan(Base):
         ENUM("full", "installments", name="payment_plan_type", create_type=False),
         nullable=False,
     )
-    created_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
 
     application = relationship("ProgramApplication", back_populates="payment_plan")
     installments = relationship("PaymentInstallment", back_populates="plan", lazy="selectin")
@@ -45,7 +45,7 @@ class PaymentInstallment(Base):
         nullable=False,
         default="pending",
     )
-    updated_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
     plan = relationship("PaymentPlan", back_populates="installments")
     payments = relationship("Payment", back_populates="installment", lazy="selectin")
@@ -65,6 +65,6 @@ class Payment(Base):
     gateway_tx_id = Column(String(255))
     gateway_status = Column(String(100))
     paid_at = Column(DateTime(timezone=True))
-    created_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
 
     installment = relationship("PaymentInstallment", back_populates="payments")

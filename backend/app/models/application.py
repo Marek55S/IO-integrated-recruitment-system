@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, DateTime, ForeignKey, Text
 from sqlalchemy.dialects.postgresql import ENUM, JSONB, UUID
@@ -27,7 +27,8 @@ class ProgramApplication(Base):
     )
     form_data = Column(JSONB, nullable=False, default=dict)
     submitted_at = Column(DateTime(timezone=True))
-    updated_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
     # relationships
     user = relationship("User", back_populates="applications")
@@ -64,6 +65,6 @@ class ApplicationStatusHistory(Base):
     )
     changed_by = Column(UUID(as_uuid=True), ForeignKey("users.id"))
     note = Column(Text)
-    changed_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow)
+    changed_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
 
     application = relationship("ProgramApplication", back_populates="status_history")

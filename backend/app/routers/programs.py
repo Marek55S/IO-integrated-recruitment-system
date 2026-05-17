@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -25,6 +25,5 @@ async def get_program(program_id: str, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Program).where(Program.id == program_id, Program.is_active.is_(True)))
     program = result.scalar_one_or_none()
     if not program:
-        from fastapi import HTTPException, status
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Program nie znaleziony")
     return program

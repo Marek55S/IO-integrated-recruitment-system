@@ -18,6 +18,15 @@ from app.schemas.document import DocumentResponse, DocumentReviewRequest
 
 router = APIRouter(tags=["documents"])
 
+ALLOWED_MIME_TYPES = {
+    "application/pdf",
+    "image/jpeg",
+    "image/png",
+    "image/jpg",
+}
+MAX_FILE_SIZE_MB = 10
+MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
+
 
 @router.get("/applications/{application_id}/documents", response_model=list[DocumentResponse])
 async def list_documents(
@@ -57,6 +66,13 @@ async def upload_document(
     db: AsyncSession = Depends(get_db),
 ):
     """Upload a document for an application."""
+    # Validate file type
+    if file.content_type not in ALLOWED_MIME_TYPES:
+        raise HTTPException(
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            detail=f"Niedozwolony typ pliku '{file.content_type}'. Dozwolone: PDF, JPEG, PNG.",
+        )
+
     # Verify ownership
     app_result = await db.execute(
         select(ProgramApplication).where(
@@ -67,12 +83,19 @@ async def upload_document(
     if not app_result.scalar_one_or_none():
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Brak dostępu do tego zgłoszenia")
 
+    # Read and validate file size
+    content = await file.read()
+    if len(content) > MAX_FILE_SIZE_BYTES:
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail=f"Plik za duży. Maksymalny rozmiar: {MAX_FILE_SIZE_MB} MB.",
+        )
+
     # Save file
     os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
-    safe_name = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{file.filename.replace(' ', '_')}"
+    safe_name = f"{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}_{file.filename.replace(' ', '_')}"
     file_path = os.path.join(settings.UPLOAD_DIR, safe_name)
 
-    content = await file.read()
     async with aiofiles.open(file_path, "wb") as f:
         await f.write(content)
 

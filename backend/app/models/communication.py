@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, String, Text
 from sqlalchemy.dialects.postgresql import ENUM, UUID
@@ -25,7 +25,7 @@ class ContactMessage(Base):
     )
     subject = Column(String(255))
     body = Column(Text, nullable=False)
-    sent_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow)
+    sent_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
 
     application = relationship("ProgramApplication", back_populates="messages")
 
@@ -52,6 +52,6 @@ class Notification(Base):
         nullable=False,
         default="system",
     )
-    sent_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow)
+    sent_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
 
     user = relationship("User", back_populates="notifications")
