@@ -634,7 +634,8 @@ export function ApplicationsTable({
             program_id: manageApp.edition_id, // Placeholder (used for linking to program)
           }}
           onClose={() => setManageApp(null)}
-          onCancel={() => {}}
+          isAdmin={true}
+          onReject={() => handleReviewAction(manageApp.id, 'rejected')}
         />
       )}
     </>

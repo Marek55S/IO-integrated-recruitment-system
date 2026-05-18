@@ -123,7 +123,8 @@ async def admin_change_status(
         raise HTTPException(404, "Zgłoszenie nie znalezione")
 
     if not validate_transition(app.status, body.new_status):
-        raise HTTPException(400, f"Niedozwolone przejście: {app.status} → {body.new_status}")
+        if body.new_status not in ("rejected", "cancelled"):
+            raise HTTPException(400, f"Niedozwolone przejście: {app.status} → {body.new_status}")
 
     old = app.status
     app.status = body.new_status

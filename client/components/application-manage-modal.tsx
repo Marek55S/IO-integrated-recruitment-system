@@ -52,7 +52,9 @@ type Application = {
 type Props = {
   app: Application;
   onClose: () => void;
-  onCancel: () => void;
+  onCancel?: () => void;
+  isAdmin?: boolean;
+  onReject?: () => void;
 };
 
 function StatusPill({ status }: { status: string }) {
@@ -73,7 +75,7 @@ function downloadDocument(applicationId: string, type: string, label: string) {
   document.body.removeChild(link);
 }
 
-export function ApplicationManageModal({ app, onClose, onCancel }: Props) {
+export function ApplicationManageModal({ app, onClose, onCancel, isAdmin, onReject }: Props) {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(true);
 
@@ -248,9 +250,19 @@ export function ApplicationManageModal({ app, onClose, onCancel }: Props) {
             className="flex flex-wrap items-center justify-between gap-2 pt-4"
             style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}
           >
-            {isCancellable ? (
+            {isAdmin ? (
+              isCancellable ? (
+                <button
+                  onClick={() => { onClose(); onReject?.(); }}
+                  className="inline-flex items-center gap-2 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-2 text-sm font-medium text-red-300 hover:bg-red-500/20 hover:text-red-200 transition-colors"
+                >
+                  <XCircle className="size-4" />
+                  Odrzuć kandydata
+                </button>
+              ) : <div />
+            ) : isCancellable ? (
               <button
-                onClick={() => { onClose(); onCancel(); }}
+                onClick={() => { onClose(); onCancel?.(); }}
                 className="inline-flex items-center gap-2 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-2 text-sm font-medium text-red-300 hover:bg-red-500/20 hover:text-red-200 transition-colors"
               >
                 <XCircle className="size-4" />
