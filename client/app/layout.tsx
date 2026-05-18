@@ -43,10 +43,10 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="pl" className={cn('dark font-sans', sourceSans.variable)}>
+    <html lang="pl" className={cn('dark font-sans', sourceSans.variable)} suppressHydrationWarning>
       <head>
         {/* Inline script to prevent flash of wrong theme */}
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script suppressHydrationWarning dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
         <PageBackground />

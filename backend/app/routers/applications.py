@@ -139,8 +139,8 @@ async def get_application(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Zgłoszenie nie znalezione")
 
     # Owner or admin can view
-    from app.models.enums import ADMIN_ROLES, UserRole
-    if app.user_id != user.id and UserRole(user.role) not in ADMIN_ROLES:
+    admin_roles = {'admin_coordinator', 'program_director', 'cok_staff', 'it_admin'}
+    if str(app.user_id) != str(user.id) and str(user.role) not in admin_roles:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Brak dostępu")
 
     return _to_response(app)
@@ -230,8 +230,8 @@ async def get_status_history(
     if not app:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Zgłoszenie nie znalezione")
 
-    from app.models.enums import ADMIN_ROLES, UserRole
-    if app.user_id != user.id and UserRole(user.role) not in ADMIN_ROLES:
+    admin_roles = {'admin_coordinator', 'program_director', 'cok_staff', 'it_admin'}
+    if str(app.user_id) != str(user.id) and str(user.role) not in admin_roles:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Brak dostępu")
 
     result = await db.execute(

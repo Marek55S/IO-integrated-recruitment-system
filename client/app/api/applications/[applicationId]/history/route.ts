@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(
+export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ applicationId: string }> },
 ) {
@@ -10,15 +10,11 @@ export async function POST(
   const token = cookieStore.get('auth_token')?.value;
 
   const apiUrl = process.env.API_URL || 'http://localhost:8000/api/v1';
-  const res = await fetch(`${apiUrl}/applications/${applicationId}/cancel`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
+  const res = await fetch(`${apiUrl}/applications/${applicationId}/history`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
     cache: 'no-store',
   });
 
-  const data = await res.json().catch(() => ({}));
+  const data = await res.json().catch(() => []);
   return NextResponse.json(data, { status: res.status });
 }

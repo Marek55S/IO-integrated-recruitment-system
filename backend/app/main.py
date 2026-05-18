@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.routers import auth, programs, applications, documents, profile, payments, admin, notifications
+from app.routers import auth, programs, applications, documents, profile, payments, admin, notifications, surveys, doc_generator
 
 
 @asynccontextmanager
@@ -42,6 +42,8 @@ app.include_router(profile.router, prefix=PREFIX)
 app.include_router(payments.router, prefix=PREFIX)
 app.include_router(admin.router, prefix=PREFIX)
 app.include_router(notifications.router, prefix=PREFIX)
+app.include_router(surveys.router, prefix=PREFIX)
+app.include_router(doc_generator.router, prefix=PREFIX)
 
 
 @app.get("/")

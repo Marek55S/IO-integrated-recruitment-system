@@ -14,6 +14,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
+import { ApplicationManageModal } from '@/components/application-manage-modal';
 import { SubmissionPreview } from '@/components/submission-preview';
 import {
   APPLICATION_STATUS_LABELS,
@@ -370,6 +371,7 @@ export function ApplicationsTable({
     null,
   );
   const [reviewApp, setReviewApp] = useState<BackendApplication | null>(null);
+  const [manageApp, setManageApp] = useState<BackendApplication | null>(null);
 
   const handleReviewAction = async (id: string, action: ReviewAction) => {
     try {
@@ -446,12 +448,19 @@ export function ApplicationsTable({
               Szczegoly
             </button>
 
+            <button
+              type="button"
+              onClick={() => setManageApp(row.original)}
+              className="rounded bg-blue-600 px-2 py-1 text-xs font-medium text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
+              Zarządzaj wnioskiem
+            </button>
+
             {row.original.status === 'payment_confirmed' ? (
               <button
                 type="button"
                 onClick={() => setReviewApp(row.original)}
                 className="rounded bg-amber-600 px-2 py-1 text-xs font-medium text-white transition-colors hover:bg-amber-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400">
-                Zarządzaj wnioskiem
+                Zmień status
               </button>
             ) : null}
           </div>
@@ -617,6 +626,17 @@ export function ApplicationsTable({
         onAction={handleReviewAction}
         onClose={() => setReviewApp(null)}
       />
+
+      {manageApp && (
+        <ApplicationManageModal
+          app={{
+            ...manageApp,
+            program_id: manageApp.edition_id, // Placeholder (used for linking to program)
+          }}
+          onClose={() => setManageApp(null)}
+          onCancel={() => {}}
+        />
+      )}
     </>
   );
 }

@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import { buttonVariants } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/theme-toggle';
-import { Bell, BookOpen, UserRound, X } from 'lucide-react';
+import { Bell, BookOpen, ClipboardList, UserRound, X } from 'lucide-react';
 
 type Notification = {
   id: string;
@@ -191,9 +191,16 @@ function SiteHeader() {
           {logoImg}
         </Link>
 
+        {/* ThemeToggle widoczny w obszarze admina */}
+        {isAdminArea && (
+          <div className="absolute top-1/2 right-4 -translate-y-1/2">
+            <ThemeToggle />
+          </div>
+        )}
+
         {showNavIcons && (
           <div className="absolute top-1/2 right-4 -translate-y-1/2 flex items-center gap-1">
-            {/* Przełącznik motywu */}
+            {/* Przełącznik motywu — kandydaci */}
             <ThemeToggle />
 
             {/* Materiały */}
@@ -208,6 +215,20 @@ function SiteHeader() {
               })}
             >
               <BookOpen className="size-6" />
+            </Link>
+
+            {/* Ankieta satysfakcji */}
+            <Link
+              href="/survey"
+              aria-label="Ankieta satysfakcji"
+              title="Wypełnij ankietę"
+              className={buttonVariants({
+                variant: 'ghost',
+                size: 'icon',
+                className: 'text-white hover:bg-white/10 hover:text-white',
+              })}
+            >
+              <ClipboardList className="size-6" />
             </Link>
 
             {/* Powiadomienia */}

@@ -5,12 +5,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import type { ProfileViewConfig } from '@io/content-api';
+import { ApplicationManageModal } from '@/components/application-manage-modal';
 import { SubmissionPreview } from '@/components/submission-preview';
 import { Button } from '@/components/ui/button';
 import { getSubmissionFiles } from '@/lib/file-session-store';
 import {
   FileText, UserRound, GraduationCap, ExternalLink, Clock,
-  CheckCircle, XCircle, AlertCircle, HourglassIcon, LogOut,
+  CheckCircle, XCircle, AlertCircle, HourglassIcon, LogOut, Settings2,
 } from 'lucide-react';
 
 type FormValues = Record<string, unknown>;
@@ -33,6 +34,7 @@ type Application = {
   created_at: string;
   updated_at: string;
   program_name: string | null;
+  program_id: string | null;
   edition_name: string | null;
   form_data: Record<string, unknown>;
 };
@@ -62,96 +64,113 @@ function ApplicationCard({ app, onCancel }: { app: Application; onCancel: () => 
   const cfg = STATUS_CONFIG[app.status] ?? { label: app.status, color: 'text-white/50 bg-white/10 border-white/10', icon: Clock };
   const Icon = cfg.icon;
   const isCancellable = !['cancelled', 'rejected', 'studies_not_launched', 'accepted'].includes(app.status);
-  const programId = app.form_data?.program_id as string | undefined;
+  const programId = (app.program_id as string | undefined) ?? (app.form_data?.program_id as string | undefined);
+  const [showManage, setShowManage] = useState(false);
+
+  const appForModal = {
+    ...app,
+    program_id: programId ?? null,
+  };
 
   return (
-    <li className={`rounded-xl border p-5 space-y-4 transition-colors ${
-      app.status === 'accepted'
-        ? 'border-green-500/30 bg-green-950/15'
-        : app.status === 'cancelled' || app.status === 'rejected'
-        ? 'border-white/10 bg-white/[0.02] opacity-70'
-        : 'border-white/10 bg-white/[0.04]'
-    }`}>
-      {/* Header */}
-      <div className="flex items-start justify-between gap-3">
-        <div className="space-y-1 min-w-0">
-          <h3 className="font-semibold text-white text-sm leading-tight">
-            {app.program_name ?? 'Nieznany kierunek'}
-          </h3>
-          {app.edition_name && (
-            <p className="text-xs text-white/40">{app.edition_name}</p>
+    <>
+      <li className={`rounded-xl border p-5 space-y-4 transition-colors ${
+        app.status === 'accepted'
+          ? 'border-green-500/30 bg-green-950/15'
+          : app.status === 'cancelled' || app.status === 'rejected'
+          ? 'border-white/10 bg-white/[0.02] opacity-70'
+          : 'border-white/10 bg-white/[0.04]'
+      }`}>
+        {/* Header */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-1 min-w-0">
+            <h3 className="font-semibold text-white text-sm leading-tight">
+              {app.program_name ?? 'Nieznany kierunek'}
+            </h3>
+            {app.edition_name && (
+              <p className="text-xs text-white/40">{app.edition_name}</p>
+            )}
+          </div>
+          <span className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${cfg.color}`}>
+            <Icon className="size-3" />
+            {cfg.label}
+          </span>
+        </div>
+
+        {/* Dates */}
+        <div className="flex gap-4 text-[11px] text-white/40">
+          <span>Złożono: <span className="text-white/60">{formatDate(app.submitted_at ?? app.created_at)}</span></span>
+          <span>Aktualizacja: <span className="text-white/60">{formatDate(app.updated_at)}</span></span>
+        </div>
+
+        {/* Special info for accepted */}
+        {app.status === 'accepted' && (
+          <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-3 space-y-2">
+            <p className="text-xs font-medium text-green-300">🎉 Gratulacje! Zostałeś przyjęty na studia.</p>
+            <div className="flex gap-2 flex-wrap">
+              <a
+                href="https://upel.agh.edu.pl"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 rounded-lg bg-green-700 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-600 transition-colors"
+              >
+                <ExternalLink className="size-3" /> Platforma uPel
+              </a>
+              <Link
+                href="/materials"
+                className="inline-flex items-center gap-1 rounded-lg border border-green-500/30 px-3 py-1.5 text-xs font-medium text-green-300 hover:bg-green-500/10 transition-colors"
+              >
+                Materiały i zasoby
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Actions */}
+        <div className="flex flex-wrap gap-2 border-t border-white/5 pt-3">
+          {/* PRIMARY: Manage button — always visible */}
+          <button
+            onClick={() => setShowManage(true)}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-500 transition-colors"
+          >
+            <Settings2 className="size-3.5" />
+            Zarządzaj wnioskiem
+          </button>
+
+          {programId && (
+            <Link href={`/programs/${programId}`}>
+              <button className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/70 hover:bg-white/10 hover:text-white transition-colors">
+                <GraduationCap className="size-3.5" />
+                Kierunek
+              </button>
+            </Link>
+          )}
+          {app.status === 'draft' && (
+            <Link href={programId ? `/form?programId=${programId}` : '/form'}>
+              <button className="inline-flex items-center gap-1.5 rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-500 transition-colors">
+                Dokończ wniosek
+              </button>
+            </Link>
+          )}
+          {app.status === 'documents_incomplete' && (
+            <Link href="/form">
+              <button className="inline-flex items-center gap-1.5 rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-500 transition-colors">
+                Uzupełnij dokumenty
+              </button>
+            </Link>
           )}
         </div>
-        <span className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${cfg.color}`}>
-          <Icon className="size-3" />
-          {cfg.label}
-        </span>
-      </div>
+      </li>
 
-      {/* Dates */}
-      <div className="flex gap-4 text-[11px] text-white/40">
-        <span>Złożono: <span className="text-white/60">{formatDate(app.submitted_at ?? app.created_at)}</span></span>
-        <span>Aktualizacja: <span className="text-white/60">{formatDate(app.updated_at)}</span></span>
-      </div>
-
-      {/* Special info for accepted */}
-      {app.status === 'accepted' && (
-        <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-3 space-y-2">
-          <p className="text-xs font-medium text-green-300">🎉 Gratulacje! Zostałeś przyjęty na studia.</p>
-          <div className="flex gap-2 flex-wrap">
-            <a
-              href="https://upel.agh.edu.pl"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 rounded-lg bg-green-700 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-600 transition-colors"
-            >
-              <ExternalLink className="size-3" /> Platforma uPel
-            </a>
-            <Link
-              href="/materials"
-              className="inline-flex items-center gap-1 rounded-lg border border-green-500/30 px-3 py-1.5 text-xs font-medium text-green-300 hover:bg-green-500/10 transition-colors"
-            >
-              Materiały i zasoby
-            </Link>
-          </div>
-        </div>
+      {/* Manage modal */}
+      {showManage && (
+        <ApplicationManageModal
+          app={appForModal}
+          onClose={() => setShowManage(false)}
+          onCancel={onCancel}
+        />
       )}
-
-      {/* Actions */}
-      <div className="flex flex-wrap gap-2 border-t border-white/5 pt-3">
-        {programId && (
-          <Link href={`/programs/${programId}`}>
-            <button className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/70 hover:bg-white/10 hover:text-white transition-colors">
-              <GraduationCap className="size-3.5" />
-              Kierunek
-            </button>
-          </Link>
-        )}
-        {app.status === 'draft' && (
-          <Link href={programId ? `/form?programId=${programId}` : '/form'}>
-            <button className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-500 transition-colors">
-              Dokończ wniosek
-            </button>
-          </Link>
-        )}
-        {app.status === 'documents_incomplete' && (
-          <Link href="/form">
-            <button className="inline-flex items-center gap-1.5 rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-500 transition-colors">
-              Uzupełnij dokumenty
-            </button>
-          </Link>
-        )}
-        {isCancellable && (
-          <button
-            onClick={onCancel}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/15 transition-colors"
-          >
-            <XCircle className="size-3.5" />
-            Anuluj wniosek
-          </button>
-        )}
-      </div>
-    </li>
+    </>
   );
 }
 
