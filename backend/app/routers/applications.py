@@ -30,8 +30,10 @@ def _to_response(app: ProgramApplication) -> ApplicationResponse:
         created_at=app.created_at,
         updated_at=app.updated_at,
         program_name=edition.program.name if edition and edition.program else None,
+        program_id=edition.program_id if edition else None,
         edition_name=edition.edition_name if edition else None,
     )
+
 
 
 @router.get("", response_model=list[ApplicationResponse])

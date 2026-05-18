@@ -6,9 +6,20 @@ from app.database import get_db
 from app.dependencies import require_candidate
 from app.models.user import Address, CandidateProfile, EducationRecord, EmergencyContact, User
 from app.schemas.user import AddressSchema, EducationSchema, EmergencyContactSchema, ProfileResponse, ProfileUpdate
-from app.utils.security import encrypt_sensitive
+from app.utils.security import decrypt_sensitive, encrypt_sensitive
 
 router = APIRouter(prefix="/profile", tags=["profile"])
+
+
+def _safe_decrypt(value: str | None) -> str | None:
+    """Decrypt a value encrypted with AES-256-GCM. Falls back to plain text for legacy values."""
+    if not value:
+        return value
+    try:
+        return decrypt_sensitive(value)
+    except Exception:
+        # Value was stored as plain text (legacy) — return as-is
+        return value
 
 
 @router.get("", response_model=ProfileResponse)
@@ -25,7 +36,7 @@ async def get_profile(user: User = Depends(require_candidate)):
         first_name=profile.first_name,
         last_name=profile.last_name,
         family_name=profile.family_name,
-        pesel=profile.pesel,  # encrypted value — frontend handles display
+        pesel=_safe_decrypt(profile.pesel),  # always return plain-text PESEL
         birth_date=profile.birth_date,
         birth_place=profile.birth_place,
         citizenship=profile.citizenship,

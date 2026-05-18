@@ -11,7 +11,7 @@ from app.models.user import Base
 class Program(Base):
     __tablename__ = "programs"
 
-    id = Column(String(100), primary_key=True)
+    id = Column(String(255), primary_key=True)
     name = Column(String(255), nullable=False)
     description = Column(Text)
     image_src = Column(String(500))
@@ -25,7 +25,7 @@ class ProgramEdition(Base):
     __tablename__ = "program_editions"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    program_id = Column(String(100), ForeignKey("programs.id"), nullable=False)
+    program_id = Column(String(255), ForeignKey("programs.id"), nullable=False)
     edition_name = Column(String(100), nullable=False)
     recruitment_start = Column(Date)
     recruitment_end = Column(Date)

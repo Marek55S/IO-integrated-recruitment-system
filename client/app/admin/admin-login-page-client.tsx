@@ -1,6 +1,7 @@
 'use client';
 
 import { FormEvent, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
@@ -9,11 +10,12 @@ import { Label } from '@/components/ui/label';
 
 export function AdminLoginPageClient() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('admin@agh.edu.pl');
+  const [password, setPassword] = useState('admin123');
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = (event: FormEvent) => {
+  const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     if (!email || !password) {
@@ -22,12 +24,66 @@ export function AdminLoginPageClient() {
     }
 
     setError(null);
-    router.push('/admin/dashboard');
+    setIsLoading(true);
+
+    try {
+      // Logowanie przez backend
+      const loginRes = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const loginData = await loginRes.json();
+
+      if (!loginRes.ok) {
+        setError(loginData.error || 'Nieprawidłowe dane logowania.');
+        setIsLoading(false);
+        return;
+      }
+
+      // Sprawdzamy rolę użytkownika
+      const meRes = await fetch('/api/auth/me');
+      if (!meRes.ok) {
+        setError('Nie udało się zweryfikować uprawnień.');
+        setIsLoading(false);
+        return;
+      }
+
+      const meData = await meRes.json();
+      const adminRoles = ['admin_coordinator', 'program_director', 'cok_staff', 'it_admin'];
+
+      if (!adminRoles.includes(meData.role)) {
+        setError('Brak uprawnień administratora. To konto nie ma roli admina.');
+        // Usuwamy cookie bo to nie jest admin
+        document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        setIsLoading(false);
+        return;
+      }
+
+      router.push('/admin/dashboard');
+    } catch (err) {
+      setError('Wystąpił błąd podczas połączenia z serwerem.');
+      setIsLoading(false);
+    }
   };
 
   return (
     <main className="flex min-h-[calc(100vh-4.25rem)] items-center justify-center px-4 py-10">
       <section className="w-full max-w-md rounded-xl border border-amber-500/25 bg-card p-6 shadow-md md:p-8">
+        <div className="mb-6 flex gap-2 border-b border-amber-500/20 pb-4">
+          <Link
+            href="/login"
+            className="flex-1 rounded-md px-3 py-1.5 text-center text-sm font-medium text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground">
+            Kandydat
+          </Link>
+          <Link
+            href="/admin"
+            className="flex-1 rounded-md bg-amber-500/10 px-3 py-1.5 text-center text-sm font-medium text-amber-600 dark:text-amber-400">
+            Administrator
+          </Link>
+        </div>
+
         <div className="mb-4 flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
             <svg
@@ -61,6 +117,7 @@ export function AdminLoginPageClient() {
               value={email}
               onChange={(event) => setEmail(event.currentTarget.value)}
               placeholder="admin@uczelnia.pl"
+              disabled={isLoading}
             />
           </div>
 
@@ -72,6 +129,7 @@ export function AdminLoginPageClient() {
               value={password}
               onChange={(event) => setPassword(event.currentTarget.value)}
               placeholder="••••••••"
+              disabled={isLoading}
             />
           </div>
 
@@ -79,10 +137,22 @@ export function AdminLoginPageClient() {
 
           <button
             type="submit"
-            className="inline-flex w-full items-center justify-center rounded-md bg-amber-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-amber-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 dark:bg-amber-700 dark:hover:bg-amber-600">
-            Zaloguj
+            disabled={isLoading}
+            className="inline-flex w-full items-center justify-center rounded-md bg-amber-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-amber-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:pointer-events-none disabled:opacity-50 dark:bg-amber-700 dark:hover:bg-amber-600">
+            {isLoading ? 'Logowanie...' : 'Zaloguj'}
           </button>
         </form>
+
+        <p className="mt-4 text-center text-xs text-muted-foreground">
+          Dane testowe: admin@agh.edu.pl / admin123
+        </p>
+        <p className="text-center text-sm text-muted-foreground">
+          <a
+            href="/forgot-password"
+            className="text-muted-foreground underline-offset-4 hover:underline hover:text-foreground transition-colors text-xs">
+            Zapomniałem hasła
+          </a>
+        </p>
       </section>
     </main>
   );

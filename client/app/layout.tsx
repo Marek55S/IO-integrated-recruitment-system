@@ -21,13 +21,33 @@ export const metadata: Metadata = {
     'System rekrutacji na studia — styl zgodny z witryną Wydziału Informatyki AGH.',
 };
 
+// Anti-flash script: reads theme from localStorage BEFORE first paint
+const themeScript = `
+(function() {
+  try {
+    var theme = localStorage.getItem('theme');
+    if (theme === 'light') {
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+    }
+  } catch(e) {
+    document.documentElement.classList.add('dark');
+  }
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
   return (
-    <html lang="pl" className={cn('font-sans', sourceSans.variable)}>
+    <html lang="pl" className={cn('dark font-sans', sourceSans.variable)}>
+      <head>
+        {/* Inline script to prevent flash of wrong theme */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         <PageBackground />
         <div className="relative z-[1]">

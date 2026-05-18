@@ -1,36 +1,56 @@
 import Link from 'next/link';
 
-import { getPrograms } from '@/mockedBackend/programs';
+import { AdminBroadcastForm } from './admin-broadcast-form';
+import { AdminLogoutButton } from './admin-logout-button';
 
-export default function AdminDashboardPage() {
-  const programs = getPrograms();
+
+async function getPrograms() {
+  try {
+    const apiUrl = process.env.API_URL || 'http://localhost:8000/api/v1';
+    const res = await fetch(`${apiUrl}/programs`, { cache: 'no-store' });
+    if (!res.ok) return [];
+    return await res.json();
+  } catch (error) {
+    console.error('Błąd pobierania kierunków:', error);
+    return [];
+  }
+}
+
+export default async function AdminDashboardPage() {
+  const programs = await getPrograms();
 
   return (
     <main className="min-h-screen bg-transparent px-4 py-8 md:px-6 md:py-10">
       <div className="mx-auto max-w-6xl space-y-6">
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-3 w-3"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2.5}
-              aria-hidden="true">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
-              />
-            </svg>
-            Panel administratora
-          </span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-3 w-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+                aria-hidden="true">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
+                />
+              </svg>
+              Panel administratora
+            </span>
+          </div>
+
+          <AdminLogoutButton />
         </div>
 
         <h1 className="text-2xl font-semibold tracking-tight text-amber-700 dark:text-amber-400">
           Kierunki studiów
         </h1>
+
+        <AdminBroadcastForm />
 
         <ul className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {programs.map((program) => (

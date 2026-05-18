@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     # ── Database ──
     DATABASE_URL: str = Field(
-        default="postgresql+asyncpg://user_admin:super_secret_password@localhost:5432/recruitment_system",
+        default="postgresql+asyncpg://user_admin:super_secret_password@localhost:5434/recruitment_system",
         description="PostgreSQL connection string"
     )
 

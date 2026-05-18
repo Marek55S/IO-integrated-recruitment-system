@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -24,11 +25,13 @@ def _to_detail(a: ProgramApplication) -> ApplicationDetail:
         status=a.status, form_data=a.form_data or {},
         submitted_at=a.submitted_at, created_at=a.created_at, updated_at=a.updated_at,
         program_name=a.edition.program.name if a.edition and a.edition.program else None,
+        program_id=a.edition.program_id if a.edition else None,
         edition_name=a.edition.edition_name if a.edition else None,
         candidate_first_name=a.user.profile.first_name if a.user and a.user.profile else None,
         candidate_last_name=a.user.profile.last_name if a.user and a.user.profile else None,
         candidate_email=a.user.email if a.user else None,
     )
+
 
 
 @router.get("/applications", response_model=ApplicationListResponse)
@@ -160,3 +163,37 @@ async def admin_change_status(
     await db.commit()
     await db.refresh(app)
     return _to_detail(app)
+
+
+# ── Broadcast notification to all candidates ──────────────────
+
+class BroadcastRequest(BaseModel):
+    title: str
+    body: str
+
+
+@router.post("/notifications/broadcast", status_code=201)
+async def broadcast_notification(
+    payload: BroadcastRequest,
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Send a system notification to ALL active candidates."""
+    result = await db.execute(
+        select(User).where(User.role == "candidate", User.is_active.is_(True))
+    )
+    candidates = result.scalars().all()
+
+    for candidate in candidates:
+        db.add(Notification(
+            user_id=candidate.id,
+            type="status_change",  # reusing enum — generic broadcast
+            title=payload.title,
+            body=payload.body,
+            channel="system",
+        ))
+
+    await db.commit()
+    return {"sent_to": len(candidates)}
+
+

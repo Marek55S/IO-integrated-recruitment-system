@@ -16,6 +16,7 @@ body {
   --wi-blue: #2563eb;
   --wi-navy: #1e3a5f;
 
+  /* ── LIGHT MODE ── */
   --background: #eef2f7;
   --foreground: #0f172a;
   --card: #ffffff;
@@ -79,14 +80,14 @@ body {
   --sidebar-ring: #60a5fa;
 }
 
-/* Tekst na tle strony (poza kartami) — jak na stronach wydziałowych: sans, granat / szary */
+/* Tekst na tle strony — dostosowany do aktywnego trybu */
 .font-outside-card-title {
-  color: #0f172a;
+  color: #0f172a; /* light mode */
   letter-spacing: -0.025em;
 }
 
 .font-outside-card-body {
-  color: #475569;
+  color: #475569; /* light mode */
 }
 
 .dark .font-outside-card-title {
@@ -139,7 +140,7 @@ body {
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Tło strony — jasne, „akademickie”, delikatny błękit jak na stronach WI */
+/* Tło strony — oryginalne jasne w trybie jasnym, granatowe w trybie ciemnym */
 .wi-page-bg__base {
   background-color: var(--background);
   background-image:
@@ -296,3 +297,54 @@ body {
     @apply text-foreground relative isolate min-h-full bg-transparent antialiased;
   }
 }
+/* ╔═══════════════════════════════════════════════════════
+   LIGHT MODE OVERRIDES
+   Scope: html:not(.dark) main  — dotyczy tylko treści strony, nie headera
+   Elementy z własnym ciemnym tłem (bg-[#0b...], bg-black) mają wyjątek.
+╗ */
+
+/* ─ TEXT white → dark ─────────────────────────────────────── */
+html:not(.dark) main .text-white               { color: #0f172a !important; }
+html:not(.dark) main .text-white\/80           { color: rgb(15 23 42 / 0.8) !important; }
+html:not(.dark) main .text-white\/70           { color: rgb(15 23 42 / 0.7) !important; }
+html:not(.dark) main .text-white\/65           { color: rgb(15 23 42 / 0.65) !important; }
+html:not(.dark) main .text-white\/60           { color: rgb(15 23 42 / 0.6) !important; }
+html:not(.dark) main .text-white\/55           { color: rgb(15 23 42 / 0.55) !important; }
+html:not(.dark) main .text-white\/50           { color: rgb(15 23 42 / 0.5) !important; }
+html:not(.dark) main .text-white\/40           { color: rgb(15 23 42 / 0.4) !important; }
+html:not(.dark) main .text-white\/30           { color: rgb(15 23 42 / 0.3) !important; }
+html:not(.dark) main .text-white\/20           { color: rgb(15 23 42 / 0.2) !important; }
+
+/* ─ EXCEPTIONS: white text stays white inside dark-bg containers ─ */
+html:not(.dark) main [class*="bg-[#0"] .text-white,
+html:not(.dark) main [class*="bg-[#0"] .text-white\/80,
+html:not(.dark) main [class*="bg-[#0"] .text-white\/70,
+html:not(.dark) main [class*="bg-[#0"] .text-white\/65,
+html:not(.dark) main [class*="bg-[#0"] .text-white\/60,
+html:not(.dark) main [class*="bg-[#0"] .text-white\/55,
+html:not(.dark) main [class*="bg-[#0"] .text-white\/50,
+html:not(.dark) main [class*="bg-[#0"] .text-white\/40,
+html:not(.dark) main [class*="bg-[#0"] .text-white\/30,
+html:not(.dark) main [class*="bg-[#0"] .text-white\/20,
+html:not(.dark) main [class*="bg-black"] .text-white,
+html:not(.dark) main [class*="bg-black"] .text-white\/60  { color: unset !important; }
+
+/* ─ BORDERS white\/N → dark ─────────────────────────────── */
+html:not(.dark) main .border-white\/5          { border-color: rgb(15 23 42 / 0.07) !important; }
+html:not(.dark) main .border-white\/10         { border-color: rgb(15 23 42 / 0.12) !important; }
+html:not(.dark) main .border-white\/15         { border-color: rgb(15 23 42 / 0.15) !important; }
+html:not(.dark) main .border-white\/20         { border-color: rgb(15 23 42 / 0.2) !important; }
+html:not(.dark) main .divide-white\/5 > * + * { border-color: rgb(15 23 42 / 0.07) !important; }
+
+/* ─ BACKGROUNDS white\/N → dark equivalent ─────────────────── */
+html:not(.dark) main .bg-white\/\[0\.02\]      { background-color: rgb(15 23 42 / 0.03) !important; }
+html:not(.dark) main .bg-white\/\[0\.03\]      { background-color: rgb(15 23 42 / 0.04) !important; }
+html:not(.dark) main .bg-white\/\[0\.04\]      { background-color: rgb(15 23 42 / 0.05) !important; }
+html:not(.dark) main .bg-white\/5              { background-color: rgb(15 23 42 / 0.05) !important; }
+html:not(.dark) main .bg-white\/10             { background-color: rgb(15 23 42 / 0.08) !important; }
+html:not(.dark) main .bg-white\/\[0\.07\]      { background-color: rgb(15 23 42 / 0.07) !important; }
+html:not(.dark) main .bg-white\/\[0\.12\]      { background-color: rgb(15 23 42 / 0.1) !important; }
+
+/* hover states in light mode */
+html:not(.dark) main .hover\:bg-white\/5:hover   { background-color: rgb(15 23 42 / 0.05) !important; }
+html:not(.dark) main .hover\:bg-white\/10:hover  { background-color: rgb(15 23 42 / 0.08) !important; }

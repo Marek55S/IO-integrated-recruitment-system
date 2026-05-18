@@ -21,6 +21,7 @@ class ApplicationResponse(BaseModel):
 
     # Enriched fields (joined)
     program_name: str | None = None
+    program_id: str | None = None
     edition_name: str | None = None
 
     model_config = {"from_attributes": True}
