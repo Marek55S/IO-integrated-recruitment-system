@@ -1,0 +1,38 @@
+program_id: systemy-baz-danych
+title: Systemy baz danych
+description: 'Studia podyplomowe z zakresu projektowania, administrowania i optymalizacji
+  relacyjnych i nierelacyjnych baz danych. Program obejmuje SQL, PostgreSQL, MongoDB,
+  hurtownie danych, Big Data oraz technologie chmurowe. Skierowany do administratorow
+  baz danych, programistow i architektow systemow.
+
+  '
+image_src: /programs/systemy-baz-danych.jpg
+form:
+  form_id: recruitment-program-systemy-baz-danych
+  version: '1.0'
+  screens:
+  - id: 1
+    title: Formularz rekrutacyjny
+    subtitle: Uzupełnij zgłoszenie na kierunek Systemy baz danych.
+    primary_action: program.defaultSubmit
+    fields:
+    - id: candidate_first_name
+      type: text
+      label: Imię
+      placeholder: np. Jan
+      required: true
+    - id: candidate_last_name
+      type: text
+      label: Nazwisko
+      placeholder: np. Kowalski
+      required: true
+    - id: candidate_email
+      type: email
+      label: E-mail kontaktowy
+      placeholder: kandydat@example.com
+      required: true
+    - id: study_mode_confirm
+      type: checkbox
+      label: Potwierdzam zainteresowanie studiami (hybrydowy)
+      required: true
+    button_text: Wyślij zgłoszenie

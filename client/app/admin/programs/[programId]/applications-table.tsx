@@ -14,13 +14,30 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
+import { ApplicationManageModal } from '@/components/application-manage-modal';
 import { SubmissionPreview } from '@/components/submission-preview';
 import {
-  type AdminApplication,
   APPLICATION_STATUS_LABELS,
   type ApplicationStatus,
   applicationStatusColor,
 } from '@/mockedBackend/applications-admin';
+
+// Mapowanie typu backendowego do celów tabeli
+export type BackendApplication = {
+  id: string;
+  user_id: string;
+  edition_id: string;
+  status: ApplicationStatus;
+  form_data: Record<string, any>;
+  submitted_at: string;
+  created_at: string;
+  updated_at: string;
+  program_name: string | null;
+  edition_name: string | null;
+  candidate_first_name: string | null;
+  candidate_last_name: string | null;
+  candidate_email: string | null;
+};
 
 function formatDate(iso: string) {
   try {
@@ -88,7 +105,7 @@ function SortIcon({ direction }: { direction: 'asc' | 'desc' | false }) {
   );
 }
 
-function exportToCsv(rows: AdminApplication[], filename: string) {
+function exportToCsv(rows: BackendApplication[], filename: string) {
   const str = (v: unknown) => `"${String(v ?? '').replace(/"/g, '""')}"`;
 
   const headers = [
@@ -125,12 +142,12 @@ function exportToCsv(rows: AdminApplication[], filename: string) {
   ];
 
   const lines = rows.map((r) => {
-    const f = r.formData;
+    const f = r.form_data;
     return [
       f.first_name,
       f.last_name,
       f.family_name,
-      r.candidate.email,
+      r.candidate_email,
       f.phone,
       f.pesel,
       f.birth_date,
@@ -156,7 +173,7 @@ function exportToCsv(rows: AdminApplication[], filename: string) {
       f.emergency_email,
       f.emergency_phone,
       APPLICATION_STATUS_LABELS[r.status],
-      formatDate(r.submittedAt),
+      formatDate(r.submitted_at),
     ]
       .map(str)
       .join(',');
@@ -177,7 +194,7 @@ function CandidateModal({
   config,
   onClose,
 }: {
-  application: AdminApplication | null;
+  application: BackendApplication | null;
   config: SubmissionDisplayConfig;
   onClose: () => void;
 }) {
@@ -193,7 +210,7 @@ function CandidateModal({
           <div className="flex shrink-0 items-center justify-between border-b border-border px-5 py-3">
             <Dialog.Title className="font-semibold text-foreground">
               {application
-                ? `${application.candidate.firstName} ${application.candidate.lastName}`
+                ? `${application.candidate_first_name} ${application.candidate_last_name}`
                 : ''}
             </Dialog.Title>
             <Dialog.Close
@@ -219,7 +236,7 @@ function CandidateModal({
           <div className="flex-1 overflow-y-auto p-5">
             {application ? (
               <SubmissionPreview
-                values={application.formData}
+                values={application.form_data}
                 config={config}
                 files={[]}
               />
@@ -238,7 +255,7 @@ function ReviewModal({
   onAction,
   onClose,
 }: {
-  application: AdminApplication | null;
+  application: BackendApplication | null;
   onAction: (id: string, action: ReviewAction) => void;
   onClose: () => void;
 }) {
@@ -301,7 +318,8 @@ function ReviewModal({
 
           {application ? (
             <p className="mt-1 text-sm text-muted-foreground">
-              {application.candidate.firstName} {application.candidate.lastName}
+              {application.candidate_first_name}{' '}
+              {application.candidate_last_name}
             </p>
           ) : null}
 
@@ -329,10 +347,10 @@ function ReviewModal({
 const ALL_STATUSES = Object.keys(
   APPLICATION_STATUS_LABELS,
 ) as ApplicationStatus[];
-const columnHelper = createColumnHelper<AdminApplication>();
+const columnHelper = createColumnHelper<BackendApplication>();
 
 type ApplicationsTableProps = {
-  applications: AdminApplication[];
+  applications: BackendApplication[];
   previewConfig: SubmissionDisplayConfig;
   programName: string;
 };
@@ -344,18 +362,38 @@ export function ApplicationsTable({
 }: ApplicationsTableProps) {
   const [applications, setApplications] = useState(initialApplications);
   const [sorting, setSorting] = useState<SortingState>([
-    { id: 'submittedAt', desc: true },
+    { id: 'submitted_at', desc: true },
   ]);
   const [statusFilter, setStatusFilter] = useState<ApplicationStatus | 'all'>(
     'all',
   );
-  const [selectedApp, setSelectedApp] = useState<AdminApplication | null>(null);
-  const [reviewApp, setReviewApp] = useState<AdminApplication | null>(null);
+  const [selectedApp, setSelectedApp] = useState<BackendApplication | null>(
+    null,
+  );
+  const [reviewApp, setReviewApp] = useState<BackendApplication | null>(null);
+  const [manageApp, setManageApp] = useState<BackendApplication | null>(null);
 
-  const handleReviewAction = (id: string, action: ReviewAction) => {
-    setApplications((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, status: action } : a)),
-    );
+  const handleReviewAction = async (id: string, action: ReviewAction) => {
+    try {
+      const response = await fetch(`/api/admin/applications/${id}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ new_status: action }),
+      });
+
+      if (!response.ok) {
+        console.error('Failed to change status');
+        return;
+      }
+
+      setApplications((prev) =>
+        prev.map((a) => (a.id === id ? { ...a, status: action } : a)),
+      );
+    } catch (error) {
+      console.error('Error changing status:', error);
+    }
   };
 
   const filtered = useMemo(
@@ -368,12 +406,12 @@ export function ApplicationsTable({
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor((row) => row.candidate.lastName, {
+      columnHelper.accessor((row) => row.candidate_last_name, {
         id: 'lastName',
         header: 'Nazwisko',
         enableSorting: false,
       }),
-      columnHelper.accessor((row) => row.candidate.firstName, {
+      columnHelper.accessor((row) => row.candidate_first_name, {
         id: 'firstName',
         header: 'Imie',
         enableSorting: false,
@@ -388,7 +426,7 @@ export function ApplicationsTable({
             'pl',
           ),
       }),
-      columnHelper.accessor('submittedAt', {
+      columnHelper.accessor('submitted_at', {
         header: 'Data zlozenia',
         enableSorting: true,
         cell: (info) => (
@@ -410,12 +448,19 @@ export function ApplicationsTable({
               Szczegoly
             </button>
 
+            <button
+              type="button"
+              onClick={() => setManageApp(row.original)}
+              className="rounded bg-blue-600 px-2 py-1 text-xs font-medium text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
+              Zarządzaj wnioskiem
+            </button>
+
             {row.original.status === 'payment_confirmed' ? (
               <button
                 type="button"
                 onClick={() => setReviewApp(row.original)}
                 className="rounded bg-amber-600 px-2 py-1 text-xs font-medium text-white transition-colors hover:bg-amber-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400">
-                Zarządzaj wnioskiem
+                Zmień status
               </button>
             ) : null}
           </div>
@@ -581,6 +626,18 @@ export function ApplicationsTable({
         onAction={handleReviewAction}
         onClose={() => setReviewApp(null)}
       />
+
+      {manageApp && (
+        <ApplicationManageModal
+          app={{
+            ...manageApp,
+            program_id: manageApp.edition_id, // Placeholder (used for linking to program)
+          }}
+          onClose={() => setManageApp(null)}
+          isAdmin={true}
+          onReject={() => handleReviewAction(manageApp.id, 'rejected')}
+        />
+      )}
     </>
   );
 }

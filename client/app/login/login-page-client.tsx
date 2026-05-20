@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { RECRUITMENT_FORM_VALUES_STORAGE_KEY } from '@/lib/recruitment-storage';
+
 
 type LoginPageClientProps = {
   validProgramIds: string[];
@@ -25,7 +25,7 @@ function LoginForm({ validProgramIds }: LoginPageClientProps) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  const onSubmit = (event: FormEvent) => {
+  const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     if (!email || !password) {
@@ -35,26 +35,71 @@ function LoginForm({ validProgramIds }: LoginPageClientProps) {
 
     setError(null);
 
-    const hasCompletedForm = !!localStorage.getItem(
-      RECRUITMENT_FORM_VALUES_STORAGE_KEY,
-    );
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (hasCompletedForm && validProgramId) {
-      router.push(`/programs/${validProgramId}`);
-    } else if (hasCompletedForm) {
-      router.push('/');
-    } else if (validProgramId) {
-      router.push(`/form?programId=${validProgramId}`);
-    } else {
-      router.push('/form');
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Nieprawidłowe dane logowania.');
+        return;
+      }
+
+      // Sprawdzamy czy profil jest kompletny
+      let profileComplete = false;
+      try {
+        const profileRes = await fetch('/api/profile');
+        if (profileRes.ok) {
+          const profile = await profileRes.json();
+          // Sprawdzamy kluczowe pola profilu
+          profileComplete = !!(
+            profile.birth_date &&
+            profile.birth_place &&
+            profile.citizenship &&
+            profile.phone
+          );
+        }
+      } catch {
+        // Jeśli nie uda się sprawdzić, zakładamy niekompletny
+      }
+
+      if (profileComplete) {
+        // Profil kompletny — strona główna
+        router.push('/');
+      } else if (validProgramId) {
+        // Profil niekompletny, ale wybrał kierunek — formularz z kierunkiem
+        router.push(`/form?programId=${validProgramId}`);
+      } else {
+        // Profil niekompletny — formularz
+        router.push('/form');
+      }
+    } catch (err) {
+      setError('Wystąpił błąd podczas połączenia z serwerem.');
     }
   };
 
   return (
     <main className="relative flex min-h-[calc(100vh-4.25rem)] items-center justify-center px-4 py-10">
       <section className="border-primary/15 w-full max-w-md rounded-xl border bg-card p-6 shadow-md md:p-8">
+        <div className="mb-6 flex gap-2 border-b pb-4">
+          <Link
+            href="/login"
+            className="flex-1 rounded-md bg-primary/10 px-3 py-1.5 text-center text-sm font-medium text-primary">
+            Kandydat
+          </Link>
+          <Link
+            href="/admin"
+            className="flex-1 rounded-md px-3 py-1.5 text-center text-sm font-medium text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground">
+            Administrator
+          </Link>
+        </div>
+
         <h1 className="text-primary text-2xl font-semibold tracking-tight">
-          Logowanie
+          Logowanie Kandydata
         </h1>
 
         <form onSubmit={onSubmit} className="mt-6 space-y-4">
@@ -70,7 +115,7 @@ function LoginForm({ validProgramIds }: LoginPageClientProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="login-password">Haslo</Label>
+            <Label htmlFor="login-password">Hasło</Label>
             <Input
               id="login-password"
               type="password"
@@ -96,16 +141,17 @@ function LoginForm({ validProgramIds }: LoginPageClientProps) {
                 : '/register'
             }
             className="text-primary cursor-pointer font-medium underline-offset-4 hover:underline">
-            Zarejestruj sie
+            Zarejestruj się
+          </Link>
+        </p>
+        <p className="text-sm text-muted-foreground">
+          <Link
+            href="/forgot-password"
+            className="text-muted-foreground underline-offset-4 hover:underline hover:text-foreground transition-colors">
+            Zapomniałem hasła
           </Link>
         </p>
       </section>
-
-      <Link
-        href="/admin"
-        className="fixed bottom-4 left-4 rounded-md px-2.5 py-1.5 text-xs text-muted-foreground/50 transition-colors hover:bg-muted/60 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
-        Panel administratora
-      </Link>
     </main>
   );
 }

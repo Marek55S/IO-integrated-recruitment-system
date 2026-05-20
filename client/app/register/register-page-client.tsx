@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { RECRUITMENT_FORM_VALUES_STORAGE_KEY } from '@/lib/recruitment-storage';
+
 
 type RegisterPageClientProps = {
   validProgramIds: string[];
@@ -23,15 +23,17 @@ function RegisterForm({ validProgramIds }: RegisterPageClientProps) {
     programId && validProgramIds.includes(programId) ? programId : null;
 
   const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const onSubmit = (event: FormEvent) => {
+  const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (!email || !password || !repeatPassword) {
+    if (!email || !password || !repeatPassword || !firstName || !lastName) {
       setError('Uzupełnij wszystkie pola.');
       return;
     }
@@ -48,18 +50,28 @@ function RegisterForm({ validProgramIds }: RegisterPageClientProps) {
 
     setError(null);
 
-    const hasCompletedForm = !!localStorage.getItem(
-      RECRUITMENT_FORM_VALUES_STORAGE_KEY,
-    );
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, firstName, lastName }),
+      });
 
-    if (hasCompletedForm && validProgramId) {
-      router.push(`/programs/${validProgramId}`);
-    } else if (hasCompletedForm) {
-      router.push('/');
-    } else if (validProgramId) {
-      router.push(`/form?programId=${validProgramId}`);
-    } else {
-      router.push('/form');
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Błąd rejestracji.');
+        return;
+      }
+
+      // Po udanej rejestracji (auto-login) kierujemy na duży formularz rekrutacyjny
+      if (validProgramId) {
+        router.push(`/form?programId=${validProgramId}`);
+      } else {
+        router.push('/form');
+      }
+    } catch (err) {
+      setError('Wystąpił błąd podczas połączenia z serwerem.');
     }
   };
 
@@ -71,6 +83,29 @@ function RegisterForm({ validProgramIds }: RegisterPageClientProps) {
         </h1>
 
         <form onSubmit={onSubmit} className="mt-6 space-y-4">
+          <div className="flex gap-4">
+            <div className="space-y-2 w-full">
+              <Label htmlFor="register-firstName">Imię</Label>
+              <Input
+                id="register-firstName"
+                type="text"
+                value={firstName}
+                onChange={(event) => setFirstName(event.currentTarget.value)}
+                placeholder="Jan"
+              />
+            </div>
+            <div className="space-y-2 w-full">
+              <Label htmlFor="register-lastName">Nazwisko</Label>
+              <Input
+                id="register-lastName"
+                type="text"
+                value={lastName}
+                onChange={(event) => setLastName(event.currentTarget.value)}
+                placeholder="Kowalski"
+              />
+            </div>
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="register-email">E-mail</Label>
             <Input

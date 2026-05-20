@@ -1,0 +1,39 @@
+program_id: systemy-erp-analiza-biznesowa
+title: Systemy ERP - sciezka Analiza biznesowa w systemach ERP oraz BI
+description: 'Studia podyplomowe ze sciezka Analiza biznesowa w systemach ERP oraz
+  BI (Business Intelligence & Information Management). Program obejmuje systemy SAP,
+  analize procesow biznesowych, raportowanie i Business Intelligence. Zajecia prowadzone
+  online w formule weekendowej przez ekspertow SAP.
+
+  '
+image_src: /programs/systemy-erp-sciezka-analiza-biznesowa-w-systemach-erp-oraz-bi-business-intelligence-information-management.png
+form:
+  form_id: recruitment-program-systemy-erp-analiza-biznesowa
+  version: '1.0'
+  screens:
+  - id: 1
+    title: Formularz rekrutacyjny
+    subtitle: Uzupełnij zgłoszenie na kierunek Systemy ERP - sciezka Analiza biznesowa
+      w systemach ERP oraz BI.
+    primary_action: program.defaultSubmit
+    fields:
+    - id: candidate_first_name
+      type: text
+      label: Imię
+      placeholder: np. Jan
+      required: true
+    - id: candidate_last_name
+      type: text
+      label: Nazwisko
+      placeholder: np. Kowalski
+      required: true
+    - id: candidate_email
+      type: email
+      label: E-mail kontaktowy
+      placeholder: kandydat@example.com
+      required: true
+    - id: study_mode_confirm
+      type: checkbox
+      label: Potwierdzam zainteresowanie studiami (online)
+      required: true
+    button_text: Wyślij zgłoszenie

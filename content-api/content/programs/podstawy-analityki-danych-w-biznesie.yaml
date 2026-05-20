@@ -1,0 +1,38 @@
+program_id: podstawy-analityki-danych-w-biznesie
+title: Podstawy analityki danych w biznesie
+description: 'Studia podyplomowe dla osob bez zaawansowanego tla technicznego, chcacych
+  nauczyc sie analizy danych z perspektywy biznesowej. Program obejmuje Excel, SQL,
+  Power BI, podstawy statystyki i metody prezentacji wynikow analiz. Idealne dla menedzerow,
+  analitykow biznesowych i specjalistow z roznych branz.
+
+  '
+image_src: /programs/podstawy-analityki-danych-w-biznesie.jpg
+form:
+  form_id: recruitment-program-podstawy-analityki-danych-w-biznesie
+  version: '1.0'
+  screens:
+  - id: 1
+    title: Formularz rekrutacyjny
+    subtitle: Uzupełnij zgłoszenie na kierunek Podstawy analityki danych w biznesie.
+    primary_action: program.defaultSubmit
+    fields:
+    - id: candidate_first_name
+      type: text
+      label: Imię
+      placeholder: np. Jan
+      required: true
+    - id: candidate_last_name
+      type: text
+      label: Nazwisko
+      placeholder: np. Kowalski
+      required: true
+    - id: candidate_email
+      type: email
+      label: E-mail kontaktowy
+      placeholder: kandydat@example.com
+      required: true
+    - id: study_mode_confirm
+      type: checkbox
+      label: Potwierdzam zainteresowanie studiami (hybrydowy)
+      required: true
+    button_text: Wyślij zgłoszenie

@@ -1,0 +1,38 @@
+program_id: analiza-danych-data-science-hybrydowe
+title: Analiza Danych - Data Science (hybrydowe)
+description: 'Studia podyplomowe z zakresu analizy danych i data science w trybie
+  hybrydowym. Program obejmuje metody statystyczne, uczenie maszynowe, wizualizacje
+  danych oraz nowoczesne narzedzia analityczne stosowane w biznesie i nauce. Zajecia
+  prowadzone weekendowo, lacza spotkania stacjonarne z modulami online.
+
+  '
+image_src: /programs/analiza-danych-data-science.jpg
+form:
+  form_id: recruitment-program-analiza-danych-data-science-hybrydowe
+  version: '1.0'
+  screens:
+  - id: 1
+    title: Formularz rekrutacyjny
+    subtitle: Uzupełnij zgłoszenie na kierunek Analiza Danych - Data Science (hybrydowe).
+    primary_action: program.defaultSubmit
+    fields:
+    - id: candidate_first_name
+      type: text
+      label: Imię
+      placeholder: np. Jan
+      required: true
+    - id: candidate_last_name
+      type: text
+      label: Nazwisko
+      placeholder: np. Kowalski
+      required: true
+    - id: candidate_email
+      type: email
+      label: E-mail kontaktowy
+      placeholder: kandydat@example.com
+      required: true
+    - id: study_mode_confirm
+      type: checkbox
+      label: Potwierdzam zainteresowanie studiami (hybrydowy)
+      required: true
+    button_text: Wyślij zgłoszenie

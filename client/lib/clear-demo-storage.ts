@@ -1,4 +1,4 @@
-import { RECRUITMENT_FORM_VALUES_STORAGE_KEY } from '@/lib/recruitment-storage';
+import { clearFormDraft } from '@/lib/recruitment-storage';
 import {
   STUDY_APPLICATIONS_CHANGED_EVENT,
   STUDY_APPLICATIONS_STORAGE_KEY,
@@ -11,7 +11,7 @@ export function clearAllDemoRecruitmentStorage(): void {
 
   try {
     localStorage.removeItem(STUDY_APPLICATIONS_STORAGE_KEY);
-    localStorage.removeItem(RECRUITMENT_FORM_VALUES_STORAGE_KEY);
+    clearFormDraft();
   } catch {}
 
   window.dispatchEvent(new Event(STUDY_APPLICATIONS_CHANGED_EVENT));

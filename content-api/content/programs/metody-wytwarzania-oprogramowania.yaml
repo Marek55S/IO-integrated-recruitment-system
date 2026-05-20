@@ -1,0 +1,38 @@
+program_id: metody-wytwarzania-oprogramowania
+title: Metody Wytwarzania Oprogramowania
+description: 'Studia podyplomowe z zakresu inzynierii oprogramowania i nowoczesnych
+  metodyk wytwarzania systemow informatycznych. Program obejmuje metodyki zwinne (Agile,
+  Scrum), DevOps, testowanie, architekture mikrouslug oraz zarzadzanie jakoscia kodu.
+  Skierowany do programistow i liderow technicznych chcacych poszerzyc kompetencje.
+
+  '
+image_src: /programs/metody-wytwarzania-oprogramowania.jpg
+form:
+  form_id: recruitment-program-metody-wytwarzania-oprogramowania
+  version: '1.0'
+  screens:
+  - id: 1
+    title: Formularz rekrutacyjny
+    subtitle: Uzupełnij zgłoszenie na kierunek Metody Wytwarzania Oprogramowania.
+    primary_action: program.defaultSubmit
+    fields:
+    - id: candidate_first_name
+      type: text
+      label: Imię
+      placeholder: np. Jan
+      required: true
+    - id: candidate_last_name
+      type: text
+      label: Nazwisko
+      placeholder: np. Kowalski
+      required: true
+    - id: candidate_email
+      type: email
+      label: E-mail kontaktowy
+      placeholder: kandydat@example.com
+      required: true
+    - id: study_mode_confirm
+      type: checkbox
+      label: Potwierdzam zainteresowanie studiami (hybrydowy)
+      required: true
+    button_text: Wyślij zgłoszenie

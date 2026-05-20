@@ -1,0 +1,38 @@
+program_id: cyberbezpieczenstwo-w-praktyce
+title: Cyberbezpieczenstwo w praktyce
+description: 'Studia podyplomowe z zakresu cyberbezpieczenstwa skierowane do praktykow
+  IT. Program obejmuje testy penetracyjne, analize malware, reagowanie na incydenty,
+  bezpieczenstwo sieci i aplikacji webowych oraz standardy i regulacje prawne. Zajecia
+  prowadzone przez ekspertow z branzy bezpieczenstwa informatycznego.
+
+  '
+image_src: /programs/cyberbezpieczenstwo-w-praktyce.jpg
+form:
+  form_id: recruitment-program-cyberbezpieczenstwo-w-praktyce
+  version: '1.0'
+  screens:
+  - id: 1
+    title: Formularz rekrutacyjny
+    subtitle: Uzupełnij zgłoszenie na kierunek Cyberbezpieczenstwo w praktyce.
+    primary_action: program.defaultSubmit
+    fields:
+    - id: candidate_first_name
+      type: text
+      label: Imię
+      placeholder: np. Jan
+      required: true
+    - id: candidate_last_name
+      type: text
+      label: Nazwisko
+      placeholder: np. Kowalski
+      required: true
+    - id: candidate_email
+      type: email
+      label: E-mail kontaktowy
+      placeholder: kandydat@example.com
+      required: true
+    - id: study_mode_confirm
+      type: checkbox
+      label: Potwierdzam zainteresowanie studiami (hybrydowy)
+      required: true
+    button_text: Wyślij zgłoszenie

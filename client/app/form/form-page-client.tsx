@@ -26,11 +26,7 @@ function FormPageInner({
     programId && validProgramIds.includes(programId) ? programId : null;
 
   const handleSuccessfulSubmit = () => {
-    if (validProgramId) {
-      router.push(`/programs/${validProgramId}`);
-    } else {
-      router.push('/');
-    }
+    router.push('/profile');
   };
 
   return (
@@ -38,6 +34,7 @@ function FormPageInner({
       <FormEngine
         config={form}
         submissionConfig={submission}
+        programId={validProgramId}
         onSuccessfulSubmit={handleSuccessfulSubmit}
       />
     </main>

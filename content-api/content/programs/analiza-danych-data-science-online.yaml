@@ -1,0 +1,38 @@
+program_id: analiza-danych-data-science-online
+title: Analiza Danych - Data Science (online)
+description: 'Studia podyplomowe z zakresu analizy danych i data science w pelni online.
+  Program przygotowuje specjalistow do pracy z duzymi zbiorami danych, modelowania
+  predykcyjnego i podejmowania decyzji na podstawie danych. Zajecia prowadzone weekendowo
+  w formie zdalnej, dostepne z dowolnego miejsca.
+
+  '
+image_src: /programs/analiza-danych-data-science.jpg
+form:
+  form_id: recruitment-program-analiza-danych-data-science-online
+  version: '1.0'
+  screens:
+  - id: 1
+    title: Formularz rekrutacyjny
+    subtitle: Uzupełnij zgłoszenie na kierunek Analiza Danych - Data Science (online).
+    primary_action: program.defaultSubmit
+    fields:
+    - id: candidate_first_name
+      type: text
+      label: Imię
+      placeholder: np. Jan
+      required: true
+    - id: candidate_last_name
+      type: text
+      label: Nazwisko
+      placeholder: np. Kowalski
+      required: true
+    - id: candidate_email
+      type: email
+      label: E-mail kontaktowy
+      placeholder: kandydat@example.com
+      required: true
+    - id: study_mode_confirm
+      type: checkbox
+      label: Potwierdzam zainteresowanie studiami (online)
+      required: true
+    button_text: Wyślij zgłoszenie

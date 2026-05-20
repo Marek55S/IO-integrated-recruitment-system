@@ -18,6 +18,7 @@ type FieldRendererProps = {
   setValue: UseFormSetValue<FormValues>;
   value: unknown;
   error?: FieldError;
+  readOnly?: boolean;
 };
 
 function FileUploadField({
@@ -228,6 +229,7 @@ function FieldRenderer({
   setValue,
   value,
   error,
+  readOnly,
 }: FieldRendererProps) {
   if (field.type === 'section_title') {
     return <h3 className="pt-2 text-base font-semibold">{field.label}</h3>;
@@ -249,6 +251,7 @@ function FieldRenderer({
           <Checkbox
             id={field.id}
             checked={checked}
+            disabled={readOnly}
             onChange={(event) =>
               setValue(field.id, event.currentTarget.checked, {
                 shouldDirty: true,
@@ -297,26 +300,44 @@ function FieldRenderer({
   if (field.type === 'select') {
     return (
       <div className="space-y-2">
-        <Label htmlFor={field.id}>
+        <Label htmlFor={field.id} className="flex items-center gap-1.5">
           {field.label}
           {field.required ? ' *' : ''}
+          {readOnly ? (
+            <span title="To pole zostało już zapisane i nie może być zmienione" className="text-muted-foreground/60" aria-label="Pole zablokowane">
+              🔒
+            </span>
+          ) : null}
         </Label>
 
-        <Select
-          id={field.id}
-          defaultValue=""
-          aria-invalid={hasError}
-          aria-describedby={describedBy}
-          {...register(field.id)}>
-          <option value="" disabled>
-            Wybierz opcję
-          </option>
-          {field.options.map((option) => (
-            <option key={option} value={option}>
-              {option}
+        {readOnly ? (
+          // When readOnly show a plain text input so the saved value is visible
+          <Input
+            id={field.id}
+            type="text"
+            value={typeof value === 'string' ? value : ''}
+            disabled
+            readOnly
+            aria-describedby={describedBy}
+            className="bg-muted/40 cursor-not-allowed"
+          />
+        ) : (
+          <Select
+            id={field.id}
+            defaultValue=""
+            aria-invalid={hasError}
+            aria-describedby={describedBy}
+            {...register(field.id)}>
+            <option value="" disabled>
+              Wybierz opcję
             </option>
-          ))}
-        </Select>
+            {field.options.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </Select>
+        )}
 
         {field.input_info ? (
           <p id={infoId} className="text-xs text-muted-foreground">
@@ -337,15 +358,22 @@ function FieldRenderer({
 
   return (
     <div className="space-y-2">
-      <Label htmlFor={field.id}>
+      <Label htmlFor={field.id} className="flex items-center gap-1.5">
         {field.label}
         {field.required ? ' *' : ''}
+        {readOnly ? (
+          <span title="To pole zostało już zapisane i nie może być zmienione" className="text-muted-foreground/60" aria-label="Pole zablokowane">
+            🔒
+          </span>
+        ) : null}
       </Label>
 
       <Input
         id={field.id}
         type={inputType}
         placeholder={field.placeholder}
+        disabled={readOnly}
+        className={readOnly ? 'bg-muted/40 cursor-not-allowed' : undefined}
         aria-invalid={hasError}
         aria-describedby={describedBy}
         {...register(field.id)}
