@@ -27,7 +27,24 @@ async def get_profile(user: User = Depends(require_candidate)):
     """Get full profile of the current candidate."""
     profile = user.profile
     if not profile:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profil nie znaleziony")
+        # it_admin may not have a candidate profile — return minimal data
+        return ProfileResponse(
+            id=user.id,
+            email=user.email,
+            role=user.role,
+            first_name="",
+            last_name="",
+            family_name=None,
+            pesel=None,
+            birth_date=None,
+            birth_place=None,
+            citizenship=None,
+            phone=None,
+            addresses=[],
+            education=None,
+            emergency_contact=None,
+            agreements=[],
+        )
 
     return ProfileResponse(
         id=user.id,
@@ -57,7 +74,16 @@ async def update_profile(
     """Update candidate profile data."""
     profile = user.profile
     if not profile:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Profil nie znaleziony")
+        # it_admin has no candidate profile — create one on the fly
+        profile = CandidateProfile(
+            user_id=user.id,
+            first_name=body.first_name or "",
+            last_name=body.last_name or "",
+        )
+        db.add(profile)
+        await db.flush()
+        await db.refresh(user)
+        profile = user.profile
 
     # Update basic profile fields
     if body.first_name is not None:

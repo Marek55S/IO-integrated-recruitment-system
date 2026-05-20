@@ -1,0 +1,38 @@
+program_id: analiza-kryminalna
+title: Analiza kryminalna
+description: 'Studia podyplomowe z zakresu analizy kryminalnej laczace wiedze informatyczna
+  z metodami stosowanymi w kryminalistyce i bezpieczenstwie publicznym. Program przygotowuje
+  do pracy w organach scigania, sluzbach specjalnych oraz instytucjach zajmujacych
+  sie bezpieczenstwem i analiza danych sledczych.
+
+  '
+image_src: /programs/analiza-kryminalna.jpg
+form:
+  form_id: recruitment-program-analiza-kryminalna
+  version: '1.0'
+  screens:
+  - id: 1
+    title: Formularz rekrutacyjny
+    subtitle: Uzupełnij zgłoszenie na kierunek Analiza kryminalna.
+    primary_action: program.defaultSubmit
+    fields:
+    - id: candidate_first_name
+      type: text
+      label: Imię
+      placeholder: np. Jan
+      required: true
+    - id: candidate_last_name
+      type: text
+      label: Nazwisko
+      placeholder: np. Kowalski
+      required: true
+    - id: candidate_email
+      type: email
+      label: E-mail kontaktowy
+      placeholder: kandydat@example.com
+      required: true
+    - id: study_mode_confirm
+      type: checkbox
+      label: Potwierdzam zainteresowanie studiami (hybrydowy)
+      required: true
+    button_text: Wyślij zgłoszenie

@@ -236,7 +236,8 @@ function FormEngine({
 
   const persistAndFinish = async (values: FormValues) => {
     // Zachowujemy stare zapisywanie plików do FileList na poczet demo lub jakby upload się wywalił
-    saveSubmissionFiles(collectFiles(config, values));
+    const filesToUpload = collectFiles(config, values);
+    saveSubmissionFiles(filesToUpload);
 
     try {
       const serialisable = Object.fromEntries(
@@ -320,12 +321,33 @@ function FormEngine({
             form_data: serialisable,
           }),
         });
+        
+        const responseData = await response.json();
 
         if (!response.ok) {
-          const errorData = await response.json();
           throw new Error(
-            errorData.error || 'Wystąpił błąd podczas wysyłania wniosku.',
+            responseData.error || 'Wystąpił błąd podczas wysyłania wniosku.',
           );
+        }
+        
+        const applicationId = responseData.id || responseData.application_id;
+        
+        if (applicationId) {
+          for (const file of filesToUpload) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('applicationId', applicationId);
+            formData.append('docType', 'other');
+  
+            const uploadRes = await fetch('/api/upload', {
+              method: 'POST',
+              body: formData,
+            });
+  
+            if (!uploadRes.ok) {
+              console.error('Błąd wgrywania pliku:', await uploadRes.text());
+            }
+          }
         }
       }
 

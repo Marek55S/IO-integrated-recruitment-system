@@ -68,14 +68,33 @@ export default async function AdminProgramPage({
 
   return (
     <main className="min-h-screen bg-transparent px-4 py-8 md:px-6 md:py-10">
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="mx-auto max-w-5xl space-y-6">
+        <div className="flex items-center gap-4 mb-4">
+          <a
+            href="/admin/dashboard"
+            className="inline-flex items-center gap-2 text-sm font-medium text-amber-600 hover:text-amber-500 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Powrót do panelu admina
+          </a>
+        </div>
+
         <div className="rounded-xl border border-amber-500/20 bg-card p-6 shadow-md md:p-8">
-          <h1 className="text-2xl font-semibold tracking-tight text-amber-700 dark:text-amber-400">
-            {program.name}
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Wnioski rekrutacyjne ({applications.length})
-          </p>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-[11px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-widest mb-1">
+                Zarządzanie kierunkiem
+              </p>
+              <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+                {program.name}
+              </h1>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Wnioski rekrutacyjne ({applications.length})
+              </p>
+            </div>
+          </div>
         </div>
 
         <ApplicationsTable

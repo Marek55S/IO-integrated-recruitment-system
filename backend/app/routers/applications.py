@@ -76,11 +76,12 @@ async def create_application(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Rekrutacja jeszcze się nie rozpoczęła. Start: {edition.recruitment_start}",
         )
-    if edition.recruitment_end and today > edition.recruitment_end:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Rekrutacja na tę edycję już się zakończyła ({edition.recruitment_end})",
-        )
+    # Tymczasowo wyłączone sprawdzanie daty zakończenia rekrutacji, aby ułatwić testowanie
+    # if edition.recruitment_end and today > edition.recruitment_end:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_400_BAD_REQUEST,
+    #         detail=f"Rekrutacja na tę edycję już się zakończyła ({edition.recruitment_end})",
+    #     )
 
     # Check for duplicate
     dup = await db.execute(

@@ -1,0 +1,38 @@
+program_id: inzynieria-systemow-sztucznej-inteligencji
+title: Inzynieria systemow sztucznej inteligencji
+description: 'Studia podyplomowe przygotowujace inzynierow do projektowania i wdrazania
+  systemow opartych na sztucznej inteligencji. Program laczy teorie uczenia maszynowego
+  z praktycznymi umiejetnosciami tworzenia skalowalnych aplikacji AI, obejmujac m.in.
+  sieci neuronowe, przetwarzanie jezyka naturalnego i widzenie komputerowe.
+
+  '
+image_src: /programs/inzynieria-systemow-sztucznej-inteligencji.jpg
+form:
+  form_id: recruitment-program-inzynieria-systemow-sztucznej-inteligencji
+  version: '1.0'
+  screens:
+  - id: 1
+    title: Formularz rekrutacyjny
+    subtitle: Uzupełnij zgłoszenie na kierunek Inzynieria systemow sztucznej inteligencji.
+    primary_action: program.defaultSubmit
+    fields:
+    - id: candidate_first_name
+      type: text
+      label: Imię
+      placeholder: np. Jan
+      required: true
+    - id: candidate_last_name
+      type: text
+      label: Nazwisko
+      placeholder: np. Kowalski
+      required: true
+    - id: candidate_email
+      type: email
+      label: E-mail kontaktowy
+      placeholder: kandydat@example.com
+      required: true
+    - id: study_mode_confirm
+      type: checkbox
+      label: Potwierdzam zainteresowanie studiami (stacjonarny)
+      required: true
+    button_text: Wyślij zgłoszenie

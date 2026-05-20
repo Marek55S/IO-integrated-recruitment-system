@@ -202,6 +202,17 @@ export function ProfilePageClient({ config }: ProfilePageClientProps) {
           mapped.residence_postal_code = residence.postal_code; mapped.residence_street = residence.street;
           mapped.residence_house_number = residence.house_number;
         }
+        const corr = profile.addresses?.find((a: any) => a.type === 'correspondence');
+        if (corr) {
+          mapped.correspondence_same_as_residence = false;
+          mapped.correspondence_country = corr.country;
+          mapped.correspondence_city = corr.city;
+          mapped.correspondence_postal_code = corr.postal_code;
+          mapped.correspondence_street = corr.street;
+          mapped.correspondence_house_number = corr.house_number;
+        } else if (residence) {
+          mapped.correspondence_same_as_residence = true;
+        }
         if (profile.education) {
           mapped.academic_title = profile.education.academic_title;
           mapped.university_name = profile.education.university_name;
@@ -309,7 +320,7 @@ export function ProfilePageClient({ config }: ProfilePageClientProps) {
             <SubmissionPreview
               values={displayValues}
               config={{ title: config.title, subtitle: config.subtitle, sections: config.sections }}
-              files={submittedFiles}
+              files={undefined}
             />
 
             <div className="flex flex-col items-center gap-3 pt-2">

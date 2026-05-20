@@ -1,0 +1,38 @@
+program_id: uczenie-maszynowe-w-analityce-danych
+title: Uczenie maszynowe w analityce danych
+description: 'Studia podyplomowe lacza teorię uczenia maszynowego z praktycznym zastosowaniem
+  w analizie danych biznesowych. Program obejmuje algorytmy ML, Python (scikit-learn,
+  TensorFlow), przetwarzanie danych i wdrazanie modeli produkcyjnych. Skierowany do
+  analitykow danych i programistow chcacych specjalizowac sie w AI/ML.
+
+  '
+image_src: /programs/uczenie-maszynowe-w-analityce-danych.jpg
+form:
+  form_id: recruitment-program-uczenie-maszynowe-w-analityce-danych
+  version: '1.0'
+  screens:
+  - id: 1
+    title: Formularz rekrutacyjny
+    subtitle: Uzupełnij zgłoszenie na kierunek Uczenie maszynowe w analityce danych.
+    primary_action: program.defaultSubmit
+    fields:
+    - id: candidate_first_name
+      type: text
+      label: Imię
+      placeholder: np. Jan
+      required: true
+    - id: candidate_last_name
+      type: text
+      label: Nazwisko
+      placeholder: np. Kowalski
+      required: true
+    - id: candidate_email
+      type: email
+      label: E-mail kontaktowy
+      placeholder: kandydat@example.com
+      required: true
+    - id: study_mode_confirm
+      type: checkbox
+      label: Potwierdzam zainteresowanie studiami (online)
+      required: true
+    button_text: Wyślij zgłoszenie

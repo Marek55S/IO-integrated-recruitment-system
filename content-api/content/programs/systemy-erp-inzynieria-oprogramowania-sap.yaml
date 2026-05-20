@@ -1,0 +1,39 @@
+program_id: systemy-erp-inzynieria-oprogramowania-sap
+title: Systemy ERP - sciezka Inzynieria oprogramowania dla SAP i programowanie ABAP
+description: 'Studia podyplomowe ze sciezka Inzynieria oprogramowania dla SAP (S/4HANA)
+  i programowanie w jezyku ABAP. Program przygotowuje programistow i konsultantow
+  do pracy z platforma SAP, obejmujac architekture systemu, ABAP OOP, FIORI i HANA.
+  Zajecia online prowadzone przez certyfikowanych ekspertow SAP.
+
+  '
+image_src: /programs/systemy-erp-sciezka-inzynieria-oprogramowania-dla-sap-hana-erp-i-programowanie-w-jezyku-abap.png
+form:
+  form_id: recruitment-program-systemy-erp-inzynieria-oprogramowania-sap
+  version: '1.0'
+  screens:
+  - id: 1
+    title: Formularz rekrutacyjny
+    subtitle: Uzupełnij zgłoszenie na kierunek Systemy ERP - sciezka Inzynieria oprogramowania
+      dla SAP i programowanie ABAP.
+    primary_action: program.defaultSubmit
+    fields:
+    - id: candidate_first_name
+      type: text
+      label: Imię
+      placeholder: np. Jan
+      required: true
+    - id: candidate_last_name
+      type: text
+      label: Nazwisko
+      placeholder: np. Kowalski
+      required: true
+    - id: candidate_email
+      type: email
+      label: E-mail kontaktowy
+      placeholder: kandydat@example.com
+      required: true
+    - id: study_mode_confirm
+      type: checkbox
+      label: Potwierdzam zainteresowanie studiami (online)
+      required: true
+    button_text: Wyślij zgłoszenie

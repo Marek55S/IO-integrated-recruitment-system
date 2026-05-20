@@ -57,4 +57,5 @@ require_admin = require_role(
     UserRole.cok_staff,
     UserRole.it_admin,
 )
-require_candidate = require_role(UserRole.candidate)
+# Candidate endpoints — it_admin also has access (for testing / managing)
+require_candidate = require_role(UserRole.candidate, UserRole.it_admin)

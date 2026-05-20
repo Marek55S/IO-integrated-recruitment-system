@@ -1,0 +1,38 @@
+program_id: systemy-erp-sap-s4hana
+title: Systemy ERP - sciezka SAP S/4HANA
+description: 'Studia podyplomowe ze sciezka SAP S/4HANA obejmujace kompleksowe wdrozenia
+  i konfiguracje systemu SAP S/4HANA. Program laczy wiedze o procesach biznesowych
+  z techniczna znajomoscia platformy SAP, przygotowujac do roli konsultanta SAP. Zajecia
+  prowadzone online z dostepem do systemu SAP do cwiczen praktycznych.
+
+  '
+image_src: /programs/systemy-erp-sap-s-4hana.png
+form:
+  form_id: recruitment-program-systemy-erp-sap-s4hana
+  version: '1.0'
+  screens:
+  - id: 1
+    title: Formularz rekrutacyjny
+    subtitle: Uzupełnij zgłoszenie na kierunek Systemy ERP - sciezka SAP S/4HANA.
+    primary_action: program.defaultSubmit
+    fields:
+    - id: candidate_first_name
+      type: text
+      label: Imię
+      placeholder: np. Jan
+      required: true
+    - id: candidate_last_name
+      type: text
+      label: Nazwisko
+      placeholder: np. Kowalski
+      required: true
+    - id: candidate_email
+      type: email
+      label: E-mail kontaktowy
+      placeholder: kandydat@example.com
+      required: true
+    - id: study_mode_confirm
+      type: checkbox
+      label: Potwierdzam zainteresowanie studiami (online)
+      required: true
+    button_text: Wyślij zgłoszenie
